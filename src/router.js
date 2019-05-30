@@ -23,6 +23,25 @@ export default new Router({
       component: () => import(/* webpackChunkName: "about" */ './views/About.vue')
     },
     {
+      //登录
+      path: '/login',
+      name: 'login',
+      component: ()=>import('./views/Login.vue')
+    },
+    {
+      //注册
+      path: '/register',
+      name: 'register',
+      component: ()=>import('./views/Register.vue')
+    },
+    {
+      //忘记密码
+      path: '/forget',
+      name: 'forget',
+      component: ()=>import('./views/Forget.vue')
+    },
+    {
+      //404
       path:'*',
       name:'notfound',
       component:()=>import('./components/NotFound.vue')

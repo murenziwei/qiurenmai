@@ -1,13 +1,9 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
     <transition :name='tName'>
       <router-view class='child-view' />
-    </transition>  
-    
+    </transition>
+
   </div>
 </template>
 <script>
@@ -15,7 +11,7 @@
     data () {
       return {
         tName: 'slide-left',
-        router:[]
+        router:[],
       }
     },
     created (){
@@ -47,13 +43,13 @@
   }
 </script>
 <style>
+body{border:0;margin:0;padding:0;}
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
 }
 .child-view {
   transition: all .4s cubic-bezier(.55,0,.1,1);

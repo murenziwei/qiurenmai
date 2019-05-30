@@ -1,6 +1,9 @@
 dependencies:
   core-js: 2.6.9
+  element-ui: 2.9.0
   vue: 2.6.10
+  vue-router: 3.0.6
+  vuex: 3.1.1
 devDependencies:
   '@vue/cli-plugin-babel': 3.8.0
   '@vue/cli-plugin-eslint': 3.8.0
@@ -1483,6 +1486,12 @@ packages:
     dev: true
     resolution:
       integrity: sha512-jp/uFnooOiO+L211eZOoSyzpOITMXx1rBITauYykG3BRYPu8h0UcxsPNB04RR5vo4Tyz3+ay17tR6JVf9qzYWg==
+  /async-validator/1.8.5:
+    dependencies:
+      babel-runtime: 6.26.0
+    dev: false
+    resolution:
+      integrity: sha512-tXBM+1m056MAX0E8TL2iCjg8WvSyXu0Zc8LNtYqrVeyoL3+esHRZ4SieE9fKQyyU09uONjnMEjrNBMqT0mbvmA==
   /async/1.5.2:
     dev: true
     resolution:
@@ -1559,6 +1568,10 @@ packages:
       eslint: '>= 4.12.1'
     resolution:
       integrity: sha512-z7OT1iNV+TjOwHNLLyJk+HN+YVWX+CLE6fPD2SymJZOZQBs+QIexFjhm4keGTm8MW9xr4EC9Q0PbaLB24V5GoQ==
+  /babel-helper-vue-jsx-merge-props/2.0.3:
+    dev: false
+    resolution:
+      integrity: sha512-gsLiKK7Qrb7zYJNgiXKpXblxbV5ffSwR0f5whkPAaBAR4fhi6bwRZxX9wBlIc5M/v8CCkXUbXZL4N/nSE97cqg==
   /babel-loader/8.0.6_@babel+core@7.4.5+webpack@4.28.4:
     dependencies:
       '@babel/core': 7.4.5
@@ -1593,6 +1606,13 @@ packages:
       node: '>= 6.0.0'
     resolution:
       integrity: sha512-tjR0GvSndzPew/Iayf4uICWZqjBwnlMWjSx6brryfQ81F9rxBVqwDJtFCV8oOs0+vJeefK9TmdZtkIFdFe1UnA==
+  /babel-runtime/6.26.0:
+    dependencies:
+      core-js: 2.6.9
+      regenerator-runtime: 0.11.1
+    dev: false
+    resolution:
+      integrity: sha1-llxwWGaOgrVde/4E/yM3vItWR/4=
   /balanced-match/1.0.0:
     dev: true
     resolution:
@@ -1774,7 +1794,7 @@ packages:
   /browserslist/4.6.1:
     dependencies:
       caniuse-lite: 1.0.30000971
-      electron-to-chromium: 1.3.137
+      electron-to-chromium: 1.3.139
       node-releases: 1.1.21
     dev: true
     hasBin: true
@@ -2076,7 +2096,7 @@ packages:
   /cli-highlight/2.1.1:
     dependencies:
       chalk: 2.4.2
-      highlight.js: 9.15.7
+      highlight.js: 9.15.8
       mz: 2.7.0
       parse5: 4.0.0
       yargs: 13.2.4
@@ -2685,7 +2705,6 @@ packages:
     resolution:
       integrity: sha1-s2nW+128E+7PUk+RsHD+7cNXzzQ=
   /deepmerge/1.5.2:
-    dev: true
     engines:
       node: '>=0.10.0'
     resolution:
@@ -2926,10 +2945,23 @@ packages:
       node: '>=0.10.0'
     resolution:
       integrity: sha512-0xy4A/twfrRCnkhfk8ErDi5DqdAsAqeGxht4xkCUrsvhhbQNs7E+4jV0CN7+NKIY0aHE72+XvqtBIXzD31ZbXQ==
-  /electron-to-chromium/1.3.137:
+  /electron-to-chromium/1.3.139:
     dev: true
     resolution:
-      integrity: sha512-kGi32g42a8vS/WnYE7ELJyejRT7hbr3UeOOu0WeuYuQ29gCpg9Lrf6RdcTQVXSt/v0bjCfnlb/EWOOsiKpTmkw==
+      integrity: sha512-8cR7h6doIC/XLgPdsTM3BXpfWLzqrHS6jWrvWLsdZWZWFvVQQUJTbU/wUZsjRGK33OY5ZIiS1n6JbqowuWrmYg==
+  /element-ui/2.9.0:
+    dependencies:
+      async-validator: 1.8.5
+      babel-helper-vue-jsx-merge-props: 2.0.3
+      deepmerge: 1.5.2
+      normalize-wheel: 1.0.1
+      resize-observer-polyfill: 1.5.1
+      throttle-debounce: 1.1.0
+    dev: false
+    peerDependencies:
+      vue: ^2.5.17
+    resolution:
+      integrity: sha512-1i50qB9ygrokuuMFsmWaX8DsRNIxdziK2IBhcWgOy+gO1mPmhZpp48hurvh1GOcInlE2KUidMKuxVMRgwW7URg==
   /elliptic/6.4.1:
     dependencies:
       bn.js: 4.11.8
@@ -3987,10 +4019,10 @@ packages:
     dev: true
     resolution:
       integrity: sha512-l9sfDFsuqtOqKDsQdqrMRk0U85RZc0RtOR9yPI7mRVOa4FsR/BVnZ0shmQRM96Ji99kYZP/7hn1cedc1+ApsTQ==
-  /highlight.js/9.15.7:
+  /highlight.js/9.15.8:
     dev: true
     resolution:
-      integrity: sha512-6AgA4zXNQZbgvhuJQhL+8JEd+XiPyzRxHpoRnhU084/ZoLqvMRjFQ3eSXvcUlLpLByA++TDYiFr0r4CHRHRJBQ==
+      integrity: sha512-RrapkKQWwE+wKdF73VsOa2RQdIoO3mxwJ4P8mhbI6KYJUraUHRKM5w5zQQKXNk0xNL4UVRdulV9SBJcmzJNzVA==
   /hmac-drbg/1.0.1:
     dependencies:
       hash.js: 1.1.7
@@ -5374,6 +5406,10 @@ packages:
       node: '>=6'
     resolution:
       integrity: sha512-U+JJi7duF1o+u2pynbp2zXDW2/PADgC30f0GsHZtRh+HOcXHnw137TrNlyxxRvWW5fjKd3bcLHPxofWuCjaeZg==
+  /normalize-wheel/1.0.1:
+    dev: false
+    resolution:
+      integrity: sha1-rsiGr/2wRQcNhWRH32Ls+GFG7EU=
   /npm-run-path/2.0.2:
     dependencies:
       path-key: 2.0.1
@@ -6482,6 +6518,10 @@ packages:
     dev: true
     resolution:
       integrity: sha512-1G6jJVDWrt0rK99kBjvEtziZNCICAuvIPkSiUFIQxVP06RCVpq3dmDo2oi6ABpYaDYaTRr67BEhL8r1wgEZZKg==
+  /regenerator-runtime/0.11.1:
+    dev: false
+    resolution:
+      integrity: sha512-MguG95oij0fC3QV3URf4V2SDYGJhJnJGqvIIgdECeODCT98wSWDAJ94SSuVpYQUoTcGUIL6L4yNB7j1DFFHSBg==
   /regenerator-runtime/0.13.2:
     dev: true
     resolution:
@@ -6681,6 +6721,10 @@ packages:
     dev: true
     resolution:
       integrity: sha1-79qpjqdFEyTQkrKyFjpqHXqaIUc=
+  /resize-observer-polyfill/1.5.1:
+    dev: false
+    resolution:
+      integrity: sha512-LwZrotdHOo12nQuZlHEmtuXdqGoOD0OhaxopaNFxWzInpEgaLWoVuAMbTzixuosCx2nEG58ngzW3vxdWoxIgdg==
   /resolve-cwd/2.0.0:
     dependencies:
       resolve-from: 3.0.0
@@ -7498,6 +7542,12 @@ packages:
       webpack: ^2.0.0 || ^3.0.0 || ^4.0.0
     resolution:
       integrity: sha512-7xpuc9Ifg6WU+QYw/8uUqNdRwMD+N5gjwHKMqETrs96Qn+7BHwECpt2Brzr4HFlf4IAkZsayNhmGdbkBsTJ//w==
+  /throttle-debounce/1.1.0:
+    dev: false
+    engines:
+      node: '>=4'
+    resolution:
+      integrity: sha512-XH8UiPCQcWNuk2LYePibW/4qL97+ZQ1AN3FNXwZRBNPPowo/NRU5fAlDCSNBJIYCKbioZfuYtMhG4quqoJhVzg==
   /through/2.3.8:
     dev: true
     resolution:
@@ -7922,6 +7972,10 @@ packages:
       webpack: ^4.1.0 || ^5.0.0-0
     resolution:
       integrity: sha512-x+NZ4RIthQOxcFclEcs8sXGEWqnZHodL2J9Vq+hUz+TDZzBaDIh1j3d9M2IUlTjtrHTZy4uMuRdTi8BGws7jLA==
+  /vue-router/3.0.6:
+    dev: false
+    resolution:
+      integrity: sha512-Ox0ciFLswtSGRTHYhGvx2L44sVbTPNS+uD2kRISuo8B39Y79rOo0Kw0hzupTmiVtftQYCZl87mwldhh2L9Aquw==
   /vue-style-loader/4.1.2:
     dependencies:
       hash-sum: 1.0.2
@@ -7944,6 +7998,10 @@ packages:
     dev: false
     resolution:
       integrity: sha512-ImThpeNU9HbdZL3utgMCq0oiMzAkt1mcgy3/E6zWC/G6AaQoeuFdsl9nDhTDU3X1R6FK7nsIUuRACVcjI+A2GQ==
+  /vuex/3.1.1:
+    dev: false
+    resolution:
+      integrity: sha512-ER5moSbLZuNSMBFnEBVGhQ1uCBNJslH9W/Dw2W7GZN23UQA69uapP5GTT9Vm8Trc0PzBSVt6LzF3hGjmv41xcg==
   /watchpack/1.6.0:
     dependencies:
       chokidar: 2.1.6
@@ -8267,7 +8325,10 @@ specifiers:
   '@vue/cli-service': ^3.8.0
   babel-eslint: ^10.0.1
   core-js: ^2.6.5
+  element-ui: ^2.8.2
   eslint: ^5.16.0
   eslint-plugin-vue: ^5.0.0
   vue: ^2.6.10
+  vue-router: ^3.0.3
   vue-template-compiler: ^2.6.10
+  vuex: ^3.0.1

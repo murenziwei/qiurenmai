@@ -1,5 +1,5 @@
 <template>
-    <div class="login">
+    <div class="register">
         <el-card :body-style="{padding:'0',borderRadius:0}">
             <el-row type="flex" justify="space-between" align="middle" >
                 <el-col :span="18">
@@ -26,23 +26,7 @@
                 <el-col :xs="24" :sm="8" >
                     <el-card class="box-card">
                         <el-form>
-                            <el-form-item class="lf-topic">
-                                <span class="l-t-span">登录求人脉</span>
-                            </el-form-item>
-                            <el-form-item>
-                                <el-input placeholder="用户名" v-model="user"></el-input>
-                            </el-form-item>
-                            <el-form-item>
-                                <el-input placeholder="密码" show-password v-model="password"></el-input>
-                            </el-form-item>
 
-                            <el-form-item>
-                                <el-row type="flex" justify="space-between" align="middle">
-                                    <el-button type="warning">登录</el-button>
-
-                                    <el-link type="primary" href="#/forget" >忘记密码</el-link>
-                                </el-row>
-                            </el-form-item>
 
                         </el-form>
                     </el-card>
@@ -54,27 +38,15 @@
 
 <script>
     export default {
-        name: 'login',
+        name: 'register',
         data: function () {
             return {
-                user:'',
-                password:''
             }
         }
     }
 </script>
 
 <style scoped>
-    .lf-topic{
-        text-align: left;
-
-    }
-    .l-t-span{
-        font-size:1.2rem;
-        color:#000;
-        font-weight: bold;
-        opacity:0.7;
-    }
     .lw-main{margin:3rem 0;}
     .lo-left-img{
         height:4rem;

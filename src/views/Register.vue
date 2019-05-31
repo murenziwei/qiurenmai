@@ -20,14 +20,77 @@
         </el-card>
         <el-main class="lw-main">
             <el-row type="flex" justify="end">
-                <el-col :xs="0" :sm="16">
-                    <el-image :src="this.$store.state.urlimg"></el-image>
-                </el-col>
-                <el-col :xs="24" :sm="8" >
+                <el-col :xs="24">
                     <el-card class="box-card">
-                        <el-form>
+
+                        <div slot="header" class="clearfix">
+                            <span class="cf-left">注册</span>
+                        </div>
+                        <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="auto" class="demo-ruleForm">
+
+                            <el-form-item label="用户名" prop="user">
+                                <el-input v-model="ruleForm.user" placeholder="请输入用户名"></el-input>
+                            </el-form-item>
+                            <el-form-item label="密码" prop="pass">
+                                <el-input type="password" v-model="ruleForm.pass" autocomplete="off"  placeholder="请输入密码"></el-input>
+                            </el-form-item>
+                            <el-form-item label="确认密码" prop="checkPass">
+                                <el-input type="password" v-model="ruleForm.checkPass" autocomplete="off"  placeholder="请再次确认密码"></el-input>
+                            </el-form-item>
+
+                            <el-form-item label="邮箱" prop="email">
+                                <el-input v-model="ruleForm.email" placeholder="请输入邮箱"></el-input>
+                            </el-form-item>
+                            <el-form-item label="QQ号" prop="qq">
+                                <el-input v-model.number="ruleForm.qq" placeholder="请输入QQ号"></el-input>
+                            </el-form-item>
+                            <el-form-item label="手机号" prop="phone">
+                                <el-input v-model.number="ruleForm.phone" placeholder="请输入手机号"></el-input>
+                            </el-form-item>
+
+                            <el-form-item label="验证码" prop="verification">
+                                <el-row >
+                                    <el-col :span="12"><el-input v-model="ruleForm.verification" type="verification" autocomplete="off"></el-input></el-col>
+                                    <el-col :span="12">
+                                        <el-button @click="makeCode" type="danger" class="mch" :loading="!send"><i class="el-icon-message" v-if="send"></i><span v-else>{{second}}</span></el-button>
+                                    </el-col>
+                                </el-row>
+                            </el-form-item>
+
+                            <el-form-item label="选择角色" prop="resource">
+                                <el-radio-group v-model="ruleForm.resource">
+                                    <el-radio label="商家"></el-radio>
+                                    <el-radio label="买手"></el-radio>
+                                </el-radio-group>
+                            </el-form-item>
 
 
+                                <el-alert
+                                        class="info-con" v-if="ruleForm.resource=='买手'"
+                                        :title="bull.title"
+                                        type="error"
+                                        >
+                                    <div>
+                                        <p v-for="(item,index) in bull.list">{{index+1}}、{{item}}</p>
+                                    </div>
+                                </el-alert>
+                            <el-row type="flex" align="middle" class="deal-row">
+                                <el-checkbox-group v-model="ruleForm.deal">
+                                    <el-checkbox label="我同意" type="deal"></el-checkbox>
+                                </el-checkbox-group>
+                                <el-link type='info' class="deal-nav" >XXX服务</el-link>
+                            </el-row>
+                            <el-row>
+                                <el-button type="warning" @click="submitForm('ruleForm')">注册</el-button>
+                                <el-button @click="resetForm('ruleForm')">重置</el-button>
+                            </el-row>
+                            <el-row class="info-con">
+                                <el-alert
+                                        :title="info.title"
+                                        type="warning"
+                                        :description="info.content">
+                                </el-alert>
+                            </el-row>
                         </el-form>
                     </el-card>
                 </el-col>
@@ -39,15 +102,187 @@
 <script>
     export default {
         name: 'register',
-        data: function () {
+        data() {
+            var checkQq = (rule, value, callback) => {
+                if (!value) {
+                    return callback(new Error('qq不能为空'));
+                }
+                setTimeout(() => {
+                    if (!Number.isInteger(value)) {
+                        callback(new Error('请输入数字值'));
+                    } else {
+
+                        callback();
+                    }
+                }, 1000);
+            };
+
+            var checkPhone = (rule, value, callback) => {
+                if (!value) {
+                    return callback(new Error('手机号不能为空'));
+                }
+                setTimeout(() => {
+                    if (!Number.isInteger(value)) {
+                        callback(new Error('请输入手机号'));
+                    } else if(value.toString().length<11){
+                        callback(new Error('请输入11位数的手机号码'));
+                    }
+                    else {
+                        callback();
+                    }
+                }, 1000);
+            };
+            var validatePass = (rule, value, callback) => {
+                if (value === '') {
+                    callback(new Error('请输入密码'));
+                } else {
+                    if (this.ruleForm.checkPass !== '') {
+                        this.$refs.ruleForm.validateField('checkPass');
+                    }
+                    callback();
+                }
+            };
+
+            var validateUser = (rule, value, callback) => {
+                if (value === '') {
+                    callback(new Error('请输入用户名'));
+                } else {
+                    callback();
+                }
+            };
+
+            var validatePass2 = (rule, value, callback) => {
+                if (value === '') {
+                    callback(new Error('请再次输入密码'));
+                } else if (value !== this.ruleForm.pass) {
+                    callback(new Error('两次输入密码不一致!'));
+                } else {
+                    callback();
+                }
+            };
+
+            var validatecode=(rule, value, callback) => {
+                var phone=this.ruleForm.phone;
+                if (!Number.isInteger(phone)||phone.toString().length<11) {
+                    callback(new Error('手机号无效，请你重填'));
+                } else {
+                    if (value === '') {
+                        callback(new Error('请输入短信码'));
+                    } else if (value != this.identifyCode) {
+                        callback(new Error('短信码错误'));
+                    } else {
+                        callback();
+                    }
+                }
+            };
             return {
+
+                bull:{
+                    title:'温馨提示',
+                    list:['每个买手只能注册一个账号，多注册账号者封号，不返还会员费',
+                        ' 严禁同一台电脑登录多个求人脉买手账号接任务、做任务。违规操作者，封禁求人脉ID账户求人，脉点余额不予提现，VIP会员费不退',
+                    '新买手福利，首次注册成功赠送3个月会员时间和4脉点'
+                    ]
+                },
+                info:{
+                    title:'求人脉是一个担保式安全刷单平台，支持淘宝，天猫等各大平台',
+                    content:'这是一句绕口令：黑灰化肥会挥发发灰黑化肥挥发；灰黑化肥会挥发发黑灰化肥发挥。 黑灰化肥会挥发发灰黑化肥黑灰挥发化为灰……'
+                },
+                send:true,
+                second:0,
+                identifyCode:'',
+                ruleForm: {
+                    user:'',
+                    pass: '',
+                    checkPass: '',
+                    qq: '',
+                    email:'',
+                    phone:'',
+                    verification:'',
+                    resource:'商家',
+                    deal:''
+                },
+                rules: {
+                    resource:[],
+                    user:[
+                        {required: true,validator:validateUser,trigger:'blur'}
+                    ],
+                    qq:[
+                        {required: true,validator:checkQq,trigger:'blur'}
+                    ],
+                    pass: [
+                        {required: true, validator: validatePass, trigger: 'blur' }
+                    ],
+                    checkPass: [
+                        {required: true, validator: validatePass2, trigger: 'blur' }
+                    ],
+                    email: [
+                        { required: true, message: '请输入邮箱地址', trigger: 'blur' },
+                        { type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change'] }
+                    ],
+                    phone:[
+                        {required: true,validator:checkPhone,trigger:'blur'}
+                    ],
+                    verification:[
+                        { validator: validatecode, trigger: 'blur' }
+                    ]
+                }
+            };
+        },
+        methods: {
+            makeCode(){
+                var phone=this.ruleForm.phone;
+                if (!Number.isInteger(phone)||phone.toString().length<11) {
+                    this.$message.error('手机号无效，请你重填');
+                } else {
+                    if(this.send){
+                        this.$message.success('发送成功，请注意查收消息');
+
+                        this.send=false,this.second=30;
+                        var code=1000+Math.floor(Math.random()*8999);
+                        console.log(code);
+                        this.identifyCode=code.toString();
+                        var sendInter=setInterval(()=>{
+                            this.second--;
+                            if(this.second<=0) {
+                                this.second = 0;
+                                this.send = true;
+                                clearInterval(sendInter);
+                            }
+                        },1000)
+                    }
+                }
+
+            },
+            submitForm(formName) {
+                console.log(this.ruleForm)
+                this.$refs[formName].validate((valid) => {
+                    if (valid) {
+                        this.$message.success('注册成功，请稍等···')
+                    } else {
+                        console.log('error submit!!');
+                        return false;
+                    }
+                });
+            },
+            resetForm(formName) {
+                this.$refs[formName].resetFields();
             }
         }
     }
 </script>
 
 <style scoped>
-    .lw-main{margin:3rem 0;}
+    .info-con{
+        margin:1rem 0;
+        text-align:left;
+    }
+    .deal-row{
+        height:2rem;
+    }
+    .deal-nav{
+        margin-left:.5rem;
+    }
     .lo-left-img{
         height:4rem;
     }

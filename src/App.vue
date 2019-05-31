@@ -1,9 +1,6 @@
 <template>
   <div id="app">
-    <transition :name='tName'>
       <router-view class='child-view' />
-    </transition>
-
   </div>
 </template>
 <script>
@@ -50,18 +47,5 @@ body{border:0;margin:0;padding:0;}
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-}
-.child-view {
-  transition: all .4s cubic-bezier(.55,0,.1,1);
-}
-.slide-left-enter, .slide-right-leave-active {
-  opacity: 0;
-  -webkit-transform: translate(100px, 0);
-  transform: translate(100px, 0);
-}
-.slide-left-leave-active, .slide-right-enter {
-  opacity: 0;
-  -webkit-transform: translate(-100px, 0);
-  transform: translate(-100px, 0);
 }
 </style>

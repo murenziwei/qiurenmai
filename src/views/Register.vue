@@ -272,17 +272,18 @@
     }
 </script>
 
-<style scoped>
+<style lang="less" scoped>
     .info-con{
         margin:1rem 0;
         text-align:left;
     }
     .deal-row{
         height:2rem;
+        .deal-nav{
+            margin-left:.5rem;
+        }
     }
-    .deal-nav{
-        margin-left:.5rem;
-    }
+
     .lo-left-img{
         height:4rem;
     }

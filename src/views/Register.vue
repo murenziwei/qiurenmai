@@ -240,7 +240,7 @@
 
                         this.send=false,this.second=30;
                         var code=1000+Math.floor(Math.random()*8999);
-                        console.log(code);
+
                         this.identifyCode=code.toString();
                         var sendInter=setInterval(()=>{
                             this.second--;
@@ -255,12 +255,10 @@
 
             },
             submitForm(formName) {
-                console.log(this.ruleForm)
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
                         this.$message.success('注册成功，请稍等···')
                     } else {
-                        console.log('error submit!!');
                         return false;
                     }
                 });

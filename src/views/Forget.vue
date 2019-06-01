@@ -1,6 +1,5 @@
 <template>
     <div v-loading="loadstatus">
-
         <el-card :body-style="{padding:'0',borderRadius:0}">
             <el-row type="flex" justify="space-between" align="middle" >
                 <el-col :span="18">

@@ -3,7 +3,7 @@
 
     <div :class="{'h-header':true,'active':scrollBol}">
 
-      <el-col class="wow bounceInDown hh-frame hidden-xs-only" :xs="0" :sm="24">
+      <el-col class="wow bounceInDown hh-frame hidden-xs-only" data-wow-delay=".1s"   :xs="0" :sm="24">
         <div class="hh-left">
           <div class="h-l-btns">
             <div class="hlb hlb-login">登录</div>
@@ -31,7 +31,7 @@
         </div>
       </el-col>
 
-      <el-col class="wow bounceInDown hidden-sm-only" :xs="24" :sm="0">
+      <el-col class="wow bounceInDown hidden-sm-only" data-wow-delay=".1s"   :xs="24" :sm="0">
         <div  @click="controlfn" class="hh-frame h-icon-list">
           <i class="hi-ico el-icon-s-fold" ></i>
         </div>
@@ -56,7 +56,7 @@
       <div class="h-item hb-top" style="background: linear-gradient(135deg,#1D1632,#3F306D,#43072A,#6F305F);
     background-image: url(http://s.zhuan.net/v1/themes/zh-cn/dist/images/bg-9.jpg);">
         <div class="h-b-frame">
-          <div class="hbf-top wow bounceInLeft">
+          <div class="hbf-top wow bounceInLeft" data-wow-delay=".2s"  >
 
             <el-row>
               <el-col class="hbf-text">
@@ -67,7 +67,7 @@
           </div>
           <div>
 
-            <el-row class="wow bounceInRight">
+            <el-row class="wow bounceInRight" data-wow-delay=".3s"  >
               <el-col :xs="24" :sm="12">
                 <div class="h-login h-btn">
                   登陆
@@ -81,7 +81,7 @@
                 </div>
               </el-col>
             </el-row>
-            <el-row class="wow bounceInUp">
+            <el-row class="wow bounceInUp" data-wow-delay=".4s"  >
               <p class="nav-more">
                 了解更多
                 <br />
@@ -92,11 +92,11 @@
         </div>
       </div>
       <div class="hb-core" :style="{backgroundImage:'url(http://s.zhuan.net/v1/themes/zh-cn/dist/images/bg-1.jpg)'}">
-        <div class="hc-topic">
+        <div class="wow bounceInLeft hc-topic">
           核心
         </div>
         <el-row class="h-t-content">
-          <el-col class="htc-list" :xs="24" :sm="8">
+          <el-col class="wow bounceInUp htc-list"  data-wow-delay=".2s"  :xs="24" :sm="8">
             <div class="h-l-flex">
               <div class="hlf-left">
                 <div class="hl-item">
@@ -109,7 +109,7 @@
               </div>
             </div>
           </el-col>
-          <el-col class="htc-list" :xs="24" :sm="8">
+          <el-col class="wow bounceInUp htc-list" data-wow-delay=".3s"  :xs="24" :sm="8">
             <div class="h-l-flex">
               <div class="hlf-left">
                 <div class="hl-item">
@@ -124,7 +124,7 @@
             </div>
           </el-col>
 
-          <el-col class="htc-list" :xs="24" :sm="8">
+          <el-col class="wow bounceInUp htc-list" data-wow-delay=".4s" :xs="24" :sm="8">
             <div class="h-l-flex">
               <div class="hlf-left">
                 <div class="hl-item">
@@ -139,33 +139,33 @@
           </el-col>
         </el-row>
         <div class="h-t-info">
-          <p class="hti-list">销量110平台紧跟淘宝发展趋势,专注搜索研究</p>
-          <p class="hti-list">实现全网首家黑科技系列搜索模型,注重有效提权</p>
+          <p class="hti-list wow bounceIn" data-wow-delay=".1s"  >销量110平台紧跟淘宝发展趋势,专注搜索研究</p>
+          <p class="hti-list wow bounceIn" data-wow-delay=".2s"  >实现全网首家黑科技系列搜索模型,注重有效提权</p>
         </div>
-        <div :style="{backgroundImage:'url(http://s.zhuan.net/v1/themes/zh-cn/dist/images/bg-2.png)'}" class="core-footer">
+        <div  :style="{backgroundImage:'url(http://s.zhuan.net/v1/themes/zh-cn/dist/images/bg-2.png)'}" class="core-footer  wow fadeIn">
           <el-image class="c-f-zhan" src="http://s.zhuan.net/v1/themes/zh-cn/dist/images/bg-2.png" ></el-image>
         </div>
 
 
       </div>
       <div class="hb-advantage">
-        <div class="hc-topic">
+        <div class="hc-topic wow flipInX">
           优势
         </div>
         <div class="ha-info">
-          <p class="h-i-list">销量110平台是电商服务众包平台,针对电商平台搜索排名优化推广效果显著</p>
-          <p class="h-i-list">选择使用我们服务的七大理由</p>
+          <p class="h-i-list wow flipInX"  data-wow-delay=".1s"  >销量110平台是电商服务众包平台,针对电商平台搜索排名优化推广效果显著</p>
+          <p class="h-i-list wow flipInX"  data-wow-delay=".2s"  >选择使用我们服务的七大理由</p>
         </div>
         <div class="advantage-body">
           <el-row class="ab-row">
             <el-col :xs="24">
-              <div class="ab-item">
+              <div class="ab-item wow fadeInDown"  data-wow-delay=".5s">
                 <div class="ab-item-in">
                   <i class="el-icon-help ai-icon"></i>
                 </div>
               </div>
             </el-col>
-            <div class="ab-xs left">
+            <div class="ab-xs left wow bounceInLeft" data-wow-duration=".5s" data-wow-delay="0s">
               <div>
                 <div>
                   <p class="a-x-title"><b>H</b>一人一号</p>
@@ -177,13 +177,48 @@
 
           <el-row class="ab-row">
             <el-col :xs="24">
-              <div class="ab-item">
+              <div class="ab-item wow fadeInDown"  data-wow-delay=".5s">
                 <div class="ab-item-in">
                   <i class="el-icon-collection ai-icon"></i>
                 </div>
               </div>
             </el-col>
-            <div class="ab-xs right">
+            <div class="ab-xs right wow bounceInRight" data-wow-duration=".5s" data-wow-delay="0s">
+              <div>
+                <div>
+                  <p class="a-x-title"><b>H</b>打标签</p>
+                  <p class="a-x-con">所有用户根据自身购物行为习惯，对年龄，性别，账号等级，花呗（白条），常购物类目等数据维度完善个人购物行为，最大范围给予商家效果保障。</p>
+                </div>
+              </div>
+            </div>
+          </el-row>
+          <el-row class="ab-row">
+            <el-col :xs="24">
+              <div class="ab-item wow fadeInDown"  data-wow-delay=".5s">
+                <div class="ab-item-in">
+                  <i class="el-icon-help ai-icon"></i>
+                </div>
+              </div>
+            </el-col>
+            <div class="ab-xs left wow bounceInLeft" data-wow-duration=".5s" data-wow-delay="0s">
+              <div>
+                <div>
+                  <p class="a-x-title"><b>H</b>一人一号</p>
+                  <p class="a-x-con">平台独创 <i>1：1：1：1：1</i>用户认证结构，即一个用户对应本人的身份认证，账号认证，锁定设备，支付宝信息吻合，综合信息吻合。最大范围给予商家安全保障。</p>
+                </div>
+              </div>
+            </div>
+          </el-row>
+
+          <el-row class="ab-row">
+            <el-col :xs="24">
+              <div class="ab-item wow fadeInDown"  data-wow-delay=".5s">
+                <div class="ab-item-in">
+                  <i class="el-icon-collection ai-icon"></i>
+                </div>
+              </div>
+            </el-col>
+            <div class="ab-xs right wow bounceInRight" data-wow-duration=".5s" data-wow-delay="0s">
               <div>
                 <div>
                   <p class="a-x-title"><b>H</b>打标签</p>
@@ -195,13 +230,41 @@
         </div>
       </div>
 
+      <div class="hb-core banner-san">
+        <div class="hc-topic white wow flipInX">
+          开发线路图
+        </div>
+        <div class="block wow rollIn">
+
+          <el-carousel :interval="4000" indicator-position="none" type="card">
+            <el-carousel-item v-for="item in 6" :key="item">
+              <div class="c-b-in" :style="{backgroundImage:'url(http://s.zhuan.net/v1/themes/zh-cn/dist/icon/icon5-02.png)'}" >
+                <div class="cbi-top">
+                  <div class="ct-title">
+                    Q3 2017
+                  </div>
+                  <div class="ct-type">
+                    黑科技
+                  </div>
+                  <div class="ct-bottom">
+                    <div class="ct-img" />
+                  </div>
+                </div>
+                <div class="cbi-bottom">
+                  完善所有任务类型，千人千面，标签功能，新增黑科技系列搜索玩法
+                </div>
+              </div>
+            </el-carousel-item>
+          </el-carousel>
+        </div>
+      </div>
       <div class="hb-core" :style="{backgroundImage:'url(http://s.zhuan.net/v1/themes/zh-cn/dist/images/bg-9.jpg)'}">
-        <div class="hc-topic">
+        <div class="hc-topic white wow flipInX">
           案例
         </div>
         <el-row class="h-t-content">
           <el-col :xs="24" :sm="12" :md="8" >
-            <div class="ju-flex">
+            <div class="ju-flex wow bounceInUp">
               <div class="j-f-top red">
                 <div class="jft-in">
                   <img src="@/assets/logo.png" alt="" class="jft-i-img" />
@@ -210,7 +273,39 @@
 
               </div>
               <div class="j-f-bottom">
-                <div class="j-f-con">
+                <div class="j-f-con"j-f-bottom>
+                  我们主要是家电产品，客单价高，销量110平台帮我们解决了资金的安全性问题，不用担心资金，用的比较多的几种任务是：预售任务，活动任务，退款任务。满足官方的活动kpi以及日常的操作需求。销量110平台用户质量很好，能够支撑我们日常推广需求，平时我们的京东单量比较大，评价不过滤是我们选择销量110平台的主要，天猫就以活动单为主。
+                </div>
+              </div>
+            </div>
+          </el-col>
+          <el-col :xs="24" :sm="12" :md="8" >
+            <div class="ju-flex wow bounceInUp">
+              <div class="j-f-top blue">
+                <div class="jft-in">
+                  <img src="@/assets/logo.png" alt="" class="jft-i-img" />
+                  <div class="jft-i-name">伟哥**万岁</div>
+                </div>
+
+              </div>
+              <div class="j-f-bottom">
+                <div class="j-f-con"j-f-bottom>
+                  我们主要是家电产品，客单价高，销量110平台帮我们解决了资金的安全性问题，不用担心资金，用的比较多的几种任务是：预售任务，活动任务，退款任务。满足官方的活动kpi以及日常的操作需求。销量110平台用户质量很好，能够支撑我们日常推广需求，平时我们的京东单量比较大，评价不过滤是我们选择销量110平台的主要，天猫就以活动单为主。
+                </div>
+              </div>
+            </div>
+          </el-col>
+          <el-col :xs="24" :sm="12" :md="8" >
+            <div class="ju-flex wow bounceInUp">
+              <div class="j-f-top black">
+                <div class="jft-in">
+                  <img src="@/assets/logo.png" alt="" class="jft-i-img" />
+                  <div class="jft-i-name">伟哥**万岁</div>
+                </div>
+
+              </div>
+              <div class="j-f-bottom">
+                <div class="j-f-con"j-f-bottom>
                   我们主要是家电产品，客单价高，销量110平台帮我们解决了资金的安全性问题，不用担心资金，用的比较多的几种任务是：预售任务，活动任务，退款任务。满足官方的活动kpi以及日常的操作需求。销量110平台用户质量很好，能够支撑我们日常推广需求，平时我们的京东单量比较大，评价不过滤是我们选择销量110平台的主要，天猫就以活动单为主。
                 </div>
               </div>
@@ -220,6 +315,65 @@
 
 
       </div>
+
+      <div class="hb-core">
+        <div class="hc-topic wow flipInX">
+          公告
+        </div>
+        <el-row class="h-t-content affiche  wow flipInX">
+
+            <el-col>
+              <div class="h-login h-btn find-all">
+                查看全部
+                <div class="hb-icon"></div>
+              </div>
+            </el-col>
+        </el-row>
+
+
+      </div>
+      <div class="hb-core" :style="{backgroundAttachment:'unset',backgroundImage:'url('+this.$store.state.bg9+')'}">
+        <div class="hc-topic white  wow flipInX">
+          联系方式
+        </div>
+        <el-row class="h-t-content">
+          <el-row class="call-ul" type="flex" justify="center" align="middle">
+            <el-col class="cu-li wow rotateInDownLeft" :xs="8">
+              <div class="cl-out">
+                <div class="cl-in">
+                  <div class="c-i-top">
+                    <img class="c-i-code" src="https://murenziwei.github.io/qiurenmai/active_wx.jpg"></img>
+                  </div>
+
+
+                  <img class="c-i-img" src="@/assets/wx_icon.png" />
+                </div>
+              </div>
+            </el-col>
+            <el-col class="cu-li wow rotateInDownRight" :xs="8">
+              <div class="cl-out">
+                <div class="cl-in">
+                  <div class="c-i-top">
+                    <img class="c-i-code" src="https://murenziwei.github.io/qiurenmai/active_wx.jpg"></img>
+                  </div>
+
+
+                  <img class="c-i-img" src="@/assets/qq_icon1.png" />
+                </div>
+              </div>
+            </el-col>
+          </el-row>
+
+        </el-row>
+        <el-row class="touch-footer" type="flex" justify="center">
+          <el-breadcrumb separator="|" class="wow bounceInUp">
+            <el-breadcrumb-item>Copyright © 2019 murenziwei</el-breadcrumb-item>
+            <el-breadcrumb-item>All Rights Reserved</el-breadcrumb-item>
+          </el-breadcrumb>
+        </el-row>
+
+      </div>
+
     </div>
   </div>
 </template>
@@ -230,6 +384,7 @@ export default {
   name: 'home',
   data(){
       return {
+        visible:false,
         headnav:[
           {text:'首页',nav:''},
           {text:'产品',nav:''},
@@ -268,18 +423,164 @@ export default {
 
 </script>
 <style lang="less">
+.cu-li{
+  &:nth-child(even){
+    .cl-in:after{
+      background: #6FB0EA;
+    }
+  }
+  &:nth-child(odd){
+    .cl-in:after{
+      background: #58689F;
+    }
+  }
+}
+.cl-out{
+  &:hover .cl-in:after{
+    background: -webkit-linear-gradient(left, #F7BC02, #D85C2F, #7F3AAF);
+  }
+}
+.cl-in{
+  line-height:6;
+  position:relative;
+  &:after{
+    .an03;
+    content:"";
+    display:block;
+    position:absolute;
+    bottom:0;
+    left:0;
+    right:0;
+    height:10px;
+    background-color:#eee;
+  }
+
+  .c-i-top{
+    text-align:center;
+    position:absolute;
+    left:0;
+    right:0;
+    top:-7rem;
+    z-index:2;
+  }
+  .c-i-code{
+    width:6rem;
+    height:6rem;
+    opacity:0;
+    will-change:opacity;
+    .an03;
+  }
+  &:hover .c-i-code{opacity:1}
+  .c-i-img{
+    width:3rem;
+  }
+}
+.c-b-in{
+  text-align:center;
+  background-position:center 0;
+  background-repeat:no-repeat;
+  .cbi-top{
+    margin-top:2rem;
+  }
+  .ct-title{
+    display:inline-block;
+    color:#FFF;
+    line-height:2rem;
+    font-size:1.3rem;
+    border-bottom:2px solid #fff;
+  }
+  .ct-type{
+    text-align:center;
+    line-height:2rem;
+    color:#fff;
+  }
+  .ct-img{
+    width:2rem;
+    height:2rem;
+    border-radius:100%;
+    border:2px solid #fff;
+    margin:1rem auto;
+    .flex(center,center,row);
+
+    &:after{
+      content:"";
+      display:block;
+      width:50%;
+      height:50%;
+      border-radius:100%;
+      background-color:#fff;
+    }
+
+  }
+  .cbi-bottom{
+    color:#fff;
+    font-size:1rem;
+    padding:0 1rem;
+  }
+}
+.el-carousel__item{.an03;}
+.el-carousel__item:nth-child(2n) {
+  background: linear-gradient(135deg,  #56428E,#B11270);
+}
+
+.el-carousel__item:nth-child(2n+1) {
+  background: linear-gradient(135deg, #B11270, #56428E);
+}
+.banner-san{
+  background: linear-gradient(135deg, #B11270, #56428E);
+  padding-bottom:2rem;
+}
+.cul-text{
+  color:#fff;
+}
+.cul-name:after{
+  content:"："
+}
+.cul-name{
+  width:30%;
+  text-align:right;
+  text-overflow:ellipsis;
+  overflow: hidden;
+  white-space:nowrap;
+}
+.call-ul{
+  padding:0;
+  margin-bottom:1rem;
+  list-style:none;
+  .c-u-li{
+    .cul-flex{
+      font-size:1.3rem;
+      .flex(center,flex-start,row);
+    }
+  }
+}
+.touch-footer{
+  text-align:center;
+  padding:1rem 0;
+}
+.affiche{
+  padding-bottom:1rem;
+}
 .ju-flex{
   width:90%;
   margin:auto;
   padding:1rem 0;
   position:relative;
   padding-top:3rem;
+  margin-bottom:2rem;
   .j-f-top{
     border-top-left-radius:50px;
     border-top-right-radius:50px;
     &.red{
-      background:red;
+      background:#B11270;
     }
+    &.blue{
+      background:#56428E;
+    }
+    &.black{
+      background:#252121;
+    }
+
     .jft-in{
       text-align:center;
       position:relative;
@@ -301,22 +602,23 @@ export default {
     border-bottom-left-radius:50px;
     border-bottom-right-radius:50px;
     background-color:#fff;
+    position:relative;
+    padding-bottom:1rem;
     &:before{
       content:'';
       display:block;
       width:100%;
       height:2rem;
-      position:relative;
+      position:absolute;
       top:-2rem;
       border-top-left-radius:100%;
       border-top-right-radius:100%;
       background-color:#fff;
     }
     .j-f-con{
-      height:7rem;
+      height:8rem;
       overflow-y:scroll;
-      padding:0 .5rem 1rem .5rem;
-
+      margin:1rem;
     }
 
   }
@@ -496,6 +798,7 @@ export default {
   background-attachment:fixed;
 }
 .hc-topic{
+  &.white{color:#fff;}
   font-size:2rem;
   line-height:8rem;
   color:#1a1a35;
@@ -547,7 +850,7 @@ export default {
   height:2.5rem;
   line-height:2.5rem;
   margin:.5rem;
-  padding:0 7rem;
+  padding:0 6rem;
   border:2px solid #56428e;
   color:#fff;
   font-size:1rem;
@@ -555,8 +858,12 @@ export default {
   white-space:nowrap;
   border-radius:40px;
   border-bottom-left-radius:0;
+  &.find-all{
+    color:#56428e;
+  }
   .an03;
   &:hover{
+    color:#fff;
     background-color:#56428e;
     .hb-icon:after{
       background-color:#fff;

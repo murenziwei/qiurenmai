@@ -11,8 +11,8 @@
           </div>
           <ul class="h-l-ul">
 
-            <li class="h-l-li" v-for="(item,index) in headnav">
-              <div class="hll-text">{{item.text}}</div>
+            <li class="h-l-li" v-for="(item) in headnav">
+              <a :href="item.nav" class="hll-text">{{item.text}}</a>
             </li>
           </ul>
 
@@ -42,9 +42,9 @@
             <div class="h-d-zhe" @click="controlfn"></div>
             <ul class="h-d-ul">
               <li class="hdu-li" v-for="(item) in headnav">
-                <div class="h-l-text">
+                <a :href="item.nav" class="h-l-text">
                   {{item.text}}
-                </div>
+                </a>
               </li>
             </ul>
           </div>
@@ -53,7 +53,7 @@
     </div>
     <div class="h-body">
       <!--http://s.zhuan.net/v1/themes/zh-cn/dist/images/bg-9.jpg-->
-      <div class="h-item hb-top" style="background: linear-gradient(135deg,#1D1632,#3F306D,#43072A,#6F305F);
+      <div id="indexT" class="h-item hb-top" style="background: linear-gradient(135deg,#1D1632,#3F306D,#43072A,#6F305F);
     background-image: url(http://s.zhuan.net/v1/themes/zh-cn/dist/images/bg-9.jpg);">
         <div class="h-b-frame">
           <div class="hbf-top wow bounceInLeft" data-wow-delay=".2s"  >
@@ -91,7 +91,7 @@
           </div>
         </div>
       </div>
-      <div class="hb-core" :style="{backgroundImage:'url(http://s.zhuan.net/v1/themes/zh-cn/dist/images/bg-1.jpg)'}">
+      <div id="coreT" class="hb-core" :style="{backgroundImage:'url(http://s.zhuan.net/v1/themes/zh-cn/dist/images/bg-1.jpg)'}">
         <div class="wow bounceInLeft hc-topic">
           核心
         </div>
@@ -148,7 +148,7 @@
 
 
       </div>
-      <div class="hb-advantage">
+      <div id="advantageT" class="hb-advantage">
         <div class="hc-topic wow flipInX">
           优势
         </div>
@@ -230,7 +230,7 @@
         </div>
       </div>
 
-      <div class="hb-core banner-san">
+      <div id="sanT" class="hb-core banner-san">
         <div class="hc-topic white wow flipInX">
           开发线路图
         </div>
@@ -258,7 +258,7 @@
           </el-carousel>
         </div>
       </div>
-      <div class="hb-core" :style="{backgroundImage:'url(http://s.zhuan.net/v1/themes/zh-cn/dist/images/bg-9.jpg)'}">
+      <div id="caseT" class="hb-core" :style="{backgroundImage:'url(http://s.zhuan.net/v1/themes/zh-cn/dist/images/bg-9.jpg)'}">
         <div class="hc-topic white wow flipInX">
           案例
         </div>
@@ -273,7 +273,7 @@
 
               </div>
               <div class="j-f-bottom">
-                <div class="j-f-con"j-f-bottom>
+                <div class="j-f-con">
                   我们主要是家电产品，客单价高，销量110平台帮我们解决了资金的安全性问题，不用担心资金，用的比较多的几种任务是：预售任务，活动任务，退款任务。满足官方的活动kpi以及日常的操作需求。销量110平台用户质量很好，能够支撑我们日常推广需求，平时我们的京东单量比较大，评价不过滤是我们选择销量110平台的主要，天猫就以活动单为主。
                 </div>
               </div>
@@ -289,7 +289,7 @@
 
               </div>
               <div class="j-f-bottom">
-                <div class="j-f-con"j-f-bottom>
+                <div class="j-f-con">
                   我们主要是家电产品，客单价高，销量110平台帮我们解决了资金的安全性问题，不用担心资金，用的比较多的几种任务是：预售任务，活动任务，退款任务。满足官方的活动kpi以及日常的操作需求。销量110平台用户质量很好，能够支撑我们日常推广需求，平时我们的京东单量比较大，评价不过滤是我们选择销量110平台的主要，天猫就以活动单为主。
                 </div>
               </div>
@@ -305,7 +305,7 @@
 
               </div>
               <div class="j-f-bottom">
-                <div class="j-f-con"j-f-bottom>
+                <div class="j-f-con">
                   我们主要是家电产品，客单价高，销量110平台帮我们解决了资金的安全性问题，不用担心资金，用的比较多的几种任务是：预售任务，活动任务，退款任务。满足官方的活动kpi以及日常的操作需求。销量110平台用户质量很好，能够支撑我们日常推广需求，平时我们的京东单量比较大，评价不过滤是我们选择销量110平台的主要，天猫就以活动单为主。
                 </div>
               </div>
@@ -316,7 +316,7 @@
 
       </div>
 
-      <div class="hb-core">
+      <div id="noticeT" class="hb-core">
         <div class="hc-topic wow flipInX">
           公告
         </div>
@@ -332,8 +332,8 @@
 
 
       </div>
-      <div class="hb-core" :style="{backgroundAttachment:'unset',backgroundImage:'url('+this.$store.state.bg9+')'}">
-        <div class="hc-topic white  wow flipInX">
+      <div id="contactT" class="hb-core" :style="{backgroundAttachment:'unset',backgroundImage:'url('+this.$store.state.bg9+')'}">
+        <div class="hc-topic white wow flipInX">
           联系方式
         </div>
         <el-row class="h-t-content">
@@ -386,9 +386,9 @@ export default {
       return {
         visible:false,
         headnav:[
-          {text:'首页',nav:''},
-          {text:'产品',nav:''},
-          {text:'联系方式',nav:''},
+          {text:'首页',nav:'#indexT'},
+          {text:'产品',nav:'#coreT'},
+          {text:'联系方式',nav:'#contactT'},
         ],
         isCollapse:true,
         scrolly:0,
@@ -912,8 +912,14 @@ export default {
   text-overflow:ellipsis;
   white-space:nowrap;
 }
+.hll-text{
+    text-decoration:none;
+    color:#fff;
+}
 .h-l-text{
+  display:block;
   .text_shen;
+  .hll-text;
 }
 .h-d-ul{
   width:50%;

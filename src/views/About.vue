@@ -16,10 +16,10 @@
       <transition type="animation">
         <div :class="{'a-top':true,bounceInRight:!isPeople,bounceOutRight:isPeople}" v-show="!isPeople">
           <div class="at-xs">
-            <span>LV 0</span><el-link type="primary" href="#/"> 1577083****</el-link>
+            <span>LV 0</span><el-link href="#/" class="recharge"> 1577083****</el-link>
           </div>
           <div class="at-xs">
-            本金：<span>0</span>元<el-link type="primary" href="#/">充值</el-link>
+            本金：<span class="money">0</span>元<el-link type="primary" href="#/" class="recharge">充值</el-link>
           </div>
 
           <div class="at-xs">
@@ -32,51 +32,39 @@
         </div>
       </transition>
     </div>
-    <div class="a-tags">
+    <div class="a-tags ani">
       <div class="at-left">
-        <img :src="this.$store.state.urlimg" alt="" class="a-l-png">
+        <i :class="{'el-icon-menu':isTag,'el-icon-close':!isTag}" alt="" class="a-l-png" @click="tagfn" />
       </div>
-      <div class="at-right">
-        <div class="a-r-list">
-          <router-link to="/forget" class="arl-link">
-            <span class="a-l-text">商家中心</span>
-          </router-link>
-        </div>
-        <div class="a-r-list active">
-          <router-link to="/forget" class="arl-link">
-            <span class="a-l-text">商家介绍</span>
-          </router-link>
-        </div>
-      </div>
-    </div>
-    <div class="ani">
       <transition type="animation">
-        <div :class="{'a-slide':true,bounceInLeft:!isAside,bounceOutLeft:isAside}" v-show="!isAside">
-          <div class="as-items">
-            <router-link to="/" class="a-i-nav">
-              <i class="el-icon-picture-outline-round ain-icon"></i>
-              <span class="ain-text">商家公告</span>
+        <div class="at-right" :class="{'at-right':true,fadeIn:!isTag,fadeOut:isTag}" v-show="!isTag">
+          <div class="a-r-list">
+            <router-link to="/forget" class="arl-link">
+              <span class="a-l-text">商家中心</span>
             </router-link>
           </div>
-          <div class="as-items">
-            <router-link to="/" class="a-i-nav">
-              <i class="el-icon-plus ain-icon"></i>
-              <span class="ain-text">发布任务</span>
+          <div class="a-r-list active">
+            <router-link to="/forget" class="arl-link">
+              <span class="a-l-text">商家介绍</span>
+            </router-link>
+          </div>
+        </div>
+      </transition>
+    </div>
+    <div class="ani as">
+      <transition type="animation">
+        <div :class="{'a-slide':true,bounceInLeft:!isAside,bounceOutLeft:isAside}" v-show="!isAside">
+          <div class="as-items" v-for="(item,index) in asideTag.val" :key="index">
+            <router-link :to="'/'+asideTag.name+'/'+item.path" :class="{'a-i-nav':true,'active':nowrou==('/'+asideTag.name+'/'+item.path)}">
+              <i :class="item.data.icon+' ain-icon'"></i>
+              <span class="ain-text">{{item.data.name}}</span>
             </router-link>
           </div>
         </div>
       </transition>
     </div>
     <div class="a-content">
-      <el-card class="box-card">
-        <div slot="header" class="clearfix">
-          <span>卡片名称</span>
-          <el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button>
-        </div>
-        <div v-for="o in 4" :key="o" class="text item">
-          {{'列表内容 ' + o }}
-        </div>
-      </el-card>
+      <router-view></router-view>
     </div>
   </div>
 </template>
@@ -85,11 +73,25 @@
   export default {
     data() {
       return {
+        asideTag:{},
         isAside:true,
-        isPeople:true
+        isPeople:true,
+        isTag:true,
+        nowrou:''
       };
     },
+    created(){
+      this.asideTag=this.$router.options.about;
+      this.nowrou=this.$router.currentRoute.path;
+    },
     methods: {
+      nowrouter(to){
+        this.nowrou=to.path;
+        this.isAside=true;
+      },
+      tagfn(){
+        this.isTag=!this.isTag;
+      },
       peoplefn(){
         this.isPeople=!this.isPeople;
       },
@@ -97,12 +99,25 @@
         this.isAside=!this.isAside;
       },
       handleClick(tab, event) {
-        console.log(tab, event);
+
       }
+    },
+    watch:{
+      '$route':'nowrouter'
     }
   };
 </script>
-<style lang="less" scoped>
+<style lang="less">
+.clearfix{
+  text-align:left;
+  .c-topic{
+    font-size:1.5rem;
+    color:#000;
+    font-weight:bold;
+    opacity:.8;
+  }
+}
+
 .mn-father{
   height:3rem;
   display:none;
@@ -139,16 +154,20 @@
 
 
 .a-slide{
-  width:30%;
+  width:100%;
   float:left;
   border:1px solid #eee;
-
+  box-sizing:border-box;
   background-color:#fff;
+
 }
 .a-content{
   position:relative;
-  width:70%;
+  width:75%;
   float:right;
+  box-sizing:border-box;
+  text-align:left;
+
 }
 .a-i-nav{
   .an03;
@@ -174,6 +193,26 @@
     text-align:left;
   }
 }
+@media only screen and (min-width:767px){
+  .ani.as{
+    padding:0 1rem;
+    box-sizing:border-box;
+    width:25%;
+  }
+  .a-slide{
+    display:block!important;
+    .a-i-nav{height:3rem;}
+  }
+  .a-content{
+    padding:0 1rem;
+  }
+  .a-i-nav{
+    .ain-icon{
+      font-size:1.2rem;
+    }
+    .ain-text{font-size:1rem;}
+  }
+}
 @media only screen and (max-width:767px){
   .a-slide{
     position:fixed;
@@ -193,37 +232,56 @@
   .flex(center,flex-start,row);
   .a-r-list{
     margin:1rem;
+    .arl-link{
+      text-decoration:none;
+      color:#000;
+    }
     &.active .arl-link{
       color:#0098e1;
     }
   }
 }
 .a-tags{
-  .flex(center,space-between,row);
+  .flex(center,flex-end,row);
+  padding:1rem 0;
+}
+.at-left{
+  margin:0 1rem;
 }
 .a-l-png{
   width:3rem;
+}
+@media only screen and (min-width:767px){
+  .at-left{display:none!important;}
+  .at-right{display:flex!important;}
+  .a-tags{
+    border-bottom:4px solid #0098e1;
+    margin-bottom:2rem;
+  }
 }
 @media only screen and (max-width:767px){
  .a-tags{
    position:fixed;
    bottom:2rem;
    right:2rem;
+   z-index:1000;
    .at-left{
      width:3rem;
      height:3rem;
      border-radius:100%;
      background-color:#fff;
      overflow:hidden;
+     box-shadow:0 0 1px rgba(0, 0, 0, 0.7);
      .flex(center,center,row);
      .a-l-png{
        width:2rem;
      }
    }
    .at-right{
+     background-color:#fff;
      position:absolute;
      right:0;
-     bottom:4rem;
+     bottom:6rem;
      .flex(flex-start,flex-end,column);
      .a-l-text{
        white-space:nowrap;
@@ -238,6 +296,10 @@
   box-sizing:border-box;
   padding:0 1rem;
 }
+.money{
+  color:#f56c6c;
+}
+.recharge{margin-left:.5rem;}
 .at-xs{
   .flex(center,center,row);
   line-height:3;
@@ -247,6 +309,13 @@
   }
   &:last-child:after{
     display:none;
+  }
+}
+
+@media only screen and (min-width:767px){
+  .a-top{
+    display:flex!important;
+    .at-xs{line-height:4;}
   }
 }
 @media only screen and (max-width:767px){
@@ -275,6 +344,16 @@
   .bounceOutRight{
     animation:bounceOutRight .5s;
   }
+
+  .fadeIn{
+    animation:fadeIn .5s;
+  }
+
+  .fadeOut{
+    animation:fadeOut .5s;
+  }
+
+
 }
 .zhe{
   position:fixed;

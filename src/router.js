@@ -5,9 +5,31 @@ import Home from './views/Home.vue'
 Vue.use(Router)
 
 
+const about={
+  name:'about',
+  val:[
+    {
+      path:'',
+      component:()=>import('./components/notice.vue'),
+      data:{
+        name:'商家公告',
+        icon:'el-icon-picture-outline-round'
+      }
+    },
+    {
+      path:'issue',
+      component:()=>import('./components/issue.vue'),
+      data:{
+        name:'发布任务',
+        icon:'el-icon-plus'
+      }
+    }
+  ]
+};
 
 export default new Router({
   // mode:'history',
+  about,
   routes: [
     {
       path: '/',
@@ -15,12 +37,10 @@ export default new Router({
       component: Home
     },
     {
-      path: '/about',
-      name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (about.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import(/* webpackChunkName: "about" */ './views/About.vue')
+      path: '/'+about.name,
+      name: about.name,
+      component: () => import( './views/About.vue'),
+      children:about.val
     },
     {
       //登录

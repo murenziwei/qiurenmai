@@ -38,21 +38,58 @@
                                                     <el-radio-group v-model="trC" class="tr-ul">
                                                         <div class="tr-li">
                                                             <el-radio :label="1" class="w-sp">
-                                                                手机淘宝任务无截图版任务
-                                                                <span>用户在手机淘宝app下单，无需截图</span>
+                                                                新版手机淘宝任务v2.1
+                                                                <span class="info-text">重构核心算法，操作模式不再单一，高权重，高安全性，<span class="danger-text">最低发布5单</span></span>
                                                                 <el-popover
                                                                         placement="top-start"
-                                                                        title="手机淘宝无图任务"
+                                                                        title="新版手机淘宝任务"
                                                                         width="200"
                                                                         trigger="click"
-                                                                        content="常规推广方式，适合有基础销量的产品操作。建议多个关键词入口进行推广计划。严格控制入口转化率。">
+                                                                        content="产品上升期的推广方式，安全性和效果为主，适合有一定销量的产品操作。">
                                                                     <el-button type="text" slot="reference" icon="el-icon-info" class="info-btn"></el-button>
                                                                 </el-popover>
                                                             </el-radio>
                                                         </div>
                                                         <div class="tr-li">
                                                             <el-radio :label="2" class="w-sp">
-                                                                <b>手机淘宝</b>浏览、收藏、加购物车、直通车
+                                                                淘宝预售任务
+                                                                <span class="info-text">（当天加购物车，指定日期付款）</span>
+                                                                <el-popover
+                                                                        placement="top-start"
+                                                                        title="淘宝预售任务"
+                                                                        width="200"
+                                                                        trigger="click"
+                                                                        content="新品推广，销量破0。适合新上产品，建议结合手机淘宝任务一起使用。严格控制转化率。">
+                                                                    <el-button type="text" slot="reference" icon="el-icon-info" class="info-btn"></el-button>
+                                                                </el-popover>
+                                                            </el-radio>
+                                                        </div>
+                                                        <div class="tr-li">
+                                                            <el-radio :label="3" class="w-sp">
+                                                                黑科技-淘口令裂变任务
+                                                                <span class="info-text">（用户通过淘口令付款，并分享出自己的淘口令给下一个用户接单）</span>
+                                                                <el-popover
+                                                                        placement="top-start"
+                                                                        title="黑科技-淘口令裂变任务"
+                                                                        width="200"
+                                                                        trigger="click"
+                                                                        content="配合以上任务的一种入口，适合流量在快速上升期间使用。">
+                                                                    <el-button type="text" slot="reference" icon="el-icon-info" class="info-btn"></el-button>
+                                                                </el-popover>
+                                                            </el-radio>
+                                                        </div>
+                                                        <div class="tr-li">
+                                                            <el-radio :label="4" class="w-sp">
+                                                                手机拼多多任务
+                                                                <span class="info-text">（用户在手机拼多多app下单）</span>
+                                                                <el-popover
+                                                                        placement="top-start"
+                                                                        title="手机拼多多任务"
+                                                                        width="200"
+                                                                        trigger="click"
+                                                                        content="常规推广方式，通用与拼多多目前的推广。">
+                                                                    <el-button type="text" slot="reference" icon="el-icon-info" class="info-btn"></el-button>
+                                                                </el-popover>
                                                             </el-radio>
                                                         </div>
                                                     </el-radio-group>
@@ -63,11 +100,6 @@
                                                         <div class="tr-li">
                                                             <el-radio :label="1" class="w-sp">
                                                                 <b>手机淘宝</b>浏览、收藏、加购物车、直通车（<span>全真人加购，不被屏蔽不降权。</span>）
-                                                            </el-radio>
-                                                        </div>
-                                                        <div class="tr-li">
-                                                            <el-radio :label="2" class="w-sp">
-                                                                <b>手机京东</b>浏览、收藏、加购物车（<span class="danger-text">用户通过京东app浏览商品</span>）
                                                             </el-radio>
                                                         </div>
                                                     </el-radio-group>
@@ -96,7 +128,6 @@
                                 </el-timeline-item>
                                 <el-timeline-item timestamp="选择平台返款模式" placement="top">
                                     <el-card>
-
                                         <el-radio-group v-model="chooseP" class="tr-ul">
                                             <div class="tr-li">
                                                 <el-radio :label="1" class="w-sp">
@@ -117,76 +148,15 @@
                                 </el-timeline-item>
                             </el-timeline>
                             <el-form-item>
-                                <el-button @click="submitForm('ruleForm')">下一步</el-button>
+                                <el-button @click="submitForm('ruleForm',1)">下一步</el-button>
                             </el-form-item>
                         </el-form>
 
                     </li>
 
                     <li v-if="stepS==2">
-                        <el-alert
-                                class="info-con"
-                                :title="bull.title"
-                                type="error"
-                        >
-                            <div>
-                                <p v-for="(item,index) in bull.list" :key="index">{{index+1}}.{{item}}</p>
-                            </div>
-                        </el-alert>
+                        <component :is="cId"></component>
 
-                        <el-form label-width="auto" ref="taskForm" :rules="taskRules" :model="taskForm">
-                            <el-alert title="注意：带红色*是必填项！" type="info" class="info-title"></el-alert>
-                            <div>
-                                <el-divider content-position="center">填写商品信息</el-divider>
-                                <el-form-item label="商品名称" prop="name">
-                                    <el-input v-model="taskForm.name" type="name"></el-input>
-                                </el-form-item>
-                                <el-form-item label="商品链接" prop="link">
-                                    <el-input v-model="taskForm.link" type="link"></el-input>
-                                </el-form-item>
-                                <el-form-item label="商品主图" prop="pic">
-                                    <el-upload
-                                            action="/src/assets"
-                                            list-type="picture-card"
-                                            :on-preview="handlePictureCardPreview"
-                                            :on-remove="handleRemove">
-                                        <i class="el-icon-plus"></i>
-                                    </el-upload>
-                                    <el-dialog :visible.sync="dialogVisible">
-                                        <img width="100%" :src="dialogImageUrl" alt="">
-                                    </el-dialog>
-                                </el-form-item>
-                                <el-alert title="上传“商品主图”，确保与搜索页面展示的图片一致。" type="error" class="info-title"></el-alert>
-
-                                <el-form-item label="单品实际成交价格">
-                                    <el-row type="flex" justify="center">
-
-                                        <el-input></el-input><span>元</span>
-                                    </el-row>
-                                </el-form-item>
-                                <el-alert title="用户拍下时的付款价格，如不同等级买号看到商品价格不同，取最大值" type="error" class="info-title"></el-alert>
-                                <el-divider></el-divider>
-                                <el-form-item label="商品是否包邮">
-                                    <el-radio-group v-model="taskForm.postage" class="tr-ul">
-                                        <div class="tr-li">
-                                            <el-radio :label="1" class="w-sp">
-                                                商品不包邮 <span class="ws-name">商家每单额外支出10元作为运费押金，任务完成后剩余运费押金将全部退还给商家</span>
-                                            </el-radio>
-                                        </div>
-                                        <div class="tr-li">
-                                            <el-radio :label="2" class="w-sp">
-                                                商品包邮
-                                            </el-radio>
-                                        </div>
-                                    </el-radio-group>
-                                </el-form-item>
-                                <div>
-                                    <el-button type="primary" @click="taskSub('taskForm')">下一步</el-button>
-                                </div>
-                            </div>
-
-
-                        </el-form>
                     </li>
                 </ul>
             </div>
@@ -195,10 +165,73 @@
 </template>
 
 <script>
+    import HelloWorld from './HelloWorld.vue'
+    import Pinduoduo from "./shop/Pinduoduo.vue";
+    import {provs_data} from 'lwarea';
     export default {
         name: "issue",
         data(){
             return {
+                cId:'Pinduoduo',//什么类型的商店
+                //备注内容
+                remark:'',
+
+                courier:'',
+                courierP:['3.60','3.60'],
+                // 快递方式
+                courierO:[
+                    {
+                        label:'申通快递',
+                        value:'0'
+                    },
+                    {
+                        label:'韵达淘宝快递',
+                        value:'1'
+                    }
+                ],
+                // 任务置顶
+                istop:false,
+
+                common:true,
+                commonArr:[
+                    {
+                        keyword:'',
+                        payment:1,
+                        currency:''
+                    }
+                ],
+                character:false,
+                characterArr:[
+                    {
+                        keyword:'',
+                        payment:'',
+                        textarea:'',
+                        currency:''
+                    }
+                ],
+
+                picture:false,
+                pictureArr:[
+                    {
+                        keyword:'',
+                        payment:'',
+                        textarea:'',
+                        currency:'',
+                        fileList:[]
+                    }
+                ],
+                video:false,
+                videoArr:[
+                    {
+                        keyword:'',
+                        payment:'',
+                        textarea:'',
+                        currency:'',
+                        fileList:[]
+                    }
+                ],
+                cityoptions: provs_data,
+                cityvalue: '',
                 // 商品主图
                 dialogImageUrl: '',
                 dialogVisible: false,
@@ -233,7 +266,7 @@
                         '推广期间请务必关掉商品淘客佣金，推广过程有诸多不确定因素可能导致产生佣金可能造成您的损失。'
                     ]
                 },
-                stepS:2,
+                stepS:1,
                 steparr:[
                     {
                         val:'选择任务类型'
@@ -250,7 +283,106 @@
                 ]
             }
         },
+        created(){
+            console.log(this.$options)
+        },
         methods:{
+            picChange(file,fileList){
+                if(file){
+
+                    var le=fileList.length,valO={
+                        name:file.name,
+                        url:file.url
+                    },max=3;
+                    if(le<max){
+
+                        if(le){
+                            if(fileList[le-1].name!=file.name){
+
+                                fileList.push(valO);
+                            }
+
+                        }else{
+                            fileList.push(valO);
+                        }
+                    }else{
+                        this.$alert('最多只能添加'+max+'张', '提示', {
+                            confirmButtonText: '确定',
+                            callback:()=>{}
+                        });
+                    }
+                }
+            },
+            picRemove(file,fileList){
+                console.log('remove',file,fileList);
+            },
+            picPreview(file,fileList){
+                console.log('picPreview');
+            },
+            cAdd(arrn,arrc,keyc){
+                var arr=this[arrn];
+                if(arr){
+                    if(arr.length<arrc){
+                        switch (keyc) {
+                            case 'video':arr.push({
+                                keyword:'',
+                                payment:1,
+                                textarea:'',
+                                currency:'',
+                                fileList:[]
+                            })
+                            ;break;
+                            case 'picture':arr.push({
+                                keyword:'',
+                                payment:1,
+                                textarea:'',
+                                currency:'',
+                                fileList:[]
+                            })
+                            ;break;
+                            case 'character':arr.push({
+                                    keyword:'',
+                                    payment:1,
+                                    textarea:'',
+                                    currency:''
+                            })
+                                ;break;
+                            default:arr.push({
+                                keyword:'',
+                                payment:1,
+                                currency:''
+                            });
+                        }
+
+                    }else{
+                        this.$alert('最多只能添加'+arrc+'条', '提示', {
+                            confirmButtonText: '确定',
+                            callback:()=>{}
+                        });
+                    }
+                }
+            },
+            cClose(arrn,arri){
+                var arr=this[arrn];
+                if(arr){
+                    this.$confirm('此操作将删除该选项, 是否继续?', '提示', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                        type: 'error'
+                    }).then(() => {
+                        arr.splice(arri,1);
+                        this.$message({
+                            type: 'success',
+                            message: '删除成功!'
+                        });
+                    }).catch(() => {
+                        this.$message({
+                            type: 'info',
+                            message: '已取消删除'
+                        });
+                    });
+                }
+            },
             //商品主图
             handleRemove(file, fileList) {
                 console.log(file, fileList);
@@ -272,11 +404,11 @@
                     }
                 });
             },
-            submitForm(){
-                this.nextfn();
+            submitForm(n,t){
+                this.nextfn(t);
             },
-            nextfn(){
-                this.stepS++;
+            nextfn(t){
+                this.stepS+=t;
 
             }
         },
@@ -286,16 +418,37 @@
                     this.$message.info({duration:0,showClose:true,message:'任务期间请关闭淘宝客、村淘、分享有赏等淘客活动，若因淘客引起的佣金支出由商家自己承担'});
                 }
             }
+        },
+        components:{
+            HelloWorld,
+            Pinduoduo
         }
     }
 </script>
 
 <style lang="less" scoped>
+.i-padding{margin:0 .5rem;}
+.bcb-span{white-space:nowrap;text-overflow:ellipsis;overflow:hidden;}
+.success-text{color:#5bc0de;}
+.c-i-close{
+    transition:color .3s;
+    will-change:color;
+    &:hover{color:#5bc0de;}
+
+}
+
+.b-c-box{
+    margin:1rem 0;;
+}
+
 .info-title{
     margin:1rem 0;
 }
 .ws-name{
     margin:0 .5rem;
+}
+.info-text{
+    color:#909399;
 }
 .danger-text{
     color:#d9534f;

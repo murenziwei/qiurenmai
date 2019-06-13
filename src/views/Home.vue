@@ -82,11 +82,11 @@
               </el-col>
             </el-row>
             <el-row class="wow bounceInUp" data-wow-delay=".4s"  >
-              <p class="nav-more">
+              <a href="#coreT" class="nav-more">
                 了解更多
                 <br />
                 <i class="el-icon-bottom"></i>
-              </p>
+              </a>
             </el-row>
           </div>
         </div>
@@ -834,6 +834,8 @@ export default {
   width:100%;
 }
 .nav-more{
+  display:block;
+  text-decoration:none;
   text-align:center;
   color:#fff;
   font-size:.8rem;

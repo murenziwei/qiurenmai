@@ -5,6 +5,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+      mtext:'元',
       count:1,
       icon5:"http://s.zhuan.net/v1/themes/zh-cn/dist/icon/icon5-02.png",
       bg9:"http://s.zhuan.net/v1/themes/zh-cn/dist/images/bg-9.jpg",

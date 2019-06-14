@@ -23,35 +23,22 @@
                         <el-input v-model="taskForm.link" type="link"></el-input>
                     </el-form-item>
                     <el-form-item label="商品主图" prop="pic">
-                        <el-upload
-                                action="/src/assets"
-                                list-type="picture-card"
-                                :on-preview="handlePictureCardPreview"
-                                :on-remove="handleRemove">
-                            <i class="el-icon-plus"></i>
-                        </el-upload>
-                        <el-dialog :visible.sync="dialogVisible">
-                            <img width="100%" :src="dialogImageUrl" alt="">
-                        </el-dialog>
-                    </el-form-item>
-                    <el-alert title="上传“商品主图”，确保与搜索页面展示的图片一致。" type="error" class="info-title"></el-alert>
+                        <div>
 
-                    <el-form-item label="单品实际成交价格">
-                        <el-row type="flex" justify="center" align="midle" :gutter="20">
-                            <el-col :span="5"><el-input></el-input></el-col>
-                            <el-col :span="2"><span>{{$store.state.mtext}}</span></el-col>
-                            <el-col>用户拍下时的付款价格，如不同等级买号看到商品价格不同，取最大值</el-col>
-
-                        </el-row>
-                    </el-form-item>
-
-                    <el-form-item label="每单拍">
-                        <el-row type="flex" justify="center" align="midle" :gutter="20">
-                            <el-col :span="5"><el-input></el-input></el-col>
-                            <el-col :span="2"><span>{{$store.state.mtext}}</span></el-col>
-                            <el-col>每单总金额 {{$store.state.mtext}} <span class="info-text">【不含运费】</span></el-col>
-
-                        </el-row>
+                            <el-upload
+                                    action="/src/assets"
+                                    list-type="picture-card"
+                                    :on-preview="handlePictureCardPreview"
+                                    :on-remove="handleRemove">
+                                <i class="el-icon-plus"></i>
+                            </el-upload>
+                            <el-dialog :visible.sync="dialogVisible">
+                                <img width="100%" :src="dialogImageUrl" alt="">
+                            </el-dialog>
+                        </div>
+                        <p class="danger-text">
+                            上传“商品主图”，确保与搜索页面展示的图片一致。
+                        </p>
                     </el-form-item>
                     <el-form-item label="手机搜索页面展示价格">
                         <el-row type="flex" justify="center" align="midle" :gutter="20">
@@ -61,24 +48,20 @@
 
                         </el-row>
                     </el-form-item>
-                    <el-form-item label="商品是否包邮">
-                        <el-radio-group v-model="taskForm.postage" class="tr-ul">
-                            <div class="tr-li">
-                                <el-radio :label="1" class="w-sp">
-                                    商品不包邮 <span class="ws-name">商家每单额外支出10元作为运费押金，任务完成后剩余运费押金将全部退还给商家</span>
-                                </el-radio>
-                            </div>
-                            <div class="tr-li">
-                                <el-radio :label="2" class="w-sp">
-                                    商品包邮
-                                </el-radio>
-                            </div>
-                        </el-radio-group>
-
-                    </el-form-item>
                 </div>
                 <div>
                     <el-divider content-position="center">第二步：设置如何找到商品</el-divider>
+                    <div>
+
+                        <el-form-item label="商品现有收货人数或付款人数约">
+                            <el-row type="flex" justify="center" align="middle" :gutter="20">
+                                <el-col :span="5"><el-input></el-input> </el-col>
+                                <el-col :span="2"><span>人</span></el-col>
+                                <el-col><span class="info-text">此处为手机淘宝销量优先搜索列表页显示的收货人数</span></el-col>
+
+                            </el-row>
+                        </el-form-item>
+                    </div>
                     <el-form-item label="价格区间">
                         <el-row type="flex" justify="center" align="middle" :gutter="20">
                             <el-col :span="14"><el-row type="flex" align="middle"><el-input></el-input><i class="el-icon-minus"></i><el-input></el-input></el-row> </el-col>
@@ -122,382 +105,96 @@
                     <el-divider content-position="center">第三步：选择任务类型和单数</el-divider>
 
                     <el-row>
-                        <div>选择添加推广任务类型</div>
+
                         <div>
 
 
-                            <el-card class="box-card b-c-box">
+                            <div class="box-card b-c-box">
                                 <div slot="header">
                                     <el-row type="flex" align="middle">
-                                        <el-checkbox v-model="common">普通好评任务 ( 默认为5星无评价内容，如需评价请备注，但不可规定评价内容 )</el-checkbox>
+                                        <el-alert :closable="false" title="选择添加推广任务类型"
+                                                  type="success"
+                                                  description="浏览任务关键词浏览数设置"
+                                                  show-icon>
 
+                                        </el-alert>
                                     </el-row>
                                 </div>
-                                <div v-if="common">
-                                    <div v-for="(item,index) in commonArr" class="c-item">
-                                        <div style="text-align:right;" v-if="index>=1">
-                                            <i class="el-icon-close c-i-close" @click="cClose('commonArr',index)"></i>
-                                        </div>
-
-                                        <el-row :gutter="20" type="flex" align="middle">
-                                            <el-col>
-                                                <p>下单关键词{{index+1}}</p>
-                                                <el-input v-model="item.keyword" ></el-input>
-                                            </el-col>
-
-                                            <el-col>
-                                                <p>货币关键词{{index+1}}</p>
-                                                <el-input v-model="item.currency" ></el-input>
-                                            </el-col>
-                                            <el-col>
-                                                <p>添加垫付{{index+1}}</p>
-                                                <el-input v-model.number="item.payment" min="1"></el-input>
-                                            </el-col>
-                                        </el-row>
-                                        <el-divider></el-divider>
-                                    </div>
-                                    <div>
-                                        <el-button type="text" @click="cAdd('commonArr',3)">+增加下单关键词</el-button>
-                                    </div>
-                                </div>
-                            </el-card>
-                            <el-card class="box-card b-c-box">
-                                <div slot="header">
-                                    <el-row type="flex" align="middle">
-                                        <el-checkbox v-model="character">指定文字好评任务 (文字好评任务佣金 +  <span class="danger-text">3金/单</span> )</el-checkbox>
-                                        <el-popover
-                                                placement="top-start"
-                                                title="指定文字好评任务"
-                                                width="200"
-                                                trigger="click"
-                                                content="选择此服务将有助于提升评价质量，请填写完整的文字评价内容，为了使评价更接近于用户的真实评价，避免多个评价内容重复相同，因此每个文字好评任务对应一条文字好评内容；一个关键词一次性最多可添加5条文字好评任务">
-                                            <el-button type="text" slot="reference" icon="el-icon-info" class="info-btn"></el-button>
-                                        </el-popover>
-                                    </el-row>
-                                </div>
-                                <div v-if="character">
-                                    <div v-for="(item,index) in characterArr" class="c-item">
-                                        <div style="text-align:right;" v-if="index>=1">
-                                            <i class="el-icon-close c-i-close" @click="cClose('characterArr',index)"></i>
-                                        </div>
-
-                                        <el-row :gutter="20" type="flex" align="middle">
-                                            <el-col>
-                                                <p>搜索关键词{{index+1}}</p>
-                                                <el-input v-model="item.keyword" ></el-input>
-                                            </el-col>
-                                            <el-col>
-                                                <p>货币关键词{{index+1}}</p>
-                                                <el-input v-model="item.currency" ></el-input>
-                                            </el-col>
-                                            <el-col>
-                                                <p>添加垫付{{index+1}}</p>
-                                                <el-select v-model="item.payment" placeholder="请选择">
-                                                    <el-option
-                                                            v-for="child in 5"
-                                                            :key="child"
-                                                            :label="child"
-                                                            :value="child">
-                                                    </el-option>
-                                                </el-select>
-                                            </el-col>
-                                        </el-row>
-                                        <el-row>
-                                            <el-col>
-                                                <p>文字好评内容</p>
-                                                <el-input
-                                                        type="textarea"
-                                                        :rows="4"
-                                                        v-model="item.textarea" maxlength="999" placeholder="可填写完整的评价内容，最多999字">
-                                                </el-input>
-                                            </el-col>
-                                        </el-row>
-                                        <el-divider></el-divider>
-                                    </div>
-                                    <div>
-                                        <el-button type="text" @click="cAdd('characterArr',3,'character')">+增加下单关键词</el-button>
-                                    </div>
-                                </div>
-                            </el-card>
-
-                            <el-card class="box-card b-c-box">
-                                <div slot="header">
-                                    <el-row type="flex" align="middle">
-                                        <el-checkbox v-model="picture">指定图片好评任务 (指定好评关键字任务佣金 +  <span class="danger-text">5金/单</span> )</el-checkbox>
-                                        <el-popover
-                                                placement="top-start"
-                                                title="指定好评图片任务"
-                                                width="200"
-                                                trigger="click"
-                                                content="此服务是通过商家提供“买家秀图片”给做任务的用户，用户确认好评的时候，将把这张买家秀图片一起提交。以达到优化评价，提高转化率的目的。注意：买家秀图片最少一张最多三张，图片商品规格必须与输入的商品规格一致，以避免乌龙~">
-                                            <el-button type="text" slot="reference" icon="el-icon-info" class="info-btn"></el-button>
-                                        </el-popover>
-                                    </el-row>
-                                </div>
-                                <div v-if="picture">
-                                    <div v-for="(item,index) in pictureArr" class="c-item">
-                                        <div style="text-align:right;" v-if="index>=1">
-                                            <i class="el-icon-close c-i-close" @click="cClose('pictureArr',index)"></i>
-                                        </div>
-
-                                        <el-row :gutter="20" type="flex" align="middle">
-                                            <el-col>
-                                                <p>搜索关键词{{index+1}}</p>
-                                                <el-input v-model="item.keyword" ></el-input>
-                                            </el-col>
-                                            <el-col>
-                                                <p>货币关键词{{index+1}}</p>
-                                                <el-input v-model="item.currency" ></el-input>
-                                            </el-col>
-                                            <el-col>
-                                                <p>添加垫付{{index+1}}</p>
-                                                <el-select v-model="item.payment" placeholder="请选择">
-                                                    <el-option
-                                                            v-for="child in 5"
-                                                            :key="child"
-                                                            :label="child"
-                                                            :value="child">
-                                                    </el-option>
-                                                </el-select>
-                                            </el-col>
-                                        </el-row>
-
-                                        <el-row>
-                                            <el-col>
-                                                <p>选择图片</p>
-                                                <div>
-                                                    <el-upload
-                                                            class="upload-demo"
-                                                            action="https://jsonplaceholder.typicode.com/posts/"
-                                                            :on-preview="picPreview"
-                                                            :on-remove="picRemove"
-                                                            :on-change="picChange"
-                                                            :file-list="item.fileList"
-                                                            list-type="picture" >
-                                                        <el-button size="small" type="primary">点击上传</el-button>
-                                                        <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
-                                                    </el-upload>
-                                                </div>
-                                            </el-col>
-                                        </el-row>
-                                        <el-row>
-                                            <el-col>
-                                                <p>评价要求</p>
-                                                <el-input
-                                                        type="textarea"
-                                                        :rows="4"
-                                                        v-model="item.textarea"  placeholder="商家可自定义填写评价的文字要求">
-                                                </el-input>
-                                            </el-col>
-                                        </el-row>
-                                        <el-divider></el-divider>
-                                    </div>
-                                    <div>
-                                        <el-button type="text" @click="cAdd('pictureArr',3,'picture')">+增加下单关键词</el-button>
-                                    </div>
-                                </div>
-                            </el-card>
-                            <el-card class="box-card b-c-box">
-                                <div slot="header">
-                                    <el-row type="flex" align="middle">
-                                        <el-checkbox v-model="video">指定视频好评任务(指定好评关键字任务佣金 +  <span class="danger-text">5金/单</span> )</el-checkbox>
-                                        <el-popover
-                                                placement="top-start"
-                                                title="指定好评视频任务"
-                                                width="200"
-                                                trigger="click"
-                                                content="此服务是通过商家提供“买家秀视频”给做任务的用户，用户确认好评的时候，将把这张买家秀视频一起提交。以达到优化评价，提高转化率的目的。注意：买家秀视频只能上传一张，视频商品规格必须与输入的商品规格一致，以避免乌龙~">
-                                            <el-button type="text" slot="reference" icon="el-icon-info" class="info-btn"></el-button>
-                                        </el-popover>
-                                    </el-row>
-                                </div>
-                                <div v-if="video">
-                                    <div v-for="(item,index) in videoArr" class="c-item">
-                                        <div style="text-align:right;" v-if="index>=1">
-                                            <i class="el-icon-close c-i-close" @click="cClose('pictureArr',index)"></i>
-                                        </div>
-
-                                        <el-row :gutter="20" type="flex" align="middle">
-                                            <el-col>
-                                                <p>搜索关键词{{index+1}}</p>
-                                                <el-input v-model="item.keyword" ></el-input>
-                                            </el-col>
-                                            <el-col>
-                                                <p>货币关键词{{index+1}}</p>
-                                                <el-input v-model="item.currency" ></el-input>
-                                            </el-col>
-                                            <el-col>
-                                                <p>添加垫付{{index+1}}</p>
-                                                <el-select v-model="item.payment" placeholder="请选择">
-                                                    <el-option
-                                                            v-for="child in 5"
-                                                            :key="child"
-                                                            :label="child"
-                                                            :value="child">
-                                                    </el-option>
-                                                </el-select>
-                                            </el-col>
-                                        </el-row>
-
-                                        <el-row>
-                                            <el-col>
-                                                <p>选择视频</p>
-                                                <div>
-                                                    <el-upload
-                                                            class="upload-demo"
-                                                            action="https://jsonplaceholder.typicode.com/posts/"
-                                                            :on-preview="picPreview"
-                                                            :on-remove="picRemove"
-                                                            :on-change="picChange"
-                                                            :file-list="item.fileList"
-                                                            list-type="picture" accept="video/*">
-                                                        <el-button size="small" type="primary">点击上传</el-button>
-
-                                                    </el-upload>
-                                                </div>
-                                            </el-col>
-                                        </el-row>
-                                        <el-row>
-                                            <el-col>
-                                                <p>评价要求</p>
-                                                <el-input
-                                                        type="textarea"
-                                                        :rows="4"
-                                                        v-model="item.textarea"  placeholder="商家可自定义填写评价的文字要求">
-                                                </el-input>
-                                            </el-col>
-                                        </el-row>
-                                        <el-divider></el-divider>
-                                    </div>
-                                    <div>
-                                        <el-button type="text" @click="cAdd('pictureArr',3,'picture')">+增加下单关键词</el-button>
-                                    </div>
-                                </div>
-                            </el-card>
-
-
-                        </div>
-                    </el-row>
-                    <el-row>
-                        <p>新版发布时间设置</p>
-                        <div>
-                            <el-row type="flex" align="middle" class="b-c-box" :gutter="20">
-                                <el-col>
-
-                                    <el-row type="flex" align="middle">
-                                        开始时间
-                                        <div class="i-padding">
-                                            <el-input></el-input>
-                                        </div>
-
-                                    </el-row>
-                                </el-col>
-                                <el-col>
-
-                                    <el-row type="flex" align="middle">
-                                        每隔
-                                        <div class="i-padding">
-                                            <el-input></el-input>
-                                        </div>
-
-                                        分钟放出1单
-                                    </el-row>
-                                </el-col>
-                                <el-col>
-
-                                    <el-row type="flex" align="middle">
-                                        共放
-                                        <div class="i-padding">
-                                            <el-input></el-input>
-                                        </div>
-
-                                        单
-                                    </el-row>
-                                </el-col>
-                            </el-row>
-                        </div>
-                    </el-row>
-
-                </div>
-                <div>
-                    <el-divider content-position="center">第四步：选择增值服务</el-divider>
-                    <div>
-                        <div>
-
-                            <el-row type="flex" align="middle" class="b-c-box">
-                                <el-checkbox v-model="istop">任务置顶<span class="danger-text">( +3金/单 )</span></el-checkbox>
-
-                            </el-row>
-                            <div>
-                                <el-row type="flex" align="middle"  class="b-c-box">
-
-                                    <div>加赏任务佣金：</div>
-
-
-                                    <el-row type="flex" align="middle">
-                                        <span>每单加赏</span>
-
-                                        <div class="i-padding">
-                                            <el-input></el-input>
-                                        </div>
-
-                                        <span>金</span>
-                                    </el-row>
-
-
-                                    <el-row type="flex" align="middle">
-                                        (<span class="success-text">加赏金额越高，越优先展示给用户</span>，<span class="info-text">任务没人接或接不完时，建议加赏提升用户积极性，优先接手你的任务</span>)
-                                    </el-row>
-
-                                </el-row>
-
                                 <el-row type="flex" align="middle" class="b-c-box">
-                                    <span>空包服务（<span class="danger-text">{{courierP[courier]||0.00}}</span>{{$store.state.mtext}}）/个</span>
-                                    <el-row type="flex" align="middle">
-                                        <span>包裹重量</span>
 
-                                        <div class="i-padding">
-                                            <el-input></el-input>
-                                        </div>
-                                        <span>公斤</span>
-                                    </el-row>
-                                    <el-row type="flex" align="middle">
-                                        <span>快递：</span>
-                                        <el-select v-model="courier" placeholder="请选择">
-                                            <el-option
-                                                    v-for="(citem) in courierO"
-                                                    :key="citem.value"
-                                                    :label="citem.label"
-                                                    :value="citem.value">
-                                            </el-option>
-                                        </el-select>
-                                    </el-row>
+                                    <el-col>
+                                        <el-row type="flex" align="middle">
+                                            <el-row type="flex" align="middle">
+                                                <span>开始日期</span>
+                                                <div class="i-padding">
+                                                    <el-date-picker type="date"
+                                                    placeholder="选择日期" v-model="preview.start"></el-date-picker>
+                                                </div>
+                                            </el-row>
+
+                                            <el-row type="flex" align="middle">
+                                                <span>任务天数</span>
+                                                <div class="i-padding">
+                                                    <el-input v-model.number="preview.days"></el-input>
+                                                </div>
+                                            </el-row>
+
+                                        </el-row>
+                                    </el-col>
+
+                                     <el-col :span="5" class="danger-text" style="text-align:right;">总单量：{{previewAll}}</el-col>
 
                                 </el-row>
+                                <div>
+                                    <div v-for="(item,index) in previewArr" class="c-item">
+                                        <div style="text-align:right;" v-if="index>=1">
+                                            <i class="el-icon-close c-i-close" @click="cClose('previewArr',index)"></i>
+                                        </div>
+                                        <el-row class="time-row">
+                                            <el-col class="t-r-li" :lg="2" :sm="4" :xs="6" v-for="(jit,fin) in item.hours">
+                                                <div class="trl-topic">
+                                                    {{fin}}时
+                                                </div>
+                                                <div class="trl-frame">
+                                                    <input class="ti-input" v-model.number="item.hours[fin]" @input="pAll(index)" />
+                                                </div>
+                                            </el-col>
+                                        </el-row>
+                                        <el-row :gutter="20" type="flex" align="middle">
+                                            <el-col>
+                                                <p>搜索关键词{{index+1}}</p>
+                                                <el-input v-model="item.keyword" ></el-input>
+                                            </el-col>
+
+                                            <el-col>
+                                                <p>添加预览{{index+1}}</p>
+                                                <el-input :value="item.prevA" disabled></el-input>
+                                            </el-col>
+                                        </el-row>
+                                        <el-divider></el-divider>
+                                    </div>
+                                    <div>
+                                        <el-button type="text" @click="cAdd('previewArr',3)">+增加搜索关键词</el-button>
+                                    </div>
+                                    <el-row type="flex" align="middle">
+                                        <el-checkbox v-model="preview.collect">收藏商品</el-checkbox>
+                                        <el-checkbox v-model="preview.gocar">加购物车</el-checkbox>
+                                        <div>
+                                            <span class="danger-text">(0.8金/个)</span>
+                                        </div>
+                                    </el-row>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    </el-row>
+
                 </div>
-                <div>
-                    <el-divider content-position="center">第五步：商家附加要求</el-divider>
-                    <div>
-                        <p>
-                            备注说明
-                        </p>
-                        <div>
-                            <el-input
-                                    type="textarea"
-                                    :rows="4"
-                                    v-model="remark" placeholder="重要！如果对用户有特别的要求，请在备注里注明，用户在做任务时会看到，最多不能超过300字(任务备注只是商家要求，我们只能做到传达给用户但不会强制用户按要求执行)">
-                            </el-input>
-                        </div>
-                    </div>
-                </div>
+
                 <div>
                     <el-row type="flex" align="middle" justify="center" :gutter="30" class="b-c-box">
 
-                        <el-button type="primary" @click="taskSub('taskForm',-1)">上一步</el-button>
-                        <el-button type="primary" @click="taskSub('taskForm',1)">下一步</el-button>
+                        <el-button type="primary" @click="nextfn(-1)">上一步</el-button>
+                        <el-button type="primary" @click="nextfn(1)">下一步</el-button>
                     </el-row>
                 </div>
             </div>
@@ -511,8 +208,21 @@
     import {provs_data} from 'lwarea';
     export default {
         name: "Tbpreview",
+
         data(){
             return {
+                previewAll:0,
+                preview:{
+                    collect:'',
+                    gocar:'',
+                    start:'',
+                    days:''
+                },
+                previewArr:[{
+                    hours:Array(24).fill(0),
+                    keyword:'',
+                    prevA:0
+                }],
                 //备注内容
                 remark:'',
 
@@ -623,8 +333,29 @@
                 ]
             }
         },
-
         methods:{
+            pAll(selI){
+                var to=this.previewArr,selA=to[selI],days=Number(this.preview.days)||0;
+
+
+                if(selA){
+                    //该选项的预览量
+                    var selAll=0,all=0;
+                    selA.hours.forEach((val,ind)=>{
+                        selAll+=Number(val)||0;
+                    })
+                    selA.prevA=selAll;
+
+                    //总单量
+                    to.forEach((v,i)=>{
+
+                        all+=(Number(v.prevA))*days;
+
+                        this.previewAll=all;
+                    })
+                }
+            },
+
             picChange(file,fileList){
                 if(file){
 
@@ -662,33 +393,10 @@
                 if(arr){
                     if(arr.length<arrc){
                         switch (keyc) {
-                            case 'video':arr.push({
-                                keyword:'',
-                                payment:1,
-                                textarea:'',
-                                currency:'',
-                                fileList:[]
-                            })
-                            ;break;
-                            case 'picture':arr.push({
-                                keyword:'',
-                                payment:1,
-                                textarea:'',
-                                currency:'',
-                                fileList:[]
-                            })
-                            ;break;
-                            case 'character':arr.push({
-                                keyword:'',
-                                payment:1,
-                                textarea:'',
-                                currency:''
-                            })
-                            ;break;
                             default:arr.push({
+                                hours:Array(24).fill(0),
                                 keyword:'',
-                                payment:1,
-                                currency:''
+                                prevA:0
                             });
                         }
 
@@ -745,12 +453,12 @@
             submitForm(n,t){
                 this.nextfn(t);
             },
-            nextfn(t){
-                this.stepS+=t;
-
+            nextfn(val){
+                this.$store.dispatch('controlco',{val});
             }
         },
         watch:{
+            "preview.days":function(to){this.pAll(0);},
             stepS:function(to){
                 if(to==2){
                     this.$message.info({duration:0,showClose:true,message:'任务期间请关闭淘宝客、村淘、分享有赏等淘客活动，若因淘客引起的佣金支出由商家自己承担'});
@@ -761,6 +469,31 @@
 </script>
 
 <style lang="less" scoped>
+    .t-r-li{
+        border:1px solid #eee;
+    }
+    .trl-topic{
+        line-height:4;
+        background-color:#909399;
+        width:100%;
+        text-align:center;
+        color:#fff;
+        font-size:1rem;
+    }
+    .ti-input{
+
+
+        border:none;
+        outline:none;
+        box-shadow:none;
+        line-height:4;
+        width:100%;
+        text-align:center;
+        font-size:1rem;
+    }
+
+
+
     .i-padding{margin:0 .5rem;}
     .bcb-span{white-space:nowrap;text-overflow:ellipsis;overflow:hidden;}
     .success-text{color:#5bc0de;}

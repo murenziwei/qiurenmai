@@ -6,13 +6,13 @@
                 <span class="c-topic">发布任务</span>
             </div>
             <div>
-                <el-steps :active="stepS" finish-status="success" simple style="margin-top: 20px">
+                <el-steps :active="$store.state.count" finish-status="success" simple style="margin-top: 20px">
 
-                    <el-step  v-for="(item,index) in steparr" :title="item.val" :key="index" >
+                    <el-step v-for="(item,index) in steparr" :title="item.val" :key="index" >
                     </el-step>
                 </el-steps>
                 <ul class="step-content">
-                    <li v-if="stepS==1">
+                    <li v-if="$store.state.count==1">
                         <el-form>
 
                             <el-alert
@@ -34,10 +34,11 @@
                                             </el-radio-group>
                                             <el-divider></el-divider>
                                             <div>
+                                                <h1>{{trC}}</h1>
                                                 <div v-if="taskR===1">
                                                     <el-radio-group v-model="trC" class="tr-ul">
                                                         <div class="tr-li">
-                                                            <el-radio :label="1" class="w-sp">
+                                                            <el-radio label="Tbsearch" class="w-sp">
                                                                 新版手机淘宝任务v2.1
                                                                 <span class="info-text">重构核心算法，操作模式不再单一，高权重，高安全性，<span class="danger-text">最低发布5单</span></span>
                                                                 <el-popover
@@ -51,7 +52,7 @@
                                                             </el-radio>
                                                         </div>
                                                         <div class="tr-li">
-                                                            <el-radio :label="2" class="w-sp">
+                                                            <el-radio label="Tbpresell" class="w-sp">
                                                                 淘宝预售任务
                                                                 <span class="info-text">（当天加购物车，指定日期付款）</span>
                                                                 <el-popover
@@ -65,7 +66,7 @@
                                                             </el-radio>
                                                         </div>
                                                         <div class="tr-li">
-                                                            <el-radio :label="3" class="w-sp">
+                                                            <el-radio label="Tbword" class="w-sp">
                                                                 黑科技-淘口令裂变任务
                                                                 <span class="info-text">（用户通过淘口令付款，并分享出自己的淘口令给下一个用户接单）</span>
                                                                 <el-popover
@@ -79,7 +80,7 @@
                                                             </el-radio>
                                                         </div>
                                                         <div class="tr-li">
-                                                            <el-radio :label="4" class="w-sp">
+                                                            <el-radio label="Pinduoduo" class="w-sp">
                                                                 手机拼多多任务
                                                                 <span class="info-text">（用户在手机拼多多app下单）</span>
                                                                 <el-popover
@@ -96,9 +97,9 @@
                                                 </div>
 
                                                 <div v-if="taskR===2">
-                                                    <el-radio-group v-model="trCT" class="tr-ul">
+                                                    <el-radio-group v-model="trC" class="tr-ul">
                                                         <div class="tr-li">
-                                                            <el-radio :label="1" class="w-sp">
+                                                            <el-radio label="Tbpreview" class="w-sp">
                                                                 <b>手机淘宝</b>浏览、收藏、加购物车、直通车（<span>全真人加购，不被屏蔽不降权。</span>）
                                                             </el-radio>
                                                         </div>
@@ -113,14 +114,9 @@
                                     <el-card>
 
                                         <el-radio-group v-model="chooseS" class="tr-ul">
-                                            <div class="tr-li">
-                                                <el-radio :label="1" class="w-sp">
-                                                    <el-tag>淘宝</el-tag><span class="ws-name">木人子韦</span>
-                                                </el-radio>
-                                            </div>
-                                            <div class="tr-li">
-                                                <el-radio :label="2" class="w-sp">
-                                                    <el-tag>拼多多</el-tag><span class="ws-name">瞧你咋地</span>
+                                            <div class="tr-li" v-for="(sit,sin) in shops" :key="sin">
+                                                <el-radio :label="sin" class="w-sp" :disabled="!RegExp('^'+sit.jude,'i').test(trC)">
+                                                    <el-tag>{{sit.type}}</el-tag><span class="ws-name">{{sit.name}}</span>
                                                 </el-radio>
                                             </div>
                                         </el-radio-group>
@@ -137,12 +133,6 @@
                                                     </p>
                                                 </el-radio>
                                             </div>
-                                            <div class="tr-li">
-                                                <el-radio :label="2" class="w-sp">
-                                                    <el-tag>拼多多</el-tag><span class="ws-name">瞧你咋地</span>
-
-                                                </el-radio>
-                                            </div>
                                         </el-radio-group>
                                     </el-card>
                                 </el-timeline-item>
@@ -154,9 +144,105 @@
 
                     </li>
 
-                    <li v-if="stepS==2">
-                        <component :is="cId"></component>
+                    <li v-if="$store.state.count==2">
+                        <component :is="trC"></component>
+                    </li>
+                    <li v-if="$store.state.count==3">
+                        <div>
+                            <el-row>
+                                <p>
+                                    本次任务费用详情
+                                </p>
+                                <el-table
+                                        border
+                                        :data="tableData"
+                                        style="width: 100%">
+                                    <el-table-column type="expand">
+                                        <template slot-scope="props">
+                                            <el-form label-position="left" inline class="demo-table-expand">
+                                                <el-form-item label="商品名称">
+                                                    <span>{{ props.row.name }}</span>
+                                                </el-form-item>
+                                                <el-form-item label="所属店铺">
+                                                    <span>{{ props.row.shop }}</span>
+                                                </el-form-item>
+                                                <el-form-item label="商品 ID">
+                                                    <span>{{ props.row.id }}</span>
+                                                </el-form-item>
+                                                <el-form-item label="店铺 ID">
+                                                    <span>{{ props.row.shopId }}</span>
+                                                </el-form-item>
+                                                <el-form-item label="商品分类">
+                                                    <span>{{ props.row.category }}</span>
+                                                </el-form-item>
+                                                <el-form-item label="店铺地址">
+                                                    <span>{{ props.row.address }}</span>
+                                                </el-form-item>
+                                                <el-form-item label="商品描述">
+                                                    <span>{{ props.row.desc }}</span>
+                                                </el-form-item>
+                                            </el-form>
+                                        </template>
+                                    </el-table-column>
+                                    <el-table-column
+                                            label="商品 ID"
+                                            prop="id">
+                                    </el-table-column>
+                                    <el-table-column
+                                            label="商品名称"
+                                            prop="name">
+                                    </el-table-column>
+                                    <el-table-column
+                                            label="描述"
+                                            prop="desc">
+                                    </el-table-column>
+                                </el-table>
+                                <div style="text-align:right;">
+                                    <p>
+                                        合计单数： <span class="success-text">1</span>单
+                                    </p>
 
+                                    <p>
+                                        合计支付： 佣金<span class="danger-text">1.60</span>金
+                                    </p>
+                                </div>
+                            </el-row>
+                            <el-divider></el-divider>
+                            <div>
+                                <p>选择支付方式</p>
+                                <el-radio-group v-model="paytype">
+                                    <el-radio :label="1">
+                                        使用账户余额支付（可用本金 <span class="danger-text">3.70</span>{{$store.state.mtext}},可用金币 <span class="danger-text">0.00</span>，充值成功后请 <span class="success-text">刷新本页面</span>）
+                                    </el-radio>
+                                </el-radio-group>
+                            </div>
+
+                            <div>
+                                <el-row type="flex" align="middle" justify="center" :gutter="30" class="b-c-box">
+
+                                    <el-button type="primary" @click="nextfn(-1)">上一步</el-button>
+                                    <el-button type="primary" @click="nextfn(1)">付款并发布任务</el-button>
+                                </el-row>
+                            </div>
+                        </div>
+                    </li>
+                    <li v-if="$store.state.count==4">
+                        <div>
+                            <el-alert
+                                    title="发布状态"
+                                    type="success"
+                                    description="恭喜你发布成功"
+                                    show-icon>
+                            </el-alert>
+                        </div>
+
+                        <div>
+                            <el-row type="flex" align="middle" justify="center" :gutter="30" class="b-c-box">
+
+                                <el-button type="primary" @click="nextfn(-1)">上一步</el-button>
+                                <el-button type="primary" >再次发布任务</el-button>
+                            </el-row>
+                        </div>
                     </li>
                 </ul>
             </div>
@@ -165,14 +251,74 @@
 </template>
 
 <script>
-    import HelloWorld from './HelloWorld.vue'
+
+    //淘宝预售
+    import Tbpresell from './shop/Tbpresell.vue'
+
+    //淘宝口令
+    import Tbsearch from './shop/Tbsearch.vue'
+
+    //淘宝精瘦
+    import Tbpreview from './shop/Tbpreview.vue'
+    //淘宝预览
+    import Tbword from "./shop/Tbword.vue";
+    //拼多多
     import Pinduoduo from "./shop/Pinduoduo.vue";
     import {provs_data} from 'lwarea';
     export default {
         name: "issue",
         data(){
             return {
-                cId:'Pinduoduo',//什么类型的商店
+                tableData: [{
+                    id: '12987122',
+                    name: '好滋好味鸡蛋仔',
+                    category: '江浙小吃、小吃零食',
+                    desc: '荷兰优质淡奶，奶香浓而不腻',
+                    address: '上海市普陀区真北路',
+                    shop: '王小虎夫妻店',
+                    shopId: '10333'
+                }, {
+                    id: '12987123',
+                    name: '好滋好味鸡蛋仔',
+                    category: '江浙小吃、小吃零食',
+                    desc: '荷兰优质淡奶，奶香浓而不腻',
+                    address: '上海市普陀区真北路',
+                    shop: '王小虎夫妻店',
+                    shopId: '10333'
+                }, {
+                    id: '12987125',
+                    name: '好滋好味鸡蛋仔',
+                    category: '江浙小吃、小吃零食',
+                    desc: '荷兰优质淡奶，奶香浓而不腻',
+                    address: '上海市普陀区真北路',
+                    shop: '王小虎夫妻店',
+                    shopId: '10333'
+                }, {
+                    id: '12987126',
+                    name: '好滋好味鸡蛋仔',
+                    category: '江浙小吃、小吃零食',
+                    desc: '荷兰优质淡奶，奶香浓而不腻',
+                    address: '上海市普陀区真北路',
+                    shop: '王小虎夫妻店',
+                    shopId: '10333'
+                }],
+
+                //支付方式
+                paytype:1,
+
+                //选择店铺
+                shops:[
+                    {
+                        type:'淘宝',
+                        name:'木人子韦',
+                        jude:'Tb'
+                    },
+                    {
+                        type:'拼多多',
+                        name:'瞧你咋滴',
+                        jude:'Pin'
+                    }
+                ],
                 //备注内容
                 remark:'',
 
@@ -252,11 +398,11 @@
                         { required: true, message: '请选择是否包邮', trigger: 'blur' }
                     ]
                 },
-
+                stepS:1,
                 chooseP:1,
                 chooseS:-1,
                 taskR:1,
-                trC:1,
+                trC:'Tbsearch',
                 trCT:1,
                 bull:{
                     title:'所有商家都要注意在销量110推广务必严格控制好以下几点：',
@@ -266,7 +412,6 @@
                         '推广期间请务必关掉商品淘客佣金，推广过程有诸多不确定因素可能导致产生佣金可能造成您的损失。'
                     ]
                 },
-                stepS:1,
                 steparr:[
                     {
                         val:'选择任务类型'
@@ -407,12 +552,18 @@
             submitForm(n,t){
                 this.nextfn(t);
             },
-            nextfn(t){
-                this.stepS+=t;
+            nextfn(val){
+                this.$store.dispatch('controlco',{val});
+            },
 
+            setfn(val){
+                this.$store.dispatch('setco',{val});
             }
         },
         watch:{
+            trC:function(){
+                this.chooseS=-1;
+            },
             stepS:function(to){
                 if(to==2){
                     this.$message.info({duration:0,showClose:true,message:'任务期间请关闭淘宝客、村淘、分享有赏等淘客活动，若因淘客引起的佣金支出由商家自己承担'});
@@ -420,8 +571,12 @@
             }
         },
         components:{
-            HelloWorld,
+            Tbword,
+            Tbpreview,
+            Tbsearch,
+            Tbpresell,
             Pinduoduo
+
         }
     }
 </script>

@@ -70,11 +70,8 @@
                         </el-form-item>
                         <el-divider></el-divider>
                     </div>
-                    <div>
-                        <el-button type="text" @click="addNS(3)">+增加附加商品</el-button>
-                        <span>(最多可增加{{3-taskForm.fval.length}}个商品)</span>
-                    </div>
-                    <el-divider></el-divider>
+
+
                     <el-form-item label="商品是否包邮">
                         <el-radio-group v-model="taskForm.postage" class="tr-ul">
                             <div class="tr-li">
@@ -90,61 +87,29 @@
                         </el-radio-group>
 
                     </el-form-item>
-                </div>
-                <div>
-                    <el-divider content-position="center">第二步：设置如何找到商品</el-divider>
-                    <div>
-
-                        <el-form-item label="商品现有收货人数或付款人数约">
-                            <el-row type="flex" justify="center" align="middle" :gutter="20">
-                                <el-col :span="5"><el-input></el-input> </el-col>
-                                <el-col :span="2"><span>人</span></el-col>
-                                <el-col><span class="info-text">此处为手机淘宝销量优先搜索列表页显示的收货人数</span></el-col>
-
-                            </el-row>
-                        </el-form-item>
-                    </div>
-                    <el-form-item label="价格区间">
-                        <el-row type="flex" justify="center" align="middle" :gutter="20">
-                            <el-col :span="14"><el-row type="flex" align="middle"><el-input></el-input><i class="el-icon-minus"></i><el-input></el-input></el-row> </el-col>
-                            <el-col :span="2"><span>{{$store.state.mtext}}</span></el-col>
-                            <el-col><span class="info-text">务必亲自在手机端搜索，确认价格准确</span></el-col>
-
-                        </el-row>
-                    </el-form-item>
-                    <el-form-item label="商品所在地">
-                        <el-select v-model="cityvalue" placeholder="请选择">
-                            <el-option
-                                    v-for="item in cityoptions"
-                                    :key="item.value"
-                                    :label="item.text"
-                                    :value="item.value">
-                            </el-option>
-                        </el-select>
-                    </el-form-item>
                     <el-form-item label="订单留言">
-                        <el-row type="flex" justify="center" align="middle" :gutter="20">
-                            <el-col :span="10"><el-input></el-input></el-col>
-                            <el-col >
-                                <el-row type="flex" align="middle">
+                    <el-row type="flex" justify="center" align="middle" :gutter="20">
+                        <el-col :span="10"><el-input></el-input></el-col>
+                        <el-col >
+                            <el-row type="flex" align="middle">
 
-                                    <el-popover
-                                            placement="top-start"
-                                            title="订单留言"
-                                            width="200"
-                                            trigger="click"
-                                            content="如非必须建议不指定订单备注留言！因淘宝现在人工审核申诉订单时，会排查买家的订单留言内容及发货方式 是否匹配，出于安全性考虑，大家尽量通过订单号和买号来区分推广订单。">
-                                        <el-button type="text" slot="reference" icon="el-icon-info" class="info-btn"></el-button>
-                                    </el-popover><span class="info-text">用户拍下商品所需要填写的买家留言；出于安全考虑不建议大批量使用</span>
-                                </el-row>
-                            </el-col>
+                                <el-popover
+                                        placement="top-start"
+                                        title="订单留言"
+                                        width="200"
+                                        trigger="click"
+                                        content="如非必须建议不指定订单备注留言！因淘宝现在人工审核申诉订单时，会排查买家的订单留言内容及发货方式 是否匹配，出于安全性考虑，大家尽量通过订单号和买号来区分推广订单。">
+                                    <el-button type="text" slot="reference" icon="el-icon-info" class="info-btn"></el-button>
+                                </el-popover><span class="info-text">用户拍下商品所需要填写的买家留言；出于安全考虑不建议大批量使用</span>
+                            </el-row>
+                        </el-col>
 
-                        </el-row>
-                    </el-form-item>
+                    </el-row>
+                </el-form-item>
                 </div>
 
                 <div>
-                    <el-divider content-position="center">第三步：选择任务类型和单数</el-divider>
+                    <el-divider content-position="center">第二步：选择任务类型和单数</el-divider>
 
                     <el-row>
                         <div>选择添加推广任务类型</div>
@@ -171,7 +136,7 @@
                                             </el-col>
 
                                             <el-col>
-                                                <p>货币关键词{{index+1}}</p>
+                                                <p>货比关键词{{index+1}}</p>
                                                 <el-input v-model="item.currency" ></el-input>
                                             </el-col>
                                             <el-col>
@@ -212,7 +177,7 @@
                                                 <el-input v-model="item.keyword" ></el-input>
                                             </el-col>
                                             <el-col>
-                                                <p>货币关键词{{index+1}}</p>
+                                                <p>货比关键词{{index+1}}</p>
                                                 <el-input v-model="item.currency" ></el-input>
                                             </el-col>
                                             <el-col>
@@ -271,7 +236,7 @@
                                                 <el-input v-model="item.keyword" ></el-input>
                                             </el-col>
                                             <el-col>
-                                                <p>货币关键词{{index+1}}</p>
+                                                <p>货比关键词{{index+1}}</p>
                                                 <el-input v-model="item.currency" ></el-input>
                                             </el-col>
                                             <el-col>
@@ -348,7 +313,7 @@
                                                 <el-input v-model="item.keyword" ></el-input>
                                             </el-col>
                                             <el-col>
-                                                <p>货币关键词{{index+1}}</p>
+                                                <p>货比关键词{{index+1}}</p>
                                                 <el-input v-model="item.currency" ></el-input>
                                             </el-col>
                                             <el-col>
@@ -405,6 +370,9 @@
                     </el-row>
                     <el-row>
                         <p>新版发布时间设置</p>
+                        <p class="danger-text">
+                            计划放单总单数必须等于发布任务总量，间隔分钟等于0默认开始时间一到一起发布
+                        </p>
                         <div>
                             <el-row type="flex" align="middle" class="b-c-box" :gutter="20">
                                 <el-col>
@@ -412,7 +380,14 @@
                                     <el-row type="flex" align="middle">
                                         开始时间
                                         <div class="i-padding">
-                                            <el-input></el-input>
+                                            <div class="block">
+
+                                                <el-date-picker
+                                                        v-model="timeobj.date"
+                                                        type="datetime"
+                                                        placeholder="选择日期时间">
+                                                </el-date-picker>
+                                            </div>
                                         </div>
 
                                     </el-row>
@@ -445,7 +420,7 @@
 
                 </div>
                 <div>
-                    <el-divider content-position="center">第四步：选择增值服务</el-divider>
+                    <el-divider content-position="center">第三步：选择增值服务</el-divider>
                     <div>
                         <div>
 
@@ -501,10 +476,54 @@
                                 </el-row>
                             </div>
                         </div>
+                        <div>
+
+                            <el-row type="flex" align="middle" class="b-c-box">
+                                <el-checkbox v-model="impose">千人千面设置</el-checkbox>
+
+                            </el-row>
+                            <div v-if="impose">
+                                <el-card class="b-c-box">
+                                    <div>
+                                        <el-checkbox v-model="imposeObj.area.sel">地域限制 <span class="info-text">(+2金/单)</span></el-checkbox>
+                                    </div>
+                                    <p>
+                                        以下所选地区 <span class="danger-text">不可接该任务</span>
+                                    </p>
+                                    <el-card v-show="imposeObj.area.sel">
+                                        <div slot="header">
+                                            <span>编辑区域</span>
+                                        </div>
+                                        <div>
+                                            <el-checkbox-group v-model="imposeObj.area.selV">
+
+                                                <el-checkbox  v-for="(aitem,aindex) in cityoptions" :key="aindex" :label="aitem.text"></el-checkbox>
+                                            </el-checkbox-group>
+                                        </div>
+                                    </el-card>
+                                </el-card>
+                                <el-card class="b-c-box">
+                                    <div>
+                                        <el-checkbox v-model="imposeObj.sex.sel">性别限制 <span class="info-text">(仅限选择性别用户 <span class="danger-text">可接该任务</span>，+1金/单)</span></el-checkbox>
+                                    </div>
+                                    <el-radio-group v-model="imposeObj.sex.selV" v-show="imposeObj.sex.sel" class="b-c-box">
+                                        <el-radio :label="1">男</el-radio>
+                                        <el-radio :label="2">女</el-radio>
+                                    </el-radio-group>
+                                </el-card>
+
+                                <el-card class="b-c-box">
+                                    <div>
+                                        <el-checkbox v-model="imposeObj.only.sel"><span class="info-text">(仅限钻级别的买号 <span class="danger-text">可接该任务</span>，+2金/单)</span></el-checkbox>
+                                    </div>
+
+                                </el-card>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div>
-                    <el-divider content-position="center">第五步：商家附加要求</el-divider>
+                    <el-divider content-position="center">第四步：商家附加要求</el-divider>
                     <div>
                         <p>
                             备注说明
@@ -535,9 +554,28 @@
 <script>
     import {provs_data} from 'lwarea';
     export default {
-        name: "Pinduoduo",
+        name: "Tbsearch",
         data(){
             return {
+                timeobj:{date:''},
+                imposeObj:{
+                    //地域限制
+                    area:{
+                        sel:true,
+                        selV:[]
+                    },
+                    //性别限制
+                    sex:{
+                        sel:true,
+                        selV:1
+                    },
+                    //钻石级别限制
+                    only:{
+                        sel:false
+                    }
+                },
+                //千人千面设置
+                impose:true,
                 //备注内容
                 remark:'',
 

@@ -70,11 +70,8 @@
                         </el-form-item>
                         <el-divider></el-divider>
                     </div>
-                    <div>
-                        <el-button type="text" @click="addNS(3)">+增加附加商品</el-button>
-                        <span>(最多可增加{{3-taskForm.fval.length}}个商品)</span>
-                    </div>
-                    <el-divider></el-divider>
+
+
                     <el-form-item label="商品是否包邮">
                         <el-radio-group v-model="taskForm.postage" class="tr-ul">
                             <div class="tr-li">
@@ -405,14 +402,29 @@
                     </el-row>
                     <el-row>
                         <p>新版发布时间设置</p>
-                        <div>
+
+                        <p class="danger-text">
+                            计划放单总单数必须等于发布任务总量，间隔分钟等于0默认开始时间一到一起发布
+                        </p>
+                        <div v-for="(tval,tind) in timearr" :key="tind">
+                            <div style="text-align:right;" v-if="tind>=1">
+                                <i class="el-icon-close c-i-close" @click="cClose('timearr',tind)"></i>
+                            </div>
                             <el-row type="flex" align="middle" class="b-c-box" :gutter="20">
                                 <el-col>
 
                                     <el-row type="flex" align="middle">
                                         开始时间
                                         <div class="i-padding">
-                                            <el-input></el-input>
+
+                                                <div class="block">
+
+                                                    <el-date-picker
+                                                            v-model="tval.date"
+                                                            type="datetime"
+                                                            placeholder="选择日期时间">
+                                                    </el-date-picker>
+                                                </div>
                                         </div>
 
                                     </el-row>
@@ -422,7 +434,7 @@
                                     <el-row type="flex" align="middle">
                                         每隔
                                         <div class="i-padding">
-                                            <el-input></el-input>
+                                            <el-input v-model.number="tval.minute"></el-input>
                                         </div>
 
                                         分钟放出1单
@@ -433,16 +445,18 @@
                                     <el-row type="flex" align="middle">
                                         共放
                                         <div class="i-padding">
-                                            <el-input></el-input>
+                                            <el-input v-model.number="tval.count"></el-input>
                                         </div>
-
                                         单
                                     </el-row>
                                 </el-col>
                             </el-row>
+                            <el-divider></el-divider>
                         </div>
                     </el-row>
-
+                    <el-row>
+                        <el-button type="text" @click="cAdd('timearr',3,'time')">+添加放单计划</el-button>
+                    </el-row>
                 </div>
                 <div>
                     <el-divider content-position="center">第四步：选择增值服务</el-divider>
@@ -501,6 +515,50 @@
                                 </el-row>
                             </div>
                         </div>
+                        <div>
+
+                            <el-row type="flex" align="middle" class="b-c-box">
+                                <el-checkbox v-model="impose">千人千面设置</el-checkbox>
+
+                            </el-row>
+                            <div v-if="impose">
+                                <el-card class="b-c-box">
+                                    <div>
+                                        <el-checkbox v-model="imposeObj.area.sel">地域限制 <span class="info-text">(+2金/单)</span></el-checkbox>
+                                    </div>
+                                    <p>
+                                        以下所选地区 <span class="danger-text">不可接该任务</span>
+                                    </p>
+                                    <el-card v-show="imposeObj.area.sel">
+                                        <div slot="header">
+                                            <span>编辑区域</span>
+                                        </div>
+                                        <div>
+                                            <el-checkbox-group v-model="imposeObj.area.selV">
+
+                                                <el-checkbox  v-for="(aitem,aindex) in cityoptions" :key="aindex" :label="aitem.text"></el-checkbox>
+                                            </el-checkbox-group>
+                                        </div>
+                                    </el-card>
+                                </el-card>
+                                <el-card class="b-c-box">
+                                    <div>
+                                        <el-checkbox v-model="imposeObj.sex.sel">性别限制 <span class="info-text">(仅限选择性别用户 <span class="danger-text">可接该任务</span>，+1金/单)</span></el-checkbox>
+                                    </div>
+                                    <el-radio-group v-model="imposeObj.sex.selV" v-show="imposeObj.sex.sel" class="b-c-box">
+                                        <el-radio :label="1">男</el-radio>
+                                        <el-radio :label="2">女</el-radio>
+                                    </el-radio-group>
+                                </el-card>
+
+                                <el-card class="b-c-box">
+                                    <div>
+                                        <el-checkbox v-model="imposeObj.only.sel"><span class="info-text">(仅限钻级别的买号 <span class="danger-text">可接该任务</span>，+2金/单)</span></el-checkbox>
+                                    </div>
+
+                                </el-card>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div>
@@ -535,9 +593,34 @@
 <script>
     import {provs_data} from 'lwarea';
     export default {
-        name: "Pinduoduo",
+        name: "Tbword",
         data(){
             return {
+                timearr:[
+                    {
+                        date:'',
+                        minute:0,
+                        count:0
+                    }
+                ],
+                imposeObj:{
+                    //地域限制
+                    area:{
+                        sel:true,
+                        selV:[]
+                    },
+                    //性别限制
+                    sex:{
+                        sel:true,
+                        selV:1
+                    },
+                    //钻石级别限制
+                    only:{
+                        sel:false
+                    }
+                },
+                //千人千面设置
+                impose:true,
                 //备注内容
                 remark:'',
 
@@ -712,6 +795,12 @@
                 if(arr){
                     if(arr.length<arrc){
                         switch (keyc) {
+                            case 'time':arr.push({
+                                date:'',
+                                    minute:0,
+                                    count:0
+                            })
+                            ;break;
                             case 'video':arr.push({
                                 keyword:'',
                                 payment:1,

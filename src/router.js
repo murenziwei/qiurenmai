@@ -23,6 +23,23 @@ const about={
         name:'发布任务',
         icon:'el-icon-plus'
       }
+    },
+
+    {
+      path:'pricetable',
+      component:()=>import('./components/pricetable.vue'),
+      data:{
+        name:'价格表',
+        icon:'el-icon-s-grid'
+      }
+    },
+    {
+      path:'shopseting',
+      component:()=>import('./components/shopseting.vue'),
+      data:{
+        name:'店铺设置',
+        icon:'el-icon-setting'
+      }
     }
   ]
 };

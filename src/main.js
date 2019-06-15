@@ -8,6 +8,11 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 
+//复制功能
+import VueClipboard from 'vue-clipboard2'
+
+Vue.use(VueClipboard)
+
 //滚动出现效果，依赖animation.js
 new WOW({live:false}).init();
 

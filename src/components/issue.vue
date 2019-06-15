@@ -26,15 +26,16 @@
                             </el-alert>
                             <el-timeline class="step-form">
                                 <el-timeline-item timestamp="选择任务类型" placement="top">
+                                    <div class="b-c-box"><el-link href="#/about/pricetable" type="primary">查看价格表</el-link></div>
                                     <el-card>
                                         <div>
                                             <el-radio-group v-model="taskR">
                                                 <el-radio :label="1">垫付任务</el-radio>
                                                 <el-radio :label="2">浏览任务</el-radio>
                                             </el-radio-group>
+
                                             <el-divider></el-divider>
                                             <div>
-                                                <h1>{{trC}}</h1>
                                                 <div v-if="taskR===1">
                                                     <el-radio-group v-model="trC" class="tr-ul">
                                                         <div class="tr-li">
@@ -154,47 +155,30 @@
                                     本次任务费用详情
                                 </p>
                                 <el-table
-                                        border
                                         :data="tableData"
-                                        style="width: 100%">
-                                    <el-table-column type="expand">
-                                        <template slot-scope="props">
-                                            <el-form label-position="left" inline class="demo-table-expand">
-                                                <el-form-item label="商品名称">
-                                                    <span>{{ props.row.name }}</span>
-                                                </el-form-item>
-                                                <el-form-item label="所属店铺">
-                                                    <span>{{ props.row.shop }}</span>
-                                                </el-form-item>
-                                                <el-form-item label="商品 ID">
-                                                    <span>{{ props.row.id }}</span>
-                                                </el-form-item>
-                                                <el-form-item label="店铺 ID">
-                                                    <span>{{ props.row.shopId }}</span>
-                                                </el-form-item>
-                                                <el-form-item label="商品分类">
-                                                    <span>{{ props.row.category }}</span>
-                                                </el-form-item>
-                                                <el-form-item label="店铺地址">
-                                                    <span>{{ props.row.address }}</span>
-                                                </el-form-item>
-                                                <el-form-item label="商品描述">
-                                                    <span>{{ props.row.desc }}</span>
-                                                </el-form-item>
-                                            </el-form>
-                                        </template>
+                                        :span-method="objectSpanMethod"
+                                        border
+                                        style="width: 100%; margin-top: 20px">
+                                    <el-table-column
+                                            prop="id"
+                                            label="ID"
+                                            width="180">
                                     </el-table-column>
                                     <el-table-column
-                                            label="商品 ID"
-                                            prop="id">
+                                            prop="name"
+                                            label="姓名">
                                     </el-table-column>
                                     <el-table-column
-                                            label="商品名称"
-                                            prop="name">
+                                            prop="amount1"
+                                            label="数值 1（元）">
                                     </el-table-column>
                                     <el-table-column
-                                            label="描述"
-                                            prop="desc">
+                                            prop="amount2"
+                                            label="数值 2（元）">
+                                    </el-table-column>
+                                    <el-table-column
+                                            prop="amount3"
+                                            label="数值 3（元）">
                                     </el-table-column>
                                 </el-table>
                                 <div style="text-align:right;">
@@ -240,7 +224,7 @@
                             <el-row type="flex" align="middle" justify="center" :gutter="30" class="b-c-box">
 
                                 <el-button type="primary" @click="nextfn(-1)">上一步</el-button>
-                                <el-button type="primary" >再次发布任务</el-button>
+                                <el-button type="primary" @click="setfn(1)">再次发布任务</el-button>
                             </el-row>
                         </div>
                     </li>
@@ -271,36 +255,34 @@
             return {
                 tableData: [{
                     id: '12987122',
-                    name: '好滋好味鸡蛋仔',
-                    category: '江浙小吃、小吃零食',
-                    desc: '荷兰优质淡奶，奶香浓而不腻',
-                    address: '上海市普陀区真北路',
-                    shop: '王小虎夫妻店',
-                    shopId: '10333'
+                    name: '王小虎',
+                    amount1: '234',
+                    amount2: '3.2',
+                    amount3: 10
                 }, {
                     id: '12987123',
-                    name: '好滋好味鸡蛋仔',
-                    category: '江浙小吃、小吃零食',
-                    desc: '荷兰优质淡奶，奶香浓而不腻',
-                    address: '上海市普陀区真北路',
-                    shop: '王小虎夫妻店',
-                    shopId: '10333'
+                    name: '王小虎',
+                    amount1: '165',
+                    amount2: '4.43',
+                    amount3: 12
+                }, {
+                    id: '12987124',
+                    name: '王小虎',
+                    amount1: '324',
+                    amount2: '1.9',
+                    amount3: 9
                 }, {
                     id: '12987125',
-                    name: '好滋好味鸡蛋仔',
-                    category: '江浙小吃、小吃零食',
-                    desc: '荷兰优质淡奶，奶香浓而不腻',
-                    address: '上海市普陀区真北路',
-                    shop: '王小虎夫妻店',
-                    shopId: '10333'
+                    name: '王小虎',
+                    amount1: '621',
+                    amount2: '2.2',
+                    amount3: 17
                 }, {
                     id: '12987126',
-                    name: '好滋好味鸡蛋仔',
-                    category: '江浙小吃、小吃零食',
-                    desc: '荷兰优质淡奶，奶香浓而不腻',
-                    address: '上海市普陀区真北路',
-                    shop: '王小虎夫妻店',
-                    shopId: '10333'
+                    name: '王小虎',
+                    amount1: '539',
+                    amount2: '4.1',
+                    amount3: 15
                 }],
 
                 //支付方式
@@ -432,6 +414,21 @@
             console.log(this.$options)
         },
         methods:{
+            objectSpanMethod({ row, column, rowIndex, columnIndex }) {
+                if (columnIndex === 0) {
+                    if (rowIndex % 2 === 0) {
+                        return {
+                            rowspan: 2,
+                            colspan: 1
+                        };
+                    } else {
+                        return {
+                            rowspan: 0,
+                            colspan: 0
+                        };
+                    }
+                }
+            },
             picChange(file,fileList){
                 if(file){
 
@@ -564,7 +561,8 @@
             trC:function(){
                 this.chooseS=-1;
             },
-            stepS:function(to){
+            '$store.state.count':function(to){
+                console.log(to);
                 if(to==2){
                     this.$message.info({duration:0,showClose:true,message:'任务期间请关闭淘宝客、村淘、分享有赏等淘客活动，若因淘客引起的佣金支出由商家自己承担'});
                 }

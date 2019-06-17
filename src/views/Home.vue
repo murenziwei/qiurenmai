@@ -53,8 +53,7 @@
     </div>
     <div class="h-body">
       <!--http://s.zhuan.net/v1/themes/zh-cn/dist/images/bg-9.jpg-->
-      <div id="indexT" class="h-item hb-top" style="background: linear-gradient(135deg,#1D1632,#3F306D,#43072A,#6F305F);
-    background-image: url(http://s.zhuan.net/v1/themes/zh-cn/dist/images/bg-9.jpg);">
+      <div id="indexT" class="h-item hb-top" :style="{backgroundImage:'url('+$store.state.bg9+')'}">
         <div class="h-b-frame">
           <div class="hbf-top wow bounceInLeft" data-wow-delay=".2s"  >
 
@@ -69,7 +68,7 @@
 
             <el-row class="wow bounceInRight" data-wow-delay=".3s"  >
               <el-col :xs="24" :sm="12">
-                <div class="h-login h-btn">
+                <div class="h-login h-btn" @click="loginnav">
                   登陆
                   <div class="hb-icon"></div>
                 </div>
@@ -91,7 +90,7 @@
           </div>
         </div>
       </div>
-      <div id="coreT" class="hb-core" :style="{backgroundImage:'url(http://s.zhuan.net/v1/themes/zh-cn/dist/images/bg-1.jpg)'}">
+      <div id="coreT" class="hb-core" :style="{backgroundImage:'url('+$store.state.bg1+')'}">
         <div class="wow bounceInLeft hc-topic">
           核心
         </div>
@@ -142,8 +141,8 @@
           <p class="hti-list wow bounceIn" data-wow-delay=".1s"  >销量110平台紧跟淘宝发展趋势,专注搜索研究</p>
           <p class="hti-list wow bounceIn" data-wow-delay=".2s"  >实现全网首家黑科技系列搜索模型,注重有效提权</p>
         </div>
-        <div  :style="{backgroundImage:'url(http://s.zhuan.net/v1/themes/zh-cn/dist/images/bg-2.png)'}" class="core-footer  wow fadeIn">
-          <el-image class="c-f-zhan" src="http://s.zhuan.net/v1/themes/zh-cn/dist/images/bg-2.png" ></el-image>
+        <div  :style="{backgroundImage:'url('+$store.state.bg2+')'}" class="core-footer  wow fadeIn">
+          <el-image class="c-f-zhan" :src="$store.state.bg2" ></el-image>
         </div>
 
 
@@ -238,7 +237,7 @@
 
           <el-carousel :interval="4000" indicator-position="none" type="card">
             <el-carousel-item v-for="item in 6" :key="item">
-              <div class="c-b-in" :style="{backgroundImage:'url(http://s.zhuan.net/v1/themes/zh-cn/dist/icon/icon5-02.png)'}" >
+              <div class="c-b-in" :style="{backgroundImage:'url('+$store.state.icon5+')'}" >
                 <div class="cbi-top">
                   <div class="ct-title">
                     Q3 2017
@@ -258,7 +257,7 @@
           </el-carousel>
         </div>
       </div>
-      <div id="caseT" class="hb-core" :style="{backgroundImage:'url(http://s.zhuan.net/v1/themes/zh-cn/dist/images/bg-9.jpg)'}">
+      <div id="caseT" class="hb-core" :style="'background-image:url('+$store.state.bg9+')'">
         <div class="hc-topic white wow flipInX">
           案例
         </div>
@@ -402,6 +401,10 @@ export default {
     })
   },
   methods:{
+    loginnav(){
+      console.log(this.$router);
+      this.$router.push({ path: 'login' })
+    },
     controlfn(){
       this.isCollapse=!this.isCollapse;
     },

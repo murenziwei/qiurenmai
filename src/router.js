@@ -24,7 +24,6 @@ const about={
         icon:'el-icon-plus'
       }
     },
-
     {
       path:'pricetable',
       component:()=>import('./components/pricetable.vue'),
@@ -40,7 +39,31 @@ const about={
         name:'店铺设置',
         icon:'el-icon-setting'
       }
-    }
+    },
+   {
+      path:'paytask',
+      component:()=>import('./components/paytask.vue'),
+      data:{
+          name:'垫付任务管理',
+          icon:'el-icon-c-scale-to-original'
+      }
+   },
+  {
+      path:'previewtask',
+      component:()=>import('./components/previewtask.vue'),
+      data:{
+          name:'浏览任务管理',
+          icon:'el-icon-camera-solid'
+      }
+  },
+  {
+      path:'noorder',
+      component:()=>import('./components/noorder.vue'),
+      data:{
+          name:'待接订单',
+          icon:'el-icon-s-operation'
+      }
+  }
   ]
 };
 

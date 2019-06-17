@@ -121,6 +121,7 @@
                                                 </el-radio>
                                             </div>
                                         </el-radio-group>
+                                        <el-link v-if="shops.length==0" href="#/about/shopseting" type="primary" class="b-c-box">添加绑定店铺</el-link>
                                     </el-card>
                                 </el-timeline-item>
                                 <el-timeline-item timestamp="选择平台返款模式" placement="top">

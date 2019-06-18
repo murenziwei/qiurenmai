@@ -38,42 +38,65 @@
       </div>
       <transition type="animation">
         <div class="at-right" :class="{'at-right':true,fadeIn:!isTag,fadeOut:isTag}" v-show="!isTag">
-          <div class="a-r-list">
-            <router-link to="/forget" class="arl-link">
+          <div :class="{'a-r-list':true,'active':tagCount==0}">
+            <div class="arl-link" @click.stop="tagcontrol(0)">
               <span class="a-l-text">商家中心</span>
-            </router-link>
+            </div>
           </div>
-          <div class="a-r-list active">
-            <router-link to="/forget" class="arl-link">
-              <span class="a-l-text">商家介绍</span>
-            </router-link>
-          </div>
-        </div>
-      </transition>
-    </div>
-    <div class="ani as">
-      <transition type="animation">
-        <div :class="{'a-slide':true,bounceInLeft:!isAside,bounceOutLeft:isAside}" v-show="!isAside">
-          <div class="as-items" v-for="(item,index) in asideTag.val" :key="index">
-            <router-link :to="'/'+asideTag.name+'/'+item.path" :class="{'a-i-nav':true,'active':nowrou==('/'+asideTag.name+'/'+item.path)}">
-              <i :class="item.data.icon+' ain-icon'"></i>
-              <span class="ain-text">{{item.data.name}}</span>
-            </router-link>
+          <div v-for="(item,index) in tags" :key="index" :class="{'a-r-list':true,'active':tagCount==(index+1)}">
+            <div class="arl-link" @click.stop="tagcontrol((index+1))">
+              <span class="a-l-text">{{item.text}}</span>
+            </div>
           </div>
         </div>
       </transition>
     </div>
-    <div class="a-content">
-      <router-view></router-view>
+    <div>
+      <div v-if="tagCount==0">
+
+        <div class="ani as">
+          <transition type="animation">
+            <div :class="{'a-slide':true,bounceInLeft:!isAside,bounceOutLeft:isAside}" v-show="!isAside">
+              <div class="as-items" v-for="(item,index) in asideTag.val" :key="index">
+                <router-link :to="'/'+asideTag.name+'/'+item.path" :class="{'a-i-nav':true,'active':nowrou==('/'+asideTag.name+'/'+item.path)}">
+                  <i :class="item.data.icon+' ain-icon'"></i>
+                  <span class="ain-text">{{item.data.name}}</span>
+                </router-link>
+              </div>
+            </div>
+          </transition>
+        </div>
+        <div class="a-content">
+          <router-view></router-view>
+        </div>
+      </div>
+      <template v-for="(item,index) in tags" >
+        <div v-if="tagCount==(index+1)">
+            <component :is="item.template"></component>
+        </div>
+      </template>
+
     </div>
   </div>
 </template>
 <script>
+  import HelloWorld from '../components/HelloWorld.vue';
   export default {
     data() {
       return {
+        tagCount:0,
+        tags:[
+          {
+            text:'商家介绍',
+            template:'HelloWorld'
+          },
+          {
+            text:'商家介绍',
+            template:'HelloWorld'
+          }
+        ],
         asideTag:{},
-        isAside:true,
+        isAside:false,
         isPeople:true,
         isTag:true,
         nowrou:''
@@ -84,6 +107,10 @@
       this.nowrou=this.$router.currentRoute.path;
     },
     methods: {
+      tagcontrol(n){
+        console.log(n,'你好');
+        this.tagCount=n;
+      },
       nowrouter(to){
         this.nowrou=to.path;
         this.isAside=true;
@@ -103,6 +130,9 @@
     },
     watch:{
       '$route':'nowrouter'
+    },
+    components:{
+      HelloWorld
     }
   };
 </script>
@@ -284,9 +314,13 @@
      .flex(flex-start,flex-end,column);
      .a-l-text{
        white-space:nowrap;
+       cursor:pointer;
      }
    }
  }
+}
+.a-l-text{
+  cursor:pointer;
 }
 
 .a-top{

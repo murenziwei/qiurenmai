@@ -63,6 +63,49 @@ const about={
           name:'待接订单',
           icon:'el-icon-s-operation'
       }
+  },
+  {
+      path:'fund',
+      component:()=>import('./components/fund.vue'),
+      data:{
+          name:'资金明细',
+          icon:'el-icon-bank-card'
+      }
+  }
+  ,
+  {
+      path:'itunes',
+      component:()=>import('./components/itunes.vue'),
+      data:{
+          name:'账号充值',
+          icon:'el-icon-s-finance'
+      }
+  }
+  ,
+  {
+      path:'appeall',
+      component:()=>import('./components/appeall.vue'),
+      data:{
+          name:'申诉中心',
+          icon:'el-icon-chat-line-square'
+      }
+  },
+  {
+      path:'invite',
+      component:()=>import('./components/invite.vue'),
+      data:{
+          name:'邀请好友',
+          icon:'el-icon-document-copy'
+      }
+  }
+  ,
+  {
+      path:'blacklist',
+      component:()=>import('./components/blacklist.vue'),
+      data:{
+          name:'黑名单',
+          icon:'el-icon-user-solid'
+      }
   }
   ]
 };

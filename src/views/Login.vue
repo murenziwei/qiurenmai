@@ -65,7 +65,7 @@
                         <el-input placeholder="密码" show-password v-model="password"></el-input>
                     </el-form-item>
                     <el-row class="l-all">
-                        <el-button type="success" class="l-a-btn">登陆</el-button>
+                        <el-button type="success" class="l-a-btn" @click="loginnav">登陆</el-button>
                     </el-row>
                     <el-form-item>
                         <el-row type="flex" justify="space-between" align="middle">
@@ -88,6 +88,11 @@
             return {
                 user:'',
                 password:''
+            }
+        },
+        methods:{
+            loginnav(){
+                this.$router.push({ path: 'about' })
             }
         }
     }

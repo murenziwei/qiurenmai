@@ -3,151 +3,46 @@
     <!--低于767px显示-->
     <div class="mn-father">
       <div class="mobile-nav">
-        <div class="m-n-people">
-          <i :class="{'el-icon-user-solid':isPeople,'el-icon-close':!isPeople,'mnl-people':true}" @click="peoplefn"></i>
-        </div>
         <div class="m-n-list">
           <i :class="{'el-icon-more':isAside,'el-icon-circle-close':!isAside,'mnl-more':true}" @click="asidefn"></i>
         </div>
       </div>
     </div>
-    <!--顶部-->
-    <div class="ani">
-      <transition type="animation">
-        <div :class="{'a-top':true,bounceInRight:!isPeople,bounceOutRight:isPeople}" v-show="!isPeople">
-          <div class="at-xs">
-            <span>LV 0</span><el-link  @click="peoplecontrol('shopseting')"  class="recharge"> 1577083****</el-link>
-          </div>
-          <div class="at-xs">
-            本金：<span class="money">0</span>元<el-link type="primary" @click="peoplecontrol('itunes')" class="recharge">充值</el-link>
-          </div>
+    <div class="p-header">
 
-          <div class="at-xs">
-            <el-link type="primary" href="#/">退出</el-link>
-          </div>
-
-          <div class="at-xs">
-            <el-popover
-                    placement="left"
-                    width="400"
-                    trigger="click" v-model="passstatus">
-              <el-form :model="passform">
-                <el-row class="mt1">
-                  用户名：13825000***
-                </el-row>
-                <el-row class="mt1">
-                  手机号：13825000***
-                </el-row>
-                <el-row class="mt1">
-                  <el-input placeholder="输入旧密码" v-model="passform.old" show-password>
-                    <template slot="prepend">
-                      <i class="el-icon-s-goods"></i>
-                    </template>
-                  </el-input>
-                </el-row>
-                <el-row class="mt1">
-                  <el-input placeholder="设置新密码" v-model="passform.new" show-password>
-                    <template slot="prepend">
-                      <i class="el-icon-s-goods"></i>
-                    </template>
-                  </el-input>
-                </el-row>
-                <el-row class="mt1">
-                  <el-input placeholder="确认新密码" v-model="passform.old" show-password>
-                    <template slot="prepend">
-                      <i class="el-icon-s-goods"></i>
-                    </template>
-                  </el-input>
-                </el-row>
-                <el-divider></el-divider>
-                <el-row class="mt-c">
-                  <el-button icon="el-icon-circle-check" @click="passfn">确认提交</el-button>
-                </el-row>
-              </el-form>
-              <el-button slot="reference" type="text" >修改密码</el-button>
-            </el-popover>
-          </div>
-        </div>
-      </transition>
+      <el-page-header @back="goBack" content="常见问题">
+      </el-page-header>
     </div>
-    <div class="a-tags ani">
-      <div class="at-left">
-        <i :class="{'el-icon-menu':isTag,'el-icon-close':!isTag}" alt="" class="a-l-png" @click="tagfn" />
-      </div>
+    <div class="ani as">
       <transition type="animation">
-        <div :class="{'at-right':true,fadeIn:!isTag,fadeOut:isTag}" v-show="!isTag">
-          <div :class="{'a-r-list':true,'active':tagCount==0}">
-            <div class="arl-link" @click.stop="tagcontrol(0)">
-              <span class="a-l-text">商家中心</span>
-            </div>
-          </div>
-          <div v-for="(item,index) in tags" :key="index" :class="{'a-r-list':true,'active':tagCount==(index+1)}">
-            <div class="arl-link" @click.stop="tagcontrol((index+1))">
-              <span class="a-l-text">{{item.text}}</span>
+        <div :class="{'a-slide':true,bounceInLeft:!isAside,bounceOutLeft:isAside}" v-show="!isAside">
+          <div class="as-items" v-for="(item,index) in $store.state.infodata[0].arr" :key="index" @click="tagcontrol(index)">
+            <div :class="{'a-i-nav':true,'active':(tagCount==index)}">
+              <span class="ain-text">{{item.name}}</span>
             </div>
           </div>
         </div>
       </transition>
     </div>
     <div>
-      <div v-if="tagCount==-1">
-        <div class="pa1">
-          <detail></detail>
-        </div>
+      <div class="iframe">
+        <orderP :dataarr="$store.state.infodata[0].arr[tagCount]"></orderP>
       </div>
-      <div v-if="tagCount==0">
-
-        <div class="ani as">
-          <transition type="animation">
-            <div :class="{'a-slide':true,bounceInLeft:!isAside,bounceOutLeft:isAside}" v-show="!isAside">
-              <div class="as-items" v-for="(item,index) in asideTag.val" :key="index">
-                <router-link :to="'/'+asideTag.name+'/'+item.path" :class="{'a-i-nav':true,'active':nowrou==('/'+asideTag.name+'/'+item.path)}">
-                  <i :class="item.data.icon+' ain-icon'"></i>
-                  <span class="ain-text">{{item.data.name}}</span>
-                </router-link>
-              </div>
-            </div>
-          </transition>
-        </div>
-        <div class="a-content">
-          <router-view></router-view>
-        </div>
-      </div>
-      <template v-for="(item,index) in tags" >
-        <div v-if="tagCount==(index+1)">
-            <component :is="item.template"></component>
-        </div>
-      </template>
-
     </div>
+
+    <!--联系客服-->
+    <service></service>
   </div>
 </template>
 <script>
-  // 查看详情
-  import detail from '../components/detail.vue';
 
-  import shopinfo from '../components/shopinfo.vue';
-  import shophelp from '../components/shophelp.vue';
+  import service from '../components/service.vue';
+  import orderP from '../components/help/orderP.vue';
   export default {
     data() {
       return {
-        passstatus:false,
-        passform:{
-          old:'',
-          new:'',
-          confirm:''
-        },
-        tagCount:0,
-        tags:[
-          {
-            text:'商家介绍',
-            template:'shopinfo'
-          },
-          {
-            text:'常见问题',
-            template:'shophelp'
-          }
-        ],
+        tagCount:-1,
+
         asideTag:{},
         isAside:false,
         isPeople:true,
@@ -156,29 +51,21 @@
       };
     },
     created(){
-      console.log(this.$route);
-      this.tagCount=this.$route.query.tagcount||0;
+      this.tagCount=this.$route.query.index||0;
       this.asideTag=this.$router.options.about;
       this.nowrou=this.$router.currentRoute.path;
     },
-
     methods: {
-      passfn(){
-        this.passstatus=false;
-      },
-      peoplecontrol(n){
-
-        if(window.innerWidth<767){
-          this.isPeople=true;
-        }
-        this.$router.push(n)
+      goBack(){
+        this.$router.go(-1);
       },
       tagcontrol(n){
-        console.log(n,'你好');
-        this.tagCount=n;
-        if(n==0){
-          this.$router.push("/about/")
+
+        if(window.innerWidth<767){
+          this.isAside=true;
+          console.log(window.innerWidth,'你好');
         }
+        this.tagCount=n;
       },
       nowrouter(to){
         this.nowrou=to.path;
@@ -201,22 +88,32 @@
       '$route':'nowrouter'
     },
     components:{
-      detail,
-      shopinfo,
-      shophelp
+      orderP,
+      service
     }
   };
 </script>
-<style lang="less">
-.pa1{
-  padding:1rem;
+<style lang="less" scoped>
+.p-header{
+  display:none;
+  padding:0 0 2rem 3rem;
 }
-.mt1{
-  margin:1rem 0;
+@media only screen and (min-width:767px){
+  .p-header{
+    display:block;
+  }
+
 }
-.mt-c{
-  margin:1rem 0;
-  text-align:center;
+.about{
+  position:absolute;
+  top:0;
+  left:0;
+  right:0;
+  bottom:0;
+  width:100%;
+  height:100%;
+  background-color:#eee;
+  padding:2rem 0;
 }
 .clearfix{
   text-align:left;
@@ -301,6 +198,7 @@
     text-overflow:ellipsis;
     overflow:hidden;
     text-align:left;
+    padding-left:1rem;
   }
 }
 @media only screen and (min-width:767px){
@@ -313,6 +211,7 @@
     width:25%;
   }
   .a-slide{
+    margin:0 2rem;
     display:block!important;
     .a-i-nav{height:3rem;}
   }

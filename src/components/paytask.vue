@@ -53,7 +53,7 @@
                                         <el-breadcrumb-item>任务编号：1008611</el-breadcrumb-item>
                                         <el-breadcrumb-item>已置顶</el-breadcrumb-item>
                                         <el-breadcrumb-item>
-                                            <el-link>[查看详情]</el-link>
+                                            <el-link href="#/about?tagcount=-1" target="_blank">[查看详情]</el-link>
                                             <el-link>[重新发布]</el-link>
                                         </el-breadcrumb-item>
                                         <el-breadcrumb-item>

@@ -143,6 +143,12 @@ export default new Router({
       name: 'forget',
       component: ()=>import('./views/Forget.vue')
     },
+   {
+      //常见问题
+      path: '/help',
+      name: 'help',
+      component: ()=>import('./views/Help.vue')
+   },
     {
       //404
       path:'*',

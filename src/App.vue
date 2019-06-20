@@ -39,7 +39,7 @@
     }
   }
 </script>
-<style>
+<style lang="less">
 body::-webkit-scrollbar{
     /*滚动条整体*/
     width:0px;

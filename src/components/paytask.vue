@@ -323,6 +323,9 @@
                                 prop="orderiid"
                                 label="订单id"
                         >
+                            <template slot-scope="scope">
+                                <el-link href="#/about?tagcount=-2" type="primary" target="_blank">{{scope.row.orderid}}</el-link>
+                            </template>
                         </el-table-column>
                         <el-table-column
 
@@ -449,9 +452,7 @@
                                 label="订单id"
                         >
                             <template slot-scope="scope">
-                                <el-link>
-                                    {{scope.row.orderid}}
-                                </el-link>
+                                <el-link href="#/about?tagcount=-2" type="primary" target="_blank">{{scope.row.orderid}}</el-link>
                             </template>
                         </el-table-column>
                         <el-table-column

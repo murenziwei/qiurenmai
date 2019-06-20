@@ -90,6 +90,12 @@
       </transition>
     </div>
     <div>
+
+      <div v-if="tagCount==-2">
+        <div class="pa1">
+          <paydetail></paydetail>
+        </div>
+      </div>
       <div v-if="tagCount==-1">
         <div class="pa1">
           <detail></detail>
@@ -126,6 +132,9 @@
   // 查看详情
   import detail from '../components/detail.vue';
 
+  // 垫付详情
+  import paydetail from '../components/paydetail.vue';
+
   import shopinfo from '../components/shopinfo.vue';
   import shophelp from '../components/shophelp.vue';
   export default {
@@ -160,6 +169,11 @@
       this.tagCount=this.$route.query.tagcount||0;
       this.asideTag=this.$router.options.about;
       this.nowrou=this.$router.currentRoute.path;
+
+      //调用接口
+      this.$api.ports.test().then(res=>{
+        console.log(res,"也许放弃");
+      })
     },
 
     methods: {
@@ -167,11 +181,11 @@
         this.passstatus=false;
       },
       peoplecontrol(n){
-
+        this.tagCount=0;
         if(window.innerWidth<767){
           this.isPeople=true;
         }
-        this.$router.push(n)
+        this.$router.push("/about/"+n)
       },
       tagcontrol(n){
         console.log(n,'你好');
@@ -201,6 +215,7 @@
       '$route':'nowrouter'
     },
     components:{
+      paydetail,
       detail,
       shopinfo,
       shophelp

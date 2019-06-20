@@ -92,7 +92,7 @@
         },
         methods:{
             loginnav(){
-                this.$router.push({ path: 'about' })
+                this.$router.push({ path: '/about/' })
             }
         }
     }

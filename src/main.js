@@ -8,6 +8,11 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 
+import api from './api';//封装接口
+
+//将api挂载在Vue原型上
+Vue.prototype.$api=api;
+
 //复制功能
 import VueClipboard from 'vue-clipboard2'
 

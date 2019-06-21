@@ -5,7 +5,10 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-
+      uesrinfo:{
+          user:'',
+          password:''
+      },
       infodata:[{
           title:'自助服务',
           arr:[
@@ -217,6 +220,9 @@ export default new Vuex.Store({
       }
   },
   actions: {
+      setuser:function(context,val){
+
+      },
       setco:function(context,val){
         context.commit('setfn',val);
       },

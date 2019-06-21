@@ -16,10 +16,11 @@
       <transition type="animation">
         <div :class="{'a-top':true,bounceInRight:!isPeople,bounceOutRight:isPeople}" v-show="!isPeople">
           <div class="at-xs">
-            <span>LV 0</span><el-link  @click="peoplecontrol('shopseting')"  class="recharge"> 1577083****</el-link>
+            <!--<span>LV 0</span>-->
+            <el-link  @click="peoplecontrol('shopseting')" class="recharge"> {{userinfo.user.ue_account|strno}}</el-link>
           </div>
           <div class="at-xs">
-            本金：<span class="money">0</span>元<el-link type="primary" @click="peoplecontrol('itunes')" class="recharge">充值</el-link>
+            本金：<span class="money">{{userinfo.user['ue_jin']}}</span>元<el-link type="primary" @click="peoplecontrol('itunes')" class="recharge">充值</el-link>
           </div>
 
           <div class="at-xs">
@@ -129,6 +130,7 @@
   </div>
 </template>
 <script>
+  import ajax from 'axios';
   // 查看详情
   import detail from '../components/detail.vue';
 
@@ -140,6 +142,7 @@
   export default {
     data() {
       return {
+        userinfo:{},
         passstatus:false,
         passform:{
           old:'',
@@ -165,18 +168,32 @@
       };
     },
     created(){
-      console.log(this.$route);
       this.tagCount=this.$route.query.tagcount||0;
       this.asideTag=this.$router.options.about;
       this.nowrou=this.$router.currentRoute.path;
 
-      //调用接口
-      this.$api.ports.test().then(res=>{
-        console.log(res,"也许放弃");
-      })
-    },
+      //获取用户信息
+      this.go_user();
 
+      ajax.all([]);
+    },
+    filters:{
+        strno:function(value){
+             if(typeof value=='string'&&value.length>4){
+                 var arr=value.split('');
+                 arr.splice(-4);
+                 value=arr.join('');
+                 value+='***';
+                 return value;
+             }else{
+                 return '***'
+             }
+        }
+    },
     methods: {
+      go_user(){
+          this.userinfo=JSON.parse(localStorage.getItem('login'));
+      },
       passfn(){
         this.passstatus=false;
       },

@@ -28,8 +28,12 @@
                         </div>
                         <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="auto" class="demo-ruleForm">
 
-                            <el-form-item label="用户名" prop="user">
-                                <el-input v-model="ruleForm.user" placeholder="请输入用户名"></el-input>
+                            <!--<el-form-item label="用户名" prop="user">-->
+                                <!--<el-input v-model="ruleForm.user" placeholder="请输入用户名"></el-input>-->
+                            <!--</el-form-item>-->
+
+                            <el-form-item label="手机号" prop="phone">
+                                <el-input v-model.number="ruleForm.phone" placeholder="请输入手机号"></el-input>
                             </el-form-item>
                             <el-form-item label="密码" prop="pass">
                                 <el-input type="password" v-model="ruleForm.pass" autocomplete="off"  placeholder="请输入密码"></el-input>
@@ -44,9 +48,6 @@
                             <el-form-item label="QQ号" prop="qq">
                                 <el-input v-model.number="ruleForm.qq" placeholder="请输入QQ号"></el-input>
                             </el-form-item>
-                            <el-form-item label="手机号" prop="phone">
-                                <el-input v-model.number="ruleForm.phone" placeholder="请输入手机号"></el-input>
-                            </el-form-item>
 
                             <el-form-item label="验证码" prop="verification">
                                 <el-row >
@@ -59,27 +60,30 @@
 
                             <el-form-item label="选择角色" prop="resource">
                                 <el-radio-group v-model="ruleForm.resource">
-                                    <el-radio label="商家"></el-radio>
-                                    <el-radio label="买手"></el-radio>
+                                    <el-radio :label="1">商家</el-radio>
+                                    <el-radio :label="2">买手</el-radio>
                                 </el-radio-group>
                             </el-form-item>
 
 
-                                <el-alert
-                                        class="info-con" v-if="ruleForm.resource=='买手'"
-                                        :title="bull.title"
-                                        type="error"
-                                        >
-                                    <div>
-                                        <p v-for="(item,index) in bull.list">{{index+1}}、{{item}}</p>
-                                    </div>
-                                </el-alert>
-                            <el-row type="flex" align="middle" class="deal-row">
-                                <el-checkbox-group v-model="ruleForm.deal">
-                                    <el-checkbox label="我同意" type="deal"></el-checkbox>
-                                </el-checkbox-group>
-                                <el-link type='info' class="deal-nav" >XXX服务</el-link>
-                            </el-row>
+                            <el-alert
+                                    class="info-con" v-if="ruleForm.resource=='买手'"
+                                    :title="bull.title"
+                                    type="error"
+                                    >
+                                <div>
+                                    <p v-for="(item,index) in bull.list">{{index+1}}、{{item}}</p>
+                                </div>
+                            </el-alert>
+                            <el-form-item prop="deal">
+
+                                <el-row type="flex" align="middle" class="deal-row">
+                                    <el-checkbox-group v-model="ruleForm.deal">
+                                        <el-checkbox label="我同意" type="deal"></el-checkbox>
+                                    </el-checkbox-group>
+                                    <el-link type='info' class="deal-nav" >XXX服务</el-link>
+                                </el-row>
+                            </el-form-item>
                             <el-row>
                                 <el-button type="warning" @click="submitForm('ruleForm')">注册</el-button>
                                 <el-button @click="resetForm('ruleForm')">重置</el-button>
@@ -100,6 +104,8 @@
 </template>
 
 <script>
+    import ajax from 'axios';
+    import base from '../untils/base';
     export default {
         name: 'register',
         data() {
@@ -175,6 +181,15 @@
                     }
                 }
             };
+
+            var validatesel=(rule,value,callback)=>{
+                if(value){
+                    callback();
+                }else{
+                    callback(new Error('请选择协议!'));
+                }
+            }
+
             return {
 
                 bull:{
@@ -199,14 +214,17 @@
                     email:'',
                     phone:'',
                     verification:'',
-                    resource:'商家',
-                    deal:''
+                    resource:1,
+                    deal:false
                 },
                 rules: {
-                    resource:[],
-                    user:[
-                        {required: true,validator:validateUser,trigger:'blur'}
+                    deal:[
+                        {
+                            validator:validatesel,
+                            trigger:'change'
+                        }
                     ],
+                    resource:[],
                     qq:[
                         {required: true,validator:checkQq,trigger:'blur'}
                     ],
@@ -229,7 +247,15 @@
                 }
             };
         },
+        created(){
+            this.$api.ports.register({ue_account:'213222'}).then((res)=>{
+
+            }).catch((err)=>{
+                console.log(err,"获取数据失败");
+            })
+        },
         methods: {
+            go_reg(){},
             makeCode(){
                 var phone=this.ruleForm.phone;
                 if (!Number.isInteger(phone)||phone.toString().length<11) {
@@ -242,6 +268,7 @@
                         var code=1000+Math.floor(Math.random()*8999);
 
                         this.identifyCode=code.toString();
+                        console.log(code.toString());
                         var sendInter=setInterval(()=>{
                             this.second--;
                             if(this.second<=0) {
@@ -257,7 +284,32 @@
             submitForm(formName) {
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
-                        this.$message.success('注册成功，请稍等···')
+                        var getR=this.ruleForm;
+                        var obj={
+                            ue_account:getR.phone,
+                            ue_password:getR.pass,
+                            phone_code:getR.verification,
+                            confirm_password:getR.checkPass,
+                            qq_no:getR.qq,
+                            pcode:'',
+                            type:getR.resource
+                        }
+                        console.log(obj);
+                        //请求注册后台
+                        ajax.post(`${base.url}/login/register`,obj).then((res)=>{
+                            res=res.data;
+                            if(res.code){
+                                this.$message.success('注册成功，请稍等···');
+                                setTimeout(()=>{
+                                    this.$router.replace('/login');
+                                },2000)
+                            }else{
+                                this.$message.error(res.message);
+                            }
+                        }).catch((err)=>{
+                            console.log(err,'错误');
+                        })
+                        // this.$message.success('注册成功，请稍等···')
                     } else {
                         return false;
                     }

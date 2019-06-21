@@ -415,6 +415,9 @@
             console.log(this.$options)
         },
         methods:{
+            go_shops(){
+
+            },
             objectSpanMethod({ row, column, rowIndex, columnIndex }) {
                 if (columnIndex === 0) {
                     if (rowIndex % 2 === 0) {

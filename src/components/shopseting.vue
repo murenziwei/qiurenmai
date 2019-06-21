@@ -38,10 +38,10 @@
                                 placement="top"
                                 width="800"
                                 >
-                            <el-form>
-                                <el-form-item label="请选择平台">
+                            <el-form :model="shopform" ref="shopform" :rules="shoprule">
+                                <el-form-item label="请选择平台" prop="type">
 
-                                    <el-select placeholder="请选择" v-model="shopform.type">
+                                    <el-select placeholder="请选择" v-model="shopform.type" type="type">
                                         <el-option
                                                 v-for="item in typeFilters"
                                                 :key="item.value"
@@ -110,7 +110,7 @@
                                 </el-form-item>
                                 <el-divider></el-divider>
                                 <el-row>
-                                    <el-button type="success" icon="el-icon-circle-check">确认提交</el-button>
+                                    <el-button type="success" icon="el-icon-circle-check" @click="submitShop('shopform')">确认提交</el-button>
                                     <el-button type="danger" icon="el-icon-circle-close">取消退出</el-button>
                                 </el-row>
                             </el-form>
@@ -205,9 +205,9 @@
                                         width="800"
                                 >
                                     <el-form>
-                                        <el-form-item label="请选择平台">
+                                        <el-form-item label="请选择平台" prop="type">
 
-                                            <el-select placeholder="请选择" v-model="shopform.type">
+                                            <el-select placeholder="请选择" v-model="shopform.type" type="type">
                                                 <el-option
                                                         v-for="item in typeFilters"
                                                         :key="item.value"
@@ -276,7 +276,7 @@
                                         </el-form-item>
                                         <el-divider></el-divider>
                                         <el-row>
-                                            <el-button type="success" icon="el-icon-circle-check">确认提交</el-button>
+                                            <el-button type="success" icon="el-icon-circle-check" @click="submitShop('shopform')">确认提交</el-button>
                                             <el-button type="danger" icon="el-icon-circle-close">取消退出</el-button>
                                         </el-row>
                                     </el-form>
@@ -293,10 +293,28 @@
 
 <script>
     import {provs_data, citys_data, dists_data} from 'lwarea';
+    import ajax from 'axios';
     export default {
         name: "shopseting",
         data(){
+            var validateType=(rule, value, callback) => {
+                console.log(value);
+                if (value=='') {
+                    callback(new Error('平台不能为空'));
+                } else {
+                    callback();
+                }
+            };
+
             return {
+                shoprule:{
+                    type:[
+                        {
+                            required:true,validator:validateType, trigger: 'blur'
+                        }
+                    ]
+                },
+                bindshop:{},
                 provs_data, citys_data, dists_data,
                 shopform:{
                     type:'',
@@ -352,8 +370,28 @@
         },
         created(){
             this.$notify.info({title:'消息',duration:0,showClose:true,message:'任务期间请务必保持店铺名与淘宝平台一致，勿随意修改店铺名称，否则用户提交不了任务就会去退款！'});
+
+            //并发请求
+            ajax.all([this.go_shops()]);
         },
         methods:{
+            submitShop(formName) {
+                this.$refs[formName].validate((valid) => {
+                    if (valid) {
+                        var getR=this.shopform;
+                        console.log(getR,'getR');
+
+                    } else {
+                        return false;
+                    }
+                });
+            },
+
+            go_shops(){
+                return this.$api.ports.bindShopList().then((res)=>{
+                    console.log(res,'res');
+                })
+            },
             copy(ev){
 
             },

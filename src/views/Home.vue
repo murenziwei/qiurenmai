@@ -74,7 +74,7 @@
                 </div>
               </el-col>
               <el-col :xs="24" :sm="12">
-                <div class="h-register h-btn">
+                <div class="h-register h-btn" @click="registernav">
                   注册
                   <div class="hb-icon"></div>
                 </div>
@@ -404,6 +404,9 @@ export default {
     loginnav(){
       console.log(this.$router);
       this.$router.push({ path: 'login' })
+    },
+    registernav(){
+        this.$router.push({ path: 'register' })
     },
     controlfn(){
       this.isCollapse=!this.isCollapse;

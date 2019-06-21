@@ -1,5 +1,5 @@
 //用于管理接口域名
 const base={
-    url:'http://localhost:3000/'
+    url:'api'
 }
 export default base;

@@ -64,7 +64,9 @@
                                     <el-radio :label="2">买手</el-radio>
                                 </el-radio-group>
                             </el-form-item>
-
+                            <el-form-item label="邀请码" prop="user">
+                                <el-input v-model="ruleForm.user" placeholder="请输入邀请码"></el-input>
+                            </el-form-item>
 
                             <el-alert
                                     class="info-con" v-if="ruleForm.resource=='买手'"
@@ -151,7 +153,7 @@
 
             var validateUser = (rule, value, callback) => {
                 if (value === '') {
-                    callback(new Error('请输入用户名'));
+                    callback(new Error('请输入邀请码'));
                 } else {
                     callback();
                 }
@@ -218,13 +220,16 @@
                     deal:false
                 },
                 rules: {
+
+                    user:[
+                        {required: true,validator:validateUser,trigger:'blur'}
+                    ],
                     deal:[
                         {
                             validator:validatesel,
                             trigger:'change'
                         }
                     ],
-                    resource:[],
                     qq:[
                         {required: true,validator:checkQq,trigger:'blur'}
                     ],
@@ -248,14 +253,15 @@
             };
         },
         created(){
-            this.$api.ports.register({ue_account:'213222'}).then((res)=>{
-
-            }).catch((err)=>{
-                console.log(err,"获取数据失败");
-            })
+            this.go_code();
         },
         methods: {
-            go_reg(){},
+            go_code(){
+                var code=this.$route.query.code
+                if(code){
+                    this.ruleForm.user=code;
+                }
+            },
             makeCode(){
                 var phone=this.ruleForm.phone;
                 if (!Number.isInteger(phone)||phone.toString().length<11) {
@@ -323,6 +329,11 @@
 </script>
 
 <style lang="less" scoped>
+    .lw-main{
+        max-width:800px;
+        margin:auto;
+    }
+
     .info-con{
         margin:1rem 0;
         text-align:left;

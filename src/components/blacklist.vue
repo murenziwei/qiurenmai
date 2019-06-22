@@ -25,15 +25,15 @@
                         stripe>
 
                     <el-table-column
-                            prop="btime"
+                            prop="create_at"
                             label="拉黑时间">
                     </el-table-column>
                     <el-table-column
-                            prop="userid"
+                            prop="id"
                             label="用户id">
                     </el-table-column>
                     <el-table-column
-                            prop="cause"
+                            prop="reason"
                             label="拉黑原因">
                     </el-table-column>
                     <el-table-column
@@ -58,6 +58,7 @@
 </template>
 
 <script>
+    import ajax from 'axios';
     export default {
         name: "noorder",
         data(){
@@ -66,7 +67,20 @@
                 tableData: []
             }
         },
+        created(){
+            ajax.all([this.go_list()]);
+        },
         methods:{
+            go_list(){
+                return this.$api.ports.Mblacklist().then((res)=>{
+                    console.log(res,'res');
+                    if(res.code){
+                        this.tableData=res.data[0].list;
+                    }else{
+                        this.$message.error(res.message);
+                    }
+                })
+            },
             onSubmit(){}
         }
     }

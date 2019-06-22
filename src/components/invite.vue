@@ -16,17 +16,28 @@
 </template>
 
 <script>
+    import ajax from 'axios';
     export default {
         name: "invite",
         data(){
             return {
                 formdata:{
-                    link:'http://xiaoliang110.com/register/10023527.html'
+                    link:'xxx'
                 }
 
             }
         },
+        created(){
+            ajax.all([this.go_url()]);
+        },
         methods:{
+            go_url(){
+                var login=JSON.parse(localStorage.getItem('login'));
+                if(login){
+                    this.formdata.link=this.$store.state.url+"register?code="+login.user.invite_code
+                }
+
+            },
 
             copySuccess(){
                 this.$message.success('复制成功');

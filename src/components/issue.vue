@@ -117,7 +117,7 @@
                                         <el-radio-group v-model="chooseS" class="tr-ul">
                                             <div class="tr-li" v-for="(sit,sin) in shops" :key="sin">
                                                 <el-radio :label="sin" class="w-sp" :disabled="!RegExp('^'+sit.jude,'i').test(trC)">
-                                                    <el-tag>{{sit.type}}</el-tag><span class="ws-name">{{sit.name}}</span>
+                                                    <el-tag>{{sit.type|shopstr}}</el-tag><span class="ws-name">{{sit.name}}</span>
                                                 </el-radio>
                                             </div>
                                         </el-radio-group>
@@ -236,6 +236,7 @@
 </template>
 
 <script>
+    import ajax from 'axios';
 
     //淘宝预售
     import Tbpresell from './shop/Tbpresell.vue'
@@ -291,16 +292,6 @@
 
                 //选择店铺
                 shops:[
-                    {
-                        type:'淘宝',
-                        name:'木人子韦',
-                        jude:'Tb'
-                    },
-                    {
-                        type:'拼多多',
-                        name:'瞧你咋滴',
-                        jude:'Pin'
-                    }
                 ],
                 //备注内容
                 remark:'',
@@ -413,10 +404,47 @@
         },
         created(){
             console.log(this.$options)
+
+            ajax.all([this.go_shoplist()]);
+        },
+        filters:{
+
+            shopstr:function(value){
+                var del='/';
+                switch (value){
+                    case 1:del='淘宝';break;
+                    case 3:del='拼多多';break;
+                }
+                return del;
+            }
         },
         methods:{
-            go_shops(){
+            go_shoplist(){
+                return this.$api.ports.shopList().then((res)=>{
+                    if(res.code){
+                        var carr=res.data.map((v,i)=>{
+                            return {
+                                jude:(()=>{
+                                    var del='/';
+                                    switch(v.platform_type){
+                                        case 1:del='Tb';break;
+                                        case 3:del='Pin';break;
+                                    }
+                                    return del;
+                                })(),
+                                name:v.shop_name,
+                                wid:v.wangwang_id,
+                                type:v.platform_type,
 
+                            }
+                        });
+                        this.shops=carr;
+                    }else{
+                        this.$message.error(res.message);
+                    }
+                    console.log(res,'获取成功',this.shops);
+
+                })
             },
             objectSpanMethod({ row, column, rowIndex, columnIndex }) {
                 if (columnIndex === 0) {
@@ -551,7 +579,16 @@
                 });
             },
             submitForm(n,t){
-                this.nextfn(t);
+                console.log(this.chooseS);
+                if((typeof (this.chooseS)=='number'&&this.chooseS>-1)){
+                    this.nextfn(1);
+                }else{
+                    this.$alert('请选择店铺','温馨提示',{
+                        confirmButtonText: '确定',
+                        callback: action => {
+                        }
+                    })
+                }
             },
             nextfn(val){
                 this.$store.dispatch('controlco',{val});

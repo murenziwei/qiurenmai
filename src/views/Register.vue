@@ -274,7 +274,8 @@
                         var code=1000+Math.floor(Math.random()*8999);
 
                         this.identifyCode=code.toString();
-                        console.log(code.toString());
+
+                        this.$notify.success(code.toString())
                         var sendInter=setInterval(()=>{
                             this.second--;
                             if(this.second<=0) {

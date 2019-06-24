@@ -1,6 +1,6 @@
 //用于管理接口域名
 const base={
-    url:'api',
+    url:'http://sd.admin.edinmed.cn',
     shop:'api/Shop',
     login:'api/login',
     task:'api/Task',

@@ -147,7 +147,7 @@
                     </li>
 
                     <li v-if="$store.state.count==2">
-                        <component :is="trC"></component>
+                        <component :is="trC" :shops="shops[chooseS]"></component>
                     </li>
                     <li v-if="$store.state.count==3">
                         <div>

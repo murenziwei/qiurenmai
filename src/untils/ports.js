@@ -2,6 +2,10 @@ import base from './base';//导入接口域名列表
 import axios from './https';//导入http中创建的axios案例
 
 const ports={
+    /*图片上传*/
+    imgupload(){
+
+    },
 
     //对接线上测试
     register(obj){
@@ -51,6 +55,12 @@ const ports={
         return axios.post(`${base.task}/shopList`,{
             access_token:localStorage.getItem('token')
         })
+    },
+
+    //发布任务
+    addTask(obj){
+        obj.access_token=localStorage.getItem('token');
+        return axios.post(`${base.task}/addTask`,obj)
     },
 
     /*拉黑模块*/

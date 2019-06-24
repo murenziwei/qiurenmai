@@ -553,7 +553,7 @@
                         };
                     }else{
                         this.shopData[index].change=false;
-                        this.$info.error(res.message);
+                        this.$notify.error(res.message);
                     }
 
                 });
@@ -586,7 +586,9 @@
                             if(res.code){
                                 this.$alert('提交成功，待1~3天平台审核', '温馨提示', {
                                     confirmButtonText: '确定',
-                                    callback: action => {this.sfsfn(false);}
+                                    callback: action => {this.$router.go(0);
+                                        //this.sfsfn(false);
+                                        }
                                 });
                             }else{
                                 this.$message.error(res.message);

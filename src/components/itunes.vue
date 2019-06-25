@@ -49,32 +49,32 @@
                                                 placement="top"
                                                 width="600"
                                         >
-                                            <el-form :model="moneyForm">
+                                            <el-form :model="moneyForm" :rules="moneyRule" ref="moneyForm">
                                                 <div class="mt1">
                                                     <span class="box-clear">提交转账信息</span><el-link type="danger">（请勿通过支付宝转账）</el-link>
                                                 </div>
                                                 <el-divider></el-divider>
 
-                                                <el-form-item label="转账银行名称">
-                                                    <el-select v-model="moneyForm.bank">
+                                                <el-form-item label="转账银行名称" prop="bank">
+                                                    <el-select v-model="moneyForm.bank" type="bank">
                                                         <el-option v-for="(item,index) in banks" :label="item.name" :key="index" :value="item.name"></el-option>
                                                     </el-select>
                                                 </el-form-item>
-                                                <el-form-item label="转账银行卡号">
-                                                    <el-input v-model="moneyForm.id"></el-input>
+                                                <el-form-item label="转账银行卡号" prop="card_no">
+                                                    <el-input v-model="moneyForm.card_no" type="card_no"></el-input>
                                                 </el-form-item>
 
-                                                <el-form-item label="转账银行名字">
-                                                    <el-input v-model="moneyForm.name"></el-input>
+                                                <el-form-item label="转账银行名字"  prop="card_name">
+                                                    <el-input v-model="moneyForm.card_name"  type="card_name"></el-input>
                                                     <el-link type="info">填写你转出银行卡开户账号的姓名，方便财务核对，不要填手机号</el-link>
                                                 </el-form-item>
-                                                <el-form-item label="转账金额（元）">
-                                                    <el-input v-model="moneyForm.money"></el-input>
+                                                <el-form-item label="转账金额（元）"  prop="money">
+                                                    <el-input v-model="moneyForm.money"  type="money"></el-input>
                                                     <el-link type="danger">（每次最低充值1元，充值1次提交1次，恶意提交将处罚或封号）</el-link>
                                                 </el-form-item>
                                                 <el-divider></el-divider>
                                                 <el-row>
-                                                    <el-button type="success" icon="el-icon-circle-check">确认提交</el-button>
+                                                    <el-button type="success" icon="el-icon-circle-check" @click="moneySubmit('moneyForm')">确认提交</el-button>
                                                 </el-row>
                                                 <el-alert type="error" class="mt1">
 
@@ -158,9 +158,31 @@
                 ],
                 moneyForm:{
                     bank:'',
-                    id:'',
-                    name:'',
+                    card_name:'',
+                    card_no:'',
                     money:''
+                },
+                moneyRule: {
+                    bank:[
+                        {
+                            required:true,message:'转账银行名称不能为空',trigger:'change'
+                        }
+                    ],
+                    card_no:[
+                        {
+                            required:true,message:'转账银行卡号不能为空',trigger:'change'
+                        }
+                    ],
+                    card_name:[
+                        {
+                            required:true,message:'转账银行名称不能为空',trigger:'change'
+                        }
+                    ],
+                    money:[
+                        {
+                            required:true,message:'转账金额不能为空',trigger:'change'
+                        }
+                    ]
                 },
                 infolist:[
                     '禁止使用财付通转账，禁止通过银行柜台、ATM机转账',
@@ -171,6 +193,33 @@
                 ],
                 activeName:'first'
             }
+        },
+        methods:{
+            moneySubmit(formName) {
+                this.$refs[formName].validate((valid) => {
+                    if (valid) {
+                        var getR=this.moneyForm;
+                        console.log(getR,'getR');
+                        this.$api.ports.topUpPost(getR).then((res)=>{
+                            if(res.code){
+                                this.$alert('充值成功','温馨提示',{
+                                    confirmButtonText: '确定',
+                                    callback: action => {
+                                        this.$router.go(0);
+                                    }
+                                })
+
+                            }else{
+                                this.$notify.error(res.message);
+                            }
+                        })
+
+
+                    } else {
+                        return false;
+                    }
+                });
+            },
         }
     }
 </script>

@@ -510,6 +510,7 @@
 </template>
 
 <script>
+    import ajax from 'axios';
     export default {
         name: "paytask",
         data(){
@@ -659,7 +660,16 @@
                 }
             }
         },
+        created(){
+            ajax.all([this.go_bs()]);
+        },
         methods:{
+            go_bs(){
+                return this.$api.ports.browseIndex().then((res)=>{
+                    console.log(res,'bs');
+                })
+            },
+
             onSubmit(f){
                 console.log(f);
             }

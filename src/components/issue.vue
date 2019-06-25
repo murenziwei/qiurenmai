@@ -157,56 +157,99 @@
                                 </p>
                                 <el-table
                                         :data="tableData"
-                                        :span-method="objectSpanMethod"
+
                                         border
                                         style="width: 100%; margin-top: 20px">
                                     <el-table-column
-                                            prop="id"
-                                            label="ID"
-                                            width="180">
+                                            label="返款本金"
+                                            >
+                                        <template slot-scope="scope">
+                                            {{scope.row.every_cash_pledge||'/'}}
+                                        </template>
+                                    </el-table-column>
+
+                                    <el-table-column
+                                            label="基础佣金"
+                                    >
+                                        <template slot-scope="scope">
+                                            {{scope.row.every_commission||'/'}}
+                                        </template>
                                     </el-table-column>
                                     <el-table-column
-                                            prop="name"
-                                            label="姓名">
+                                            label="数量"
+                                    >
+                                        <template slot-scope="scope">
+                                            {{scope.row.task_num||'/'}}
+                                        </template>
                                     </el-table-column>
                                     <el-table-column
-                                            prop="amount1"
-                                            label="数值 1（元）">
+                                            label="千人千面"
+                                    >
+                                        <template slot-scope="scope">
+                                            {{scope.row.platform_fee||'/'}}
+                                        </template>
                                     </el-table-column>
                                     <el-table-column
-                                            prop="amount2"
-                                            label="数值 2（元）">
+                                            label="空包服务费"
+                                    >
+                                        <template slot-scope="scope">
+                                            {{scope.row.empty_parcel_fee||'/'}}
+                                        </template>
                                     </el-table-column>
                                     <el-table-column
-                                            prop="amount3"
-                                            label="数值 3（元）">
+                                            label="收藏加购服务费"
+                                    >
+                                        <template slot-scope="scope">
+                                            {{scope.row.favorites_fee||'/'}}
+                                        </template>
+                                    </el-table-column>
+                                    <el-table-column
+                                            label="置顶"
+                                    >
+                                        <template slot-scope="scope">
+                                            {{scope.row.top_fee||'/'}}
+                                        </template>
+                                    </el-table-column>
+                                    <el-table-column
+                                            label="加赏佣金（每单）"
+                                    >
+                                        <template slot-scope="scope">
+                                            {{scope.row.add_fee||'/'}}
+                                        </template>
+                                    </el-table-column>
+                                    <el-table-column
+                                            label="评论需求"
+                                    >
+                                        <template slot-scope="scope">
+                                            {{scope.row.comment_fee||'/'}}
+                                        </template>
                                     </el-table-column>
                                 </el-table>
                                 <div style="text-align:right;">
                                     <p>
-                                        合计单数： <span class="success-text">1</span>单
+                                        合计单数： <span class="success-text">{{allm.yn||0}}</span>单
                                     </p>
 
                                     <p>
-                                        合计支付： 佣金<span class="danger-text">1.60</span>金
+                                        合计支付： 佣金<span class="danger-text">{{allm.ym}}</span>金
                                     </p>
                                 </div>
                             </el-row>
                             <el-divider></el-divider>
-                            <div>
-                                <p>选择支付方式</p>
-                                <el-radio-group v-model="paytype">
-                                    <el-radio :label="1">
-                                        使用账户余额支付（可用本金 <span class="danger-text">3.70</span>{{$store.state.mtext}},可用金币 <span class="danger-text">0.00</span>，充值成功后请 <span class="success-text">刷新本页面</span>）
-                                    </el-radio>
-                                </el-radio-group>
-                            </div>
+                            <!--<div>-->
+                                <!--<p>选择支付方式</p>-->
+                                <!--<el-radio-group v-model="paytype">-->
+                                    <!--<el-radio :label="1">-->
+                                        <!--使用账户余额支付（可用本金 <span class="danger-text">3.70</span>{{$store.state.mtext}},可用金币 <span class="danger-text">0.00</span>，充值成功后请 <span class="success-text">刷新本页面</span>）-->
+                                    <!--</el-radio>-->
+                                <!--</el-radio-group>-->
+                            <!--</div>-->
 
                             <div>
                                 <el-row type="flex" align="middle" justify="center" :gutter="30" class="b-c-box">
 
                                     <el-button type="primary" @click="nextfn(-1)">上一步</el-button>
-                                    <el-button type="primary" @click="nextfn(1)">付款并发布任务</el-button>
+                                    <el-button type="primary" @click="payissue">付款并发布任务</el-button>
                                 </el-row>
                             </div>
                         </div>
@@ -255,37 +298,8 @@
         name: "issue",
         data(){
             return {
-                tableData: [{
-                    id: '12987122',
-                    name: '王小虎',
-                    amount1: '234',
-                    amount2: '3.2',
-                    amount3: 10
-                }, {
-                    id: '12987123',
-                    name: '王小虎',
-                    amount1: '165',
-                    amount2: '4.43',
-                    amount3: 12
-                }, {
-                    id: '12987124',
-                    name: '王小虎',
-                    amount1: '324',
-                    amount2: '1.9',
-                    amount3: 9
-                }, {
-                    id: '12987125',
-                    name: '王小虎',
-                    amount1: '621',
-                    amount2: '2.2',
-                    amount3: 17
-                }, {
-                    id: '12987126',
-                    name: '王小虎',
-                    amount1: '539',
-                    amount2: '4.1',
-                    amount3: 15
-                }],
+                allm:{ym:0},
+                tableData: [],
 
                 //支付方式
                 paytype:1,
@@ -403,9 +417,8 @@
             }
         },
         created(){
-            console.log(this.$options)
 
-            ajax.all([this.go_shoplist()]);
+            ajax.all([this.go_shoplist(),this.setfn(1)])
         },
         filters:{
 
@@ -438,6 +451,9 @@
 
                             }
                         });
+
+
+
                         this.shops=carr;
                     }else{
                         this.$message.error(res.message);
@@ -590,6 +606,19 @@
                     })
                 }
             },
+            payissue(){
+                var id=Number(this.$store.state.taskid);
+                if(typeof (id)==='number'){
+                    this.$api.ports.payTask({id}).then((res)=>{
+                        if(res.code){
+
+                        }else{
+                            this.$notify.error(res.message);
+                        }
+                        console.log(res,'你好');
+                    });
+                }
+            },
             nextfn(val){
                 this.$store.dispatch('controlco',{val});
             },
@@ -606,6 +635,37 @@
                 console.log(to);
                 if(to==2){
                     this.$message.info({duration:0,showClose:true,message:'任务期间请关闭淘宝客、村淘、分享有赏等淘客活动，若因淘客引起的佣金支出由商家自己承担'});
+                }else if(to==3){
+                    var id=Number(this.$store.state.taskid);
+                    if(typeof (id)==='number'){
+                        this.$api.ports.feeInfo({id}).then((res)=>{
+                            if(res.code){
+                                console.log(res,'333');
+                                this.tableData=res.data;
+                                var ap=0,np=0;
+                                res.data.forEach((v)=>{
+                                    //总单数
+                                    np+=Number(v.task_num)||0;
+
+                                    //总金额
+                                    ap+=((Number(v.every_cash_pledge)||0)+(Number(v.every_commission)||0)+(Number(v.thousand_fee)||0)+(Number(v.empty_parcel_fee)||0)+(Number(v.favorites_fee)||0)+(Number(v.add_fee)||0))*(Number(v.task_num)||1)
+
+                                    ap+=(Number(v.platform_fee)||0)+(Number(v.top_fee)||0)+(Number(v.comment_fee)||0);
+                                });
+                                this.allm.ym=ap;
+                                this.allm.yn=np;
+                            }else{
+                                this.$notify.error(res.message);
+                            }
+                        });
+                    }else{
+
+                        this.$alert('任务数据出现错误！', '温馨提示', {
+                            confirmButtonText: '确定',
+                            callback: action => {
+                            }
+                        });
+                    }
                 }
             }
         },

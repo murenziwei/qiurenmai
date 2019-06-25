@@ -303,7 +303,7 @@
                         }
                         console.log(obj);
                         //请求注册后台
-                        ajax.post(`${base.url}/login/register`,obj).then((res)=>{
+                        ajax.post(`${base.api}/login/register`,obj).then((res)=>{
                             res=res.data;
                             if(res.code){
                                 this.$message.success('注册成功，请稍等···');

@@ -6,6 +6,9 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
       token:localStorage.getItem('token'),
+
+      taskid:-1,
+
       url:'http://localhost/#/',
       uesrinfo:{
           user:'',
@@ -219,9 +222,16 @@ export default new Vuex.Store({
 
       setfn(state,obj){
           state.count=obj.val;
+      },
+
+      settidfn(state,obj){
+          state.taskid=obj.id;
       }
   },
   actions: {
+      setTid:function(context,val){
+          context.commit('settidfn',val);
+      },
       setuser:function(context,val){
 
       },

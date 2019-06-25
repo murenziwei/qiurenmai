@@ -57,7 +57,7 @@
                         <el-form-item label="每单拍" prop="fval">
                             <el-row type="flex" justify="center" align="midle" :gutter="20">
                                 <el-col :span="5"><el-input v-model="fitem.beat" type="fval"></el-input></el-col>
-                                <el-col :span="2"><span>{{$store.state.mtext}}</span></el-col>
+                                <el-col :span="2"><span>个</span></el-col>
                                 <el-col>每单总金额 {{$store.state.mtext}} <span class="info-text">【不含运费】</span></el-col>
 
                             </el-row>
@@ -539,7 +539,7 @@
                                 </el-row>
 
                                 <el-row type="flex" align="middle" class="b-c-box">
-                                    <span>空包服务（<span class="danger-text">{{courierP[courier]||0.00}}</span>{{$store.state.mtext}}）/个</span>
+                                    <span>空包服务（<span class="danger-text">{{courierP[empty_parcel_serve.post_type]||0.00}}</span>{{$store.state.mtext}}）/个</span>
                                     <el-row type="flex" align="middle">
                                         <span>包裹重量</span>
 
@@ -632,7 +632,7 @@
                 if(value){
                     if(value.start!=''&&Number(value.start)){
                         if(value.end!=''&&Number(value.end)){
-                            if(value.end>value.start){
+                            if(Number(value.end)>Number(value.start)){
                                 callback();
                             }else{
                                 callback(new Error('最小价格不能大于最大价格'));
@@ -931,10 +931,9 @@
                                 });
                                 return false;
                             }
-
                             task.plan=cA.map((v)=>{
                                 return {
-                                    "start_at": v.date,//开始时间
+                                    "start_at": (Date.parse(v.date)/1000),//开始时间
                                     "time_interval": v.minute,//每隔分钟
                                     "task_num": v.count// 共放几单
                                 }
@@ -1043,7 +1042,7 @@
 
 
                                         var clearArr=v[ind].map((cv,ci)=>{
-                                            return (base.url+cv.response.data[0].filePath)
+                                            return (cv.response.data[0].filePath)
                                         })
 
                                         v.imgs=clearArr.join(',');
@@ -1061,7 +1060,12 @@
                             }
 
 
-                            comment[3]=cA;
+
+                            comment[3]=cA.map((v,i)=>{
+                                var gd=v;
+                                delete gd.fileList;
+                                return gd;
+                            });
                         }else{
                             comment[3]=[]
                         }
@@ -1079,7 +1083,7 @@
 
 
                                         var clearArr=v[ind].map((cv,ci)=>{
-                                            return (base.url+cv.response.data[0].filePath)
+                                            return (cv.response.data[0].filePath)
                                         })
 
                                         v.imgs=clearArr.join(',');
@@ -1089,7 +1093,7 @@
 
 
                                         var clearArr=v[ind].map((cv,ci)=>{
-                                            return (base.url+cv.response.data[0].filePath)
+                                            return (cv.response.data[0].filePath)
                                         })
 
                                         v.video=clearArr.join(',');
@@ -1108,17 +1112,29 @@
                             }
 
 
-                            comment[4]=cA;
+                            comment[4]=cA.map((v,i)=>{
+                                var gd=v;
+                                delete gd.fileList;
+                                delete gd.videoList;
+                                return gd;
+                            });
                         }else{
                             comment[4]=[]
                         }
+
+                        var garr=getD.fval[0].imgs;
+
+                        var gcarr=garr.map((cv)=>{
+                            return (cv.response.data[0].filePath)
+                        });
+
 
 
                         var obj={
                             "goods": {
                                 "goods_name": getD.fval[0].name,
                                 "goods_link": getD.fval[0].link,
-                                "goods_img": "商品主图",
+                                "goods_img": gcarr.join(','),
                                 "real_price": getD.fval[0].aprice,//单品实际成交价格
                                 "goods_count": getD.fval[0].beat,//每单拍
                                 "show_price": getD.fval[0].bprice,//手机搜索页面展示价格
@@ -1140,6 +1156,7 @@
                             if(res.code){
                                 console.log(res,'你还');
                                 this.$notify.success('添加成功');
+                                this.$store.dispatch('setTid',{id:res.data[0].id});
                                 this.nextfn(1);
                             }else{
 

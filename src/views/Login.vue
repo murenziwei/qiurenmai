@@ -90,7 +90,7 @@
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
                         var getR=this.dataForm;
-                        ajax.post(`${base.url}/login/userLogin`,getR).then((res)=>{
+                        ajax.post(`${base.api}/login/userLogin`,getR).then((res)=>{
                             res=res.data;
                             if(res.code){
                                 console.log(res,'res,sfefe');

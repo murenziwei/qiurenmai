@@ -42,23 +42,23 @@
                     </el-form>
                     <el-divider></el-divider>
                     <div>
-                        <div class="an-item" v-for="(item,index) in 3" :key="index">
+                        <div class="an-item" v-for="(item,index) in bsdata" :key="index">
                             <el-row class="t-i-header" type="flex" align="middle" justify="space-between">
 
-                                <div class="tih-type">木人子韦</div>
+                                <div class="tih-type">{{item.shop_name}}</div>
                                 <div>
                                     <el-breadcrumb separator-class="el-icon-arrow-right">
-                                        <el-breadcrumb-item :to="{ path: '/' }">新版手机淘宝任务</el-breadcrumb-item>
-                                        <el-breadcrumb-item>总单数：1</el-breadcrumb-item>
-                                        <el-breadcrumb-item>任务编号：1008611</el-breadcrumb-item>
-                                        <el-breadcrumb-item>已置顶</el-breadcrumb-item>
+                                        <!--<el-breadcrumb-item>新版手机淘宝任务</el-breadcrumb-item>-->
+                                        <el-breadcrumb-item>总单数：{{item.task_num}}</el-breadcrumb-item>
+                                        <el-breadcrumb-item>任务编号：{{item.id}}</el-breadcrumb-item>
+                                        <!--<el-breadcrumb-item>已置顶</el-breadcrumb-item>-->
                                         <el-breadcrumb-item>
                                             <el-link>[查看详情]</el-link>
                                             <el-link>[重新发布]</el-link>
                                         </el-breadcrumb-item>
-                                        <el-breadcrumb-item>
-                                            <el-link type="success">已完成</el-link>
-                                        </el-breadcrumb-item>
+                                        <!--<el-breadcrumb-item>-->
+                                            <!--<el-link type="success">已完成</el-link>-->
+                                        <!--</el-breadcrumb-item>-->
 
                                     </el-breadcrumb>
                                 </div>
@@ -67,21 +67,21 @@
                                 <el-col class="tib-first tib-item" :span="9">
                                     <el-row type="flex" align="middle">
                                         <div>
-                                            <el-image :src="$store.state.urlimg" class="tf-img"></el-image>
+                                            <el-image :src="item.goods_img" class="tf-img"></el-image>
                                         </div>
 
 
                                         <el-col>
                                             <el-row class="tf-r-flex">
                                                 <el-col class="trf-text">
-                                                    蜂蜜洛神花茶自产土蜂蜜水果茶500g泡水喝的饮品花果养生蜂蜜茶
+                                                    {{item.goods_name}}
                                                 </el-col>
                                                 <el-col class="tf-b">
                                                     <div class="tf-b-r">
-                                                        未接单：0
+                                                        {{item.platform_type|shops}}
                                                     </div>
                                                     <div class="tf-b-l">
-                                                        2019-06-01 16:55:49
+                                                        {{item.is_recall?'已撤销':'不撤销'}}
                                                     </div>
 
                                                 </el-col>
@@ -89,25 +89,27 @@
                                         </el-col>
                                     </el-row>
                                 </el-col>
-                                <el-col class="tib-first tib-item" :span="3">
-                                    <el-link type="info">待操作</el-link>
-                                </el-col>
+                                <!--<el-col class="tib-first tib-item" :span="3">-->
+                                    <!--<el-link type="info">待操作</el-link>-->
+                                <!--</el-col>-->
 
-                                <el-col class="tib-first tib-item" :span="3">
-                                    <el-link type="danger">待返款发货</el-link>
-                                </el-col>
+                                <!--<el-col class="tib-first tib-item" :span="3">-->
+                                    <!--<el-link type="danger">待返款发货</el-link>-->
+                                <!--</el-col>-->
 
-                                <el-col class="tib-first tib-item" :span="3">
-                                    <el-link type="info">待评价</el-link>
-                                </el-col>
-                                <el-col class="tib-first tib-item" :span="3">
-                                    <el-link type="info">待确认</el-link>
-                                </el-col>
+                                <!--<el-col class="tib-first tib-item" :span="3">-->
+                                    <!--<el-link type="info">待评价</el-link>-->
+                                <!--</el-col>-->
+                                <!--<el-col class="tib-first tib-item" :span="3">-->
+                                    <!--<el-link type="info">待确认</el-link>-->
+                                <!--</el-col>-->
 
-                                <el-col class="tib-first tib-item" :span="3">
-                                    <el-link type="info">已完成：1</el-link>
-                                </el-col>
+                                <!--<el-col class="tib-first tib-item" :span="3">-->
+                                    <!--<el-link type="info">已完成：1</el-link>-->
+                                <!--</el-col>-->
                             </el-row>
+
+                            <el-divider></el-divider>
                         </div>
                     </div>
                     <div class="mt-cen" style="text-align:center;">
@@ -152,13 +154,15 @@
                                 <template slot-scope="scope">
                                     <div class="ptl-list">
                                         <div class="pl-left">
-                                            <el-image class="pl-img" :src="$store.state.urlimg"></el-image>
+                                            <el-image class="pl-img" :src="scope.row.goods_img"></el-image>
                                         </div>
                                         <div class="pl-right">
-                                            <p class="pr-top">蜂蜜洛神花茶自产土蜂蜜水果茶500g泡水喝的饮品花果养生蜂蜜茶</p>
+                                            <p class="pr-top">{{scope.row.goods_name}}</p>
                                             <div class="pr-bottom">
-                                                <el-tag type="danger" class="pb-tag">淘</el-tag>
-                                                <span class="pb-span">木人子韦</span>
+                                                <el-tag type="danger" class="pb-tag">
+                                                    {{scope.row.platform_type|shops}}
+                                                </el-tag>
+                                                <span class="pb-span">{{scope.row.shop_name}}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -169,7 +173,7 @@
                                     >
                                 <template slot-scope="scope">
                                     <p>
-                                        撤销原因：{{scope.row.payless}}
+                                        撤销原因：{{scope.row.note}}
                                     </p>
                                 </template>
                             </el-table-column>
@@ -189,6 +193,7 @@
 </template>
 
 <script>
+    import ajax from 'axios';
     export default {
         name: "previewtask",
         data(){
@@ -204,6 +209,7 @@
                     {name:'未完成订单'},
                     {name:'已完成订单'}
                 ],
+                bsdata:[],
 
                 payhistoryData:[
                     {
@@ -338,7 +344,44 @@
                 }
             }
         },
+        filters:{
+
+            shops:function(value){
+                var del='/';
+                switch (value){
+                    case 1:del='淘宝';break;
+                    case 3:del='拼多多';break;
+                }
+                return del;
+            }
+        },
+
+        created(){
+            ajax.all([this.go_bs(),this.go_rb()]);
+        },
         methods:{
+            go_bs(){
+                return this.$api.ports.browseIndex().then((res)=>{
+                    console.log(res,'bs');
+                    if(res.code){
+                        this.bsdata=res.data[0].list;
+                    }else{
+                        this.$notify.error(res.message);
+                    }
+
+                })
+            },
+            go_rb(){
+                return this.$api.ports.recallBrowse().then((res)=>{
+                    console.log(res,'rb');
+                    if(res.code){
+                        this.outData=res.data[0].list;
+                    }else{
+                        this.$notify.error(res.message);
+                    }
+
+                })
+            },
             onSubmit(f){
                 console.log(f);
             }

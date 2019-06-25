@@ -14,6 +14,41 @@ const ports={
     login(obj){
         return axios.post(`${base.login}/userLogin`,obj)
     },
+
+    /*资金模块*/
+    topUpPost(obj){
+        obj.access_token=localStorage.getItem('token');
+        return axios.post(`${base.jin}/topUpPost`,obj)
+    },
+    /*垫付任务管理*/
+
+    feeInfo(obj){
+        obj.access_token=localStorage.getItem('token');
+        return axios.post(`${base.task}/feeInfo`,obj)
+    },
+
+    /*浏览任务管理*/
+    //浏览任务管理首页
+    browseIndex(){
+        return axios.post(`${base.task}/browseIndex`,{
+            access_token:localStorage.getItem('token')
+        })
+    },
+    //浏览任务撤销列表
+    recallBrowse(){
+        return axios.post(`${base.task}/recallBrowse`,{
+            access_token:localStorage.getItem('token')
+        })
+    },
+
+    //浏览任务价格表
+    browsePrice(){
+        return axios.post(`${base.jin}/recallBrowse`,{
+            access_token:localStorage.getItem('token')
+        })
+    },
+
+
     /*店铺模块*/
 
     //绑定店铺列表
@@ -61,6 +96,12 @@ const ports={
     addTask(obj){
         obj.access_token=localStorage.getItem('token');
         return axios.post(`${base.task}/addTask`,obj)
+    },
+
+    //为任务支付
+    payTask(obj){
+        obj.access_token=localStorage.getItem('token');
+        return axios.post(`${base.task}/payTask`,obj)
     },
 
     /*拉黑模块*/

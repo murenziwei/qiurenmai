@@ -1,40 +1,6 @@
 <template>
     <div>
         <el-tabs type="border-card">
-            <el-tab-pane>
-                <span slot="label"><i class="el-icon-bank-card"></i> 垫付类型任务</span>
-                <div>
-
-                    <el-radio-group v-model="payment">
-                        <el-radio border v-for="(pitem,pindex) in payarr" :key="pindex" :label="pindex">
-                            {{pitem.name}}
-                        </el-radio>
-                    </el-radio-group>
-                    <el-divider></el-divider>
-                    <div>
-                        <div class="pay-header">
-                            {{payarr[payment].text}} (<span class="danger-text">{{payarr[payment].jin}}金={{payarr[payment].yuan}}{{$store.state.mtext}}</span>)
-                        </div>
-                        <el-table
-                                :data="payarr[payment].val"
-                                stripe
-                                border
-                                style="width: 100%" class="mt1">
-                            <el-table-column
-                                    prop="range"
-                                    label="垫付区间"
-                                    >
-                            </el-table-column>
-                            <el-table-column
-                                    prop="price"
-                                    label="价格"
-                                    >
-                            </el-table-column>
-                        </el-table>
-                    </div>
-                </div>
-
-            </el-tab-pane>
             <el-tab-pane >
                 <span slot="label"><i class="el-icon-s-management"></i> 浏览类型任务</span>
                 <div>
@@ -55,18 +21,61 @@
                                 border
                                 style="width: 100%" class="mt1">
                             <el-table-column
-                                    prop="type"
-                                    label="类型"
+                                    prop="favorites"
+                                    label="收藏"
                             >
                             </el-table-column>
                             <el-table-column
-                                    prop="price"
-                                    label="价格"
+                                    prop="shopping_trolley"
+                                    label="加购"
+                            >
+                            </el-table-column>
+                            <el-table-column
+                                    prop="browse_fee"
+                                    label="普通流量"
                             >
                             </el-table-column>
                         </el-table>
                     </div>
                 </div>
+            </el-tab-pane>
+            <el-tab-pane>
+                <span slot="label"><i class="el-icon-bank-card"></i> 垫付类型任务</span>
+                <div>
+                    <el-radio-group v-model="payment">
+                        <el-radio border v-for="(pitem,pindex) in payarr" :key="pindex" :label="pindex">
+                            {{pitem.name}}
+                        </el-radio>
+                    </el-radio-group>
+                    <el-divider></el-divider>
+                    <div>
+                        <div class="pay-header">
+                            {{payarr[payment].text}} (<span class="danger-text">{{payarr[payment].jin}}金={{payarr[payment].yuan}}{{$store.state.mtext}}</span>)
+                        </div>
+                        <el-table
+                                :data="payarrVal"
+                                stripe
+                                border
+                                style="width: 100%" class="mt1">
+                            <el-table-column
+                                    prop="start_price"
+                                    label="起始价格"
+                                    >
+                            </el-table-column>
+                            <el-table-column
+                                    prop="end_price"
+                                    label="结束价格"
+                                    >
+                            </el-table-column>
+                            <el-table-column
+                                    prop="commission_fee"
+                                    label="佣金费用"
+                            >
+                            </el-table-column>
+                        </el-table>
+                    </div>
+                </div>
+
             </el-tab-pane>
         </el-tabs>
 
@@ -74,17 +83,72 @@
 </template>
 
 <script>
+
+    import ajax from 'axios';
+
     export default {
         name: "pricetable",
         data(){
             return {
+                payarrVal:[
+
+                ],
+
                 payment:0,
                 payarr:[
                     {
-                        name:'淘宝垫付',
+                        name:'淘宝任务',
                         text:'淘宝垫付(常规) 阶梯价格',
                         jin:1,
                         yuan:1,
+                        type:1,
+                        val:[
+                            {
+                                range:'1-100',
+                                price:'10金'
+                            },
+
+                            {
+                                range:'1-1000',
+                                price:'10金'
+                            },
+
+                            {
+                                range:'1-5000',
+                                price:'10金'
+                            }
+                        ]
+                    },
+                    {
+                        name:'淘口令任务',
+                        text:'淘宝垫付(常规) 阶梯价格',
+                        jin:1,
+                        yuan:1,
+                        type:2,
+                        val:[
+                            {
+                                range:'1-100',
+                                price:'10金'
+                            },
+
+                            {
+                                range:'1-1000',
+                                price:'10金'
+                            },
+
+                            {
+                                range:'1-5000',
+                                price:'10金'
+                            }
+                        ]
+                    },
+
+                    {
+                        name:'预售任务',
+                        text:'淘宝垫付(常规) 阶梯价格',
+                        jin:1,
+                        yuan:1,
+                        type:3,
                         val:[
                             {
                                 range:'1-100',
@@ -107,6 +171,7 @@
                         text:'拼多多垫付(常规) 阶梯价格',
                         jin:1,
                         yuan:1,
+                        type:4,
                         val:[
                             {
                                 range:'1-100',
@@ -147,6 +212,42 @@
                     }
 
                 ]
+            }
+        },
+        created(){
+            ajax.all([this.go_price(),this.go_pay()]);
+        },
+        methods:{
+
+            //垫付任务价格表
+            go_pay(){
+                var obj={
+                    type:this.payarr[this.payment].type
+                };
+                return this.$api.ports.payPriceList(obj).then((res)=>{
+                    if(res.code){
+                        this.payarrVal=res.data;
+                    }else{
+                        this.$notify.error(res.message);
+                    }
+                })
+            },
+            //浏览任务价格表
+            go_price(){
+                return this.$api.ports.browsePrice().then((res)=>{
+                    console.log(res,'你好法');
+                    if(res.code){
+                        this.previewarr[0].val=res.data;
+                    }else{
+                        this.$notify.error(res.message);
+                    }
+                })
+            }
+        },
+        watch:{
+            "payment":function(){
+
+                this.go_pay();
             }
         }
     }

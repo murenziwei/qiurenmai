@@ -42,7 +42,7 @@
                     </el-form>
                     <el-divider></el-divider>
                     <div>
-                        <div class="an-item" v-for="(item,index) in bsdata" :key="index">
+                        <div class="an-item" v-for="(item,index) in bsdata.data" :key="index">
                             <el-row class="t-i-header" type="flex" align="middle" justify="space-between">
 
                                 <div class="tih-type">{{item.shop_name}}</div>
@@ -53,8 +53,8 @@
                                         <el-breadcrumb-item>任务编号：{{item.id}}</el-breadcrumb-item>
                                         <!--<el-breadcrumb-item>已置顶</el-breadcrumb-item>-->
                                         <el-breadcrumb-item>
-                                            <el-link>[查看详情]</el-link>
-                                            <el-link>[重新发布]</el-link>
+                                            <el-link><span class="nav-active">[查看详情]</span></el-link>
+                                            <el-link  :underline="false" @click="revokefn(item.id)"><span class="nav-active">[撤销]</span></el-link>
                                         </el-breadcrumb-item>
                                         <!--<el-breadcrumb-item>-->
                                             <!--<el-link type="success">已完成</el-link>-->
@@ -64,10 +64,10 @@
                                 </div>
                             </el-row>
                             <el-row class="t-i-bottom" type="flex" align="middle" :gutter="20">
-                                <el-col class="tib-first tib-item" :span="9">
+                                <el-col class="tib-first tib-item" >
                                     <el-row type="flex" align="middle">
                                         <div>
-                                            <el-image :src="item.goods_img" class="tf-img"></el-image>
+                                            <el-image :src="item.goods_img" class="tf-img" lazy></el-image>
                                         </div>
 
 
@@ -114,9 +114,10 @@
                     </div>
                     <div class="mt-cen" style="text-align:center;">
                         <el-pagination
+                                @current-change="bschange"
                                 background
                                 layout="prev, pager, next"
-                                :total="100">
+                                :total="bsdata.last_page*10">
                         </el-pagination>
                     </div>
                 </el-tab-pane>
@@ -182,7 +183,7 @@
                             <el-pagination
                                     background
                                     layout="prev, pager, next"
-                                    :total="100">
+                                    :total="bsdata.last_page">
                             </el-pagination>
                         </div>
                 </el-tab-pane>
@@ -209,7 +210,7 @@
                     {name:'未完成订单'},
                     {name:'已完成订单'}
                 ],
-                bsdata:[],
+                bsdata:{},
 
                 payhistoryData:[
                     {
@@ -360,11 +361,49 @@
             ajax.all([this.go_bs(),this.go_rb()]);
         },
         methods:{
-            go_bs(){
-                return this.$api.ports.browseIndex().then((res)=>{
+            //浏览任务的分页
+            bschange(ee){
+                this.go_bs(ee);
+            },
+
+            revokefn(id){
+                console.log(id,'id');
+                this.$confirm('此操作将撤销该文件, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then((rs) => {
+                    console.log(rs);
+                    this.go_db({id});
+                }).catch((ee) => {
+                    console.log(ee);
+                    this.$message({
+                        type: 'error',
+                        message: '撤销失败'
+                    });
+                });
+            },
+
+            go_db(obj){
+                this.$api.ports.doRecallBrowse(obj).then((res)=>{
+                    console.log(res,'db');
+                    if(res.code){
+                        this.$message({
+                            type: 'success',
+                            message: '撤销成功!'
+                        });
+
+                    }else{
+                        this.$notify.error(res.message);
+                    }
+
+                })
+            },
+            go_bs(page){
+                return this.$api.ports.browseIndex(page).then((res)=>{
                     console.log(res,'bs');
                     if(res.code){
-                        this.bsdata=res.data[0].list;
+                        this.bsdata=res.data[0];
                     }else{
                         this.$notify.error(res.message);
                     }
@@ -375,7 +414,7 @@
                 return this.$api.ports.recallBrowse().then((res)=>{
                     console.log(res,'rb');
                     if(res.code){
-                        this.outData=res.data[0].list;
+                        // this.outData=res.data[0];
                     }else{
                         this.$notify.error(res.message);
                     }
@@ -390,6 +429,13 @@
 </script>
 
 <style lang="less" scoped>
+    .nav-active{
+        cursor:pointer;
+        &:hover{
+            color:#5bc0de;
+
+        }
+    }
 .ptl-list{
     .pl-img{
         width:7rem;

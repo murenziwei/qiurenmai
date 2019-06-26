@@ -4,8 +4,8 @@
             <div slot="header">
                 <div class="h-flex">
 
-                    <span class="clearfix">
-                        新版手机淘宝任务
+                    <span class="clearfix">`
+                       {{detaildata.task_type|shoptype}}
                     </span>
                     <el-row type="flex" align="middle" justify="flex-end">
                         <el-breadcrumb separator="|">
@@ -19,10 +19,10 @@
             </div>
             <div>
                 <div>
-                    <el-steps :active="1" simple  finish-status="success" >
+                    <el-steps :active="detaildata.status" simple  finish-status="success" >
                         <el-step title="提交任务等待付款"></el-step>
-                        <el-step title="已付款，等候审核"></el-step>
-                        <el-step title="任务审核通过，进行中"></el-step>
+                        <!--<el-step title="已付款，等候审核"></el-step>-->
+                        <el-step title="任务进行中"></el-step>
                         <el-step title="任务全部完成"></el-step>
                     </el-steps>
                 </div>
@@ -84,26 +84,29 @@
                                         <el-col :span="12">
                                             <div class="task-flex">
                                                 <div class="tf-left">
-                                                    <img class="t-l-img" :src="$store.state.urlimg" alt="" />
+                                                    <el-image class="t-l-img" :src="detaildata.goods_img" alt="" />
                                                 </div>
                                                 <div class="tf-right">
                                                     <p class="t-r-top">
-                                                        <el-link class="trt-text" type="primary">蜂蜜洛神花茶自产土蜂蜜水果茶500g泡水喝的饮品花果养生蜂蜜茶</el-link>
+                                                        <el-link class="trt-text" type="primary">{{detaildata.goods_name}}</el-link>
                                                     </p>
                                                     <p class="t-r-bottom">
-                                                        <span>商品链接:</span><el-link class="trt-link trt-text" type="primary" href="https://item.taobao.com/item.htm?spm=a1z10.3-c-s.w4002-">https://item.taobao.com/item.htm?spm=a1z10.3-c-s.w4002-</el-link>
+                                                        <span>商品链接:</span>
+                                                        <el-link class="trt-link trt-text" type="primary" :href="detaildata.goods_link">
+                                                            {{detaildata.goods_link}}
+                                                        </el-link>
                                                     </p>
                                                 </div>
                                             </div>
                                         </el-col>
                                         <el-col :span="4">
-                                            <span>￥324.00</span>
+                                            <span>￥{{detaildata.show_price}}</span>
                                         </el-col>
                                         <el-col :span="4">
-                                            <span>￥3321.00</span>
+                                            <span>￥{{detaildata.real_price}}</span>
                                         </el-col>
                                         <el-col :span="4">
-                                            <span>2</span>
+                                            <span>{{detaildata.goods_count}}</span>
                                         </el-col>
                                     </el-row>
                                     <el-divider></el-divider>
@@ -112,7 +115,7 @@
                                         <el-breadcrumb separator="|">
                                             <el-breadcrumb-item>
                                                 <span class="trt-text">任务类型：</span>
-                                                <el-link class="trt-text" type="primary" :underline="false">新版手机淘宝任务</el-link>
+                                                <el-link class="trt-text" type="primary" :underline="false">{{detaildata.task_type|shoptype}}</el-link>
                                             </el-breadcrumb-item>
                                             <el-breadcrumb-item>
 
@@ -122,9 +125,9 @@
                                             <el-breadcrumb-item>
 
                                                 <span class="trt-text">是否包邮：</span>
-                                                <el-link class="trt-text" type="primary" :underline="false">是</el-link>
+                                                <el-link class="trt-text" type="primary" :underline="false">{{detaildata.is_post?'包邮':'不包邮'}}</el-link>
                                             </el-breadcrumb-item>
-                                            <el-breadcrumb-item>状态：已完成</el-breadcrumb-item>
+                                            <!--<el-breadcrumb-item>状态：已完成</el-breadcrumb-item>-->
                                         </el-breadcrumb>
                                     </el-row>
                                     <el-divider></el-divider>
@@ -133,12 +136,12 @@
                                         <el-breadcrumb separator="|">
                                             <el-breadcrumb-item>
                                                 <span class="trt-text">店铺名称：</span>
-                                                <el-link class="trt-text" type="primary" :underline="false">木人子韦</el-link>
+                                                <el-link class="trt-text" type="primary" :underline="false">{{detaildata.shop_name}}</el-link>
                                             </el-breadcrumb-item>
                                             <el-breadcrumb-item>
 
                                                 <span class="trt-text">旺旺名称：</span>
-                                                <el-link class="trt-text" type="primary" :underline="false">旺你眉笔</el-link>
+                                                <el-link class="trt-text" type="primary" :underline="false">{{detaildata.shop_wang_id}}</el-link>
                                             </el-breadcrumb-item>
                                         </el-breadcrumb>
                                     </el-row>
@@ -147,12 +150,12 @@
                                         <el-breadcrumb separator="|">
                                             <el-breadcrumb-item>
                                                 <span class="trt-text">价格区间：</span>
-                                                <el-link class="trt-text" type="primary" :underline="false">0.00-1.00</el-link>
+                                                <el-link class="trt-text" type="primary" :underline="false">{{detaildata.searh_start_price}}-{{detaildata.searh_end_price}}</el-link>
                                             </el-breadcrumb-item>
                                             <el-breadcrumb-item>
 
                                                 <span class="trt-text">商品所在城市：</span>
-                                                <el-link class="trt-text" type="primary" :underline="false">全国</el-link>
+                                                <el-link class="trt-text" type="primary" :underline="false">{{detaildata.goods_location	}}</el-link>
                                             </el-breadcrumb-item>
                                         </el-breadcrumb>
                                     </el-row>
@@ -161,10 +164,10 @@
                                         <el-breadcrumb separator="|">
                                             <el-breadcrumb-item>
 
-                                                <el-link class="trt-text" type="info" :underline="false"><span>包裹重量：</span>1.40公斤</el-link>
+                                                <el-link class="trt-text" type="info" :underline="false"><span>包裹重量：</span>{{detaildata.empty_parcel?(detaildata.empty_parcel["parcel_weight"]||0)+'公斤':'/'}}</el-link>
                                             </el-breadcrumb-item>
                                             <el-breadcrumb-item>
-                                                <el-link class="trt-text" type="info" :underline="false"><span>快递：</span>菜鸟快递</el-link>
+                                                <el-link class="trt-text" type="info" :underline="false"><span>快递：</span>{{detaildata.empty_parcel?(detaildata.empty_parcel["post_type"]||0)+'公斤':'/'}}</el-link>
 
                                             </el-breadcrumb-item>
                                         </el-breadcrumb>
@@ -173,7 +176,7 @@
                                     <el-row type="flex" align="middle" justify="flex-end">
                                         <el-breadcrumb separator="|">
                                             <el-breadcrumb-item>
-                                                <span>备注：无需假聊</span>
+                                                <span>备注：{{detaildata.explain||'无需假聊'}}</span>
                                             </el-breadcrumb-item>
                                         </el-breadcrumb>
                                     </el-row>
@@ -189,22 +192,26 @@
                                         </el-col>
                                     </el-row>
                                 </div>
-                                <div>
+                                <div v-for="(cval) in filterarr(detaildata.comment_info)">
 
                                     <el-row type="flex" align="middle" justify="flex-end">
                                         <el-col :span="7">
                                             <div>
-                                                <span class="trt-text">搜索关键词</span><el-link class="trt-text" type="primary">蜂蜜洛神花茶自产养生蜂蜜茶</el-link>
+                                                <span class="trt-text">搜索关键词：</span><el-link class="trt-text" type="primary">{{cval.text}}</el-link>
                                             </div>
                                         </el-col>
                                         <el-col :span="7">
                                             <div>
-                                                <span class="trt-text">任务单数</span><el-link class="trt-text" type="primary">1</el-link>
+                                                <span class="trt-text">任务单数：</span><el-link class="trt-text" type="primary">{{cval.count}}</el-link>
                                             </div>
                                         </el-col>
                                     </el-row>
                                     <el-divider></el-divider>
                                 </div>
+
+                                <p>
+                                    <el-link type="info" v-show="!(detaildata.comment_info?detaildata.comment_info.length:false)">没有更多数据了</el-link>
+                                </p>
                             </el-card>
 
                             <el-card class="box-card">
@@ -217,14 +224,20 @@
                                 </div>
                                 <div>
 
-                                    <el-row type="flex" align="middle" justify="flex-end">
-                                        <el-col>
-                                            <div>
-                                                <span class="trt-text">放单计划</span>从<el-link class="trt-text" type="primary">2019-06-01 16:00:00</el-link>开始，每隔 <el-link type="danger">1</el-link>分钟放出1单，共放 <el-link type="danger">1</el-link>单
-                                            </div>
-                                        </el-col>
-                                    </el-row>
-                                    <el-divider></el-divider>
+                                    <div v-for="(sval,sind) in detaildata.send_plan" :key="sind">
+
+                                        <el-row type="flex" align="middle" justify="flex-end">
+                                            <el-col>
+                                                <div>
+                                                    <span class="trt-text">放单计划</span>从<el-link class="trt-text" type="primary">{{new Date(sval.start_at*1000).toLocaleString()}}</el-link>开始，每隔 <el-link type="danger">{{sval.time_interval}}</el-link>分钟放出1单，共放 <el-link type="danger">{{sval.task_num}}</el-link>单
+                                                </div>
+                                            </el-col>
+                                        </el-row>
+                                        <el-divider></el-divider>
+                                    </div>
+                                    <p>
+                                        <el-link type="info" v-show="!(detaildata.send_plan?detaildata.send_plan.length:false)">没有更多数据了</el-link>
+                                    </p>
                                 </div>
                             </el-card>
                             <el-card class="box-card">
@@ -239,22 +252,24 @@
 
                                     <el-row>
                                         <el-col :span="12">
-                                            <div class="it-div trt-text info-text">
+                                            <div class="it-div trt-text">
                                                 <span>地域限制：</span>
-                                                <span>--</span>
+                                                <span>{{detaildata.restrict_area||'--'}}</span>
                                             </div>
                                         </el-col>
                                         <el-col :span="12">
-                                            <div class="it-div trt-text info-text">
-                                                <span>年龄限制：</span>
-                                                <span>--</span>
+                                            <div class="it-div trt-text">
+                                                <span>性别限制：</span>
+                                                <span>{{detaildata.restrict_sex|sexs}}</span>
                                             </div>
-                                        </el-col><el-col :span="12">
-                                        <div class="it-div trt-text">
-                                            <span >地域限制：</span>
-                                            <span>--</span>
-                                        </div>
-                                    </el-col>
+                                        </el-col>
+
+                                        <el-col :span="12">
+                                            <div class="it-div trt-text">
+                                                <span>性别限制：</span>
+                                                <span>{{detaildata.restrict_level?'钻级别以上':'--'}}</span>
+                                            </div>
+                                        </el-col>
                                     </el-row>
                                     <el-divider></el-divider>
                                 </div>
@@ -462,11 +477,15 @@
 </template>
 
 <script>
+    import ajax from 'axios';
     import end from '../components/end'
     export default {
         name: "detail",
+        props:['id'],
         data(){
             return {
+                detaildata:{},
+
                 loadOrder:[],
                 doneOrder:[],
                 annulOrder:[],
@@ -504,7 +523,90 @@
                 }]
             }
         },
+        filters:{
+            sexs:function(value){
+                var del='--';
+                switch (value){
+                    case 1:del='男';break;
+                    case 2:del='女';break;
+                }
+                return del;
+            },
+            shoptype:function(value){
+                var del='/';
+                switch (value){
+                    case 1:del='淘宝任务';break;
+                    case 2:del='淘口令任务';break;
+                    case 3:del='预售任务';break;
+                    case 4:del='拼多多任务';break;
+                    case 5:del='浏览任务';break;
+                }
+                return del;
+            }
+        },
+        created(){
+            console.log(this.id,'id');
+
+            ajax.all([this.go_detail(this.id)])
+        },
         methods:{
+
+            filterarr:function(val){
+
+                if(typeof val=='object'){
+
+                    var sar=[],duijiao=[],tarr=[];
+                    val.forEach((v)=>{
+                        duijiao.push(v.search_word);
+                        if(sar.indexOf(v.search_word)<=-1){
+                            sar.push(v.search_word)
+                        }
+                    });
+                    console.log(duijiao,val)
+
+                    duijiao.forEach((v,i)=>{
+                        var dind=sar.indexOf(v);
+
+                        if(dind>-1){
+                            if(tarr[dind]){
+                                tarr[dind].count++;
+                            }else{
+                                tarr[dind]={
+                                    text:v,
+                                    count:1
+                                }
+                            }
+
+                        }
+                    })
+
+                    console.log(tarr,'tarr');
+                    return tarr;
+                }else{
+                    return [];
+                }
+            },
+
+            go_bs(){
+                return this.$api.ports.taskIndex().then((res)=>{
+                    if(res.code){
+                        console.log(res,'res');
+                        this.payTaskArr=res.data[0].list;
+                    }else{
+                        this.$notify.error(res.message);
+                    }
+                })
+            },
+            go_detail(id){
+                return this.$api.ports.taskInfo({id}).then((res)=>{
+                    if(res.code){
+                        this.detaildata=res.data[0];
+                        console.log(res,'res,re,sef');
+                    }else{
+                        this.$notify.error(res.message);
+                    }
+                })
+            },
 
             objectSpanMethod({ row, column, rowIndex, columnIndex }) {
                 if (columnIndex === 0) {

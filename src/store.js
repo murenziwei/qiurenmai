@@ -1,10 +1,19 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
+import ajax from 'axios';
+
+import base from './untils/base'
+
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+      user:{
+          account:'',
+          password:''
+      },
+
       token:localStorage.getItem('token'),
 
       taskid:-1,
@@ -226,14 +235,33 @@ export default new Vuex.Store({
 
       settidfn(state,obj){
           state.taskid=obj.id;
+      },
+
+      loginfn(state){
+          ajax.post(`${base.api}/login/userLogin`,state.user).then((res)=>{
+              res=res.data;
+              if(res.code){
+                  console.log(res,'res,sfefe');
+                  localStorage.setItem("login",JSON.stringify(res.data))
+                  localStorage.setItem("token",res.data.access_token);
+              }
+          })
+
+      },
+      setuserfn(state,val){
+          state.user=val;
       }
   },
   actions: {
+      loginco:function(context,user){
+          context.commit('loginfn',user);
+      },
+
       setTid:function(context,val){
           context.commit('settidfn',val);
       },
       setuser:function(context,val){
-
+          context.commit('setuserfn',val);
       },
       setco:function(context,val){
         context.commit('setfn',val);

@@ -20,7 +20,7 @@
             <el-link  @click="peoplecontrol('shopseting')" class="recharge"> {{userinfo.user.ue_account|strno}}</el-link>
           </div>
           <div class="at-xs">
-            本金：<span class="money">{{userinfo.user['ue_jin']}}</span>元<el-link type="primary" @click="peoplecontrol('itunes')" class="recharge">充值</el-link>
+            本金：<span class="money">{{userinfo.user['ue_jin']}}</span>金<el-link type="primary" @click="peoplecontrol('itunes')" class="recharge">充值</el-link>
           </div>
 
           <div class="at-xs">
@@ -99,7 +99,7 @@
       </div>
       <div v-if="tagCount==-1">
         <div class="pa1">
-          <detail></detail>
+          <detail :id="taskid"></detail>
         </div>
       </div>
       <div v-if="tagCount==0">
@@ -142,6 +142,7 @@
   export default {
     data() {
       return {
+        taskid:0,
         userinfo:{},
         passstatus:false,
         passform:{
@@ -168,14 +169,18 @@
       };
     },
     created(){
+
+
       this.tagCount=this.$route.query.tagcount||0;
+      this.taskid=this.$route.query.id||0;
+
       this.asideTag=this.$router.options.about;
       this.nowrou=this.$router.currentRoute.path;
 
       //获取用户信息
-      this.go_user();
 
-      ajax.all([]);
+
+      ajax.all([this.go_user()]);
     },
     filters:{
         strno:function(value){

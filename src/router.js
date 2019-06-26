@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Home from './views/Home.vue'
 
+
 Vue.use(Router)
 
 
@@ -215,58 +216,74 @@ const maishou={
     ]
 };
 
-export default new Router({
-  // mode:'history',
-  about,
-  maishou,
-  routes: [
-    {
-      path: '/',
-      name: 'home',
-      component: Home
-    },
-    {
-      path: '/'+about.name,
-      name: about.name,
-      component: () => import( './views/About.vue'),
-      children:about.val
-    },
+const vueRouter=new Router({
+    // mode:'history',
+    about,
+    maishou,
+    routes: [
+        {
+            path: '/',
+            name: 'home',
+            component: Home
+        },
+        {
+            path: '/'+about.name,
+            name: about.name,
+            component: () => import( './views/About.vue'),
+            children:about.val
+        },
 
-  {
-      path: '/'+maishou.name,
-      name: maishou.name,
-      component: () => import( './views/Maishou.vue'),
-      children:maishou.val
-  },
-    {
-      //登录
-      path: '/login',
-      name: 'login',
-      component: ()=>import('./views/Login.vue')
-    },
-    {
-      //注册
-      path: '/register',
-      name: 'register',
-      component: ()=>import('./views/Register.vue')
-    },
-    {
-      //忘记密码
-      path: '/forget',
-      name: 'forget',
-      component: ()=>import('./views/Forget.vue')
-    },
-   {
-      //常见问题
-      path: '/help',
-      name: 'help',
-      component: ()=>import('./views/Help.vue')
-   },
-    {
-      //404
-      path:'*',
-      name:'notfound',
-      component:()=>import('./components/NotFound.vue')
-    }
-  ]
+        {
+            path: '/'+maishou.name,
+            name: maishou.name,
+            component: () => import( './views/Maishou.vue'),
+            children:maishou.val
+        },
+        {
+            //登录
+            path: '/login',
+            name: 'login',
+            component: ()=>import('./views/Login.vue')
+        },
+        {
+            //注册
+            path: '/register',
+            name: 'register',
+            component: ()=>import('./views/Register.vue')
+        },
+        {
+            //忘记密码
+            path: '/forget',
+            name: 'forget',
+            component: ()=>import('./views/Forget.vue')
+        },
+        {
+            //常见问题
+            path: '/help',
+            name: 'help',
+            component: ()=>import('./views/Help.vue')
+        },
+        {
+            //404
+            path:'*',
+            name:'notfound',
+            component:()=>import('./components/NotFound.vue')
+        }
+    ]
 })
+
+export default vueRouter;
+
+//路由守卫
+vueRouter.beforeEach(function (to, from, next) {
+    const nextRoute = [ 'notfound', 'home', 'login','register','forget'];
+
+    if (nextRoute.indexOf(to.name) < 0) {
+
+
+        if(!localStorage.getItem('token')){
+            vueRouter.replace('/login');
+        }
+    }
+    next();
+});

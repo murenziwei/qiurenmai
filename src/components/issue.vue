@@ -231,7 +231,7 @@
                                     </p>
 
                                     <p>
-                                        合计支付： 佣金<span class="danger-text">{{allm.ym}}</span>金
+                                        合计支付： 佣金<span class="danger-text">{{parseInt(allm.ym)}}</span>金
                                     </p>
                                 </div>
                             </el-row>
@@ -248,7 +248,7 @@
                             <div>
                                 <el-row type="flex" align="middle" justify="center" :gutter="30" class="b-c-box">
 
-                                    <el-button type="primary" @click="nextfn(-1)">上一步</el-button>
+                                    <!--<el-button type="primary" @click="nextfn(-1)">上一步</el-button>-->
                                     <el-button type="primary" @click="payissue">付款并发布任务</el-button>
                                 </el-row>
                             </div>
@@ -267,7 +267,7 @@
                         <div>
                             <el-row type="flex" align="middle" justify="center" :gutter="30" class="b-c-box">
 
-                                <el-button type="primary" @click="nextfn(-1)">上一步</el-button>
+                                <!--<el-button type="primary" @click="nextfn(-1)">上一步</el-button>-->
                                 <el-button type="primary" @click="setfn(1)">再次发布任务</el-button>
                             </el-row>
                         </div>
@@ -432,6 +432,7 @@
             }
         },
         methods:{
+
             go_shoplist(){
                 return this.$api.ports.shopList().then((res)=>{
                     if(res.code){
@@ -596,26 +597,37 @@
             },
             submitForm(n,t){
                 console.log(this.chooseS);
-                if((typeof (this.chooseS)=='number'&&this.chooseS>-1)){
-                    this.nextfn(1);
-                }else{
-                    this.$alert('请选择店铺','温馨提示',{
+                if(this.trC==-1){
+
+                    this.$alert('请选择任务类型','温馨提示',{
                         confirmButtonText: '确定',
                         callback: action => {
                         }
                     })
+                }else{
+
+                    if((typeof (this.chooseS)=='number'&&this.chooseS>-1)){
+                        this.nextfn(1);
+                    }else{
+                        this.$alert('请选择店铺','温馨提示',{
+                            confirmButtonText: '确定',
+                            callback: action => {
+                            }
+                        })
+                    }
                 }
+
             },
             payissue(){
                 var id=Number(this.$store.state.taskid);
                 if(typeof (id)==='number'){
                     this.$api.ports.payTask({id}).then((res)=>{
                         if(res.code){
-
+                            this.$notify.success(res.message);
+                            this.nextfn(1);
                         }else{
                             this.$notify.error(res.message);
                         }
-                        console.log(res,'你好');
                     });
                 }
             },
@@ -628,6 +640,9 @@
             }
         },
         watch:{
+            taskR:function(){
+                this.trC=-1;
+            },
             trC:function(){
                 this.chooseS=-1;
             },

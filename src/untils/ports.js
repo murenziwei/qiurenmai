@@ -11,6 +11,8 @@ const ports={
     register(obj){
         return axios.post(`${base.login}/register`,obj)
     },
+
+    /*登录*/
     login(obj){
         return axios.post(`${base.login}/userLogin`,obj)
     },
@@ -20,6 +22,7 @@ const ports={
         obj.access_token=localStorage.getItem('token');
         return axios.post(`${base.jin}/topUpPost`,obj)
     },
+
     /*垫付任务管理*/
 
     feeInfo(obj){
@@ -27,12 +30,40 @@ const ports={
         return axios.post(`${base.task}/feeInfo`,obj)
     },
 
+    //垫付任务详情
+    taskInfo(obj){
+        obj.access_token=localStorage.getItem('token');
+        return axios.post(`${base.task}/taskInfo`,obj)
+    },
+
+    //垫付任务管理首页
+    taskIndex(page){
+        var obj=page?{page}:{};
+        obj.access_token=localStorage.getItem('token');
+        return axios.post(`${base.task}/taskIndex`,obj)
+    },
+
+    //垫付任务价格表
+    payPriceList(obj){
+
+        obj.access_token=localStorage.getItem('token');
+        return axios.post(`${base.jin}/payPriceList`,obj)
+    },
+
+
+    //垫付任务撤销
+    doRecallTask (obj){
+        obj.access_token=localStorage.getItem('token');
+        return axios.post(`${base.task}/doRecallTask `,obj)
+    },
+
+
     /*浏览任务管理*/
     //浏览任务管理首页
-    browseIndex(){
-        return axios.post(`${base.task}/browseIndex`,{
-            access_token:localStorage.getItem('token')
-        })
+    browseIndex(page){
+        var obj=page?{page}:{};
+        obj.access_token=localStorage.getItem('token');
+        return axios.post(`${base.task}/browseIndex`,obj)
     },
     //浏览任务撤销列表
     recallBrowse(){
@@ -41,9 +72,15 @@ const ports={
         })
     },
 
+    //浏览任务撤销
+    doRecallBrowse (obj){
+        obj.access_token=localStorage.getItem('token');
+        return axios.post(`${base.task}/doRecallBrowse `,obj)
+    },
+
     //浏览任务价格表
     browsePrice(){
-        return axios.post(`${base.jin}/recallBrowse`,{
+        return axios.post(`${base.jin}/browsePrice`,{
             access_token:localStorage.getItem('token')
         })
     },

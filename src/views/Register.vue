@@ -298,7 +298,7 @@
                             phone_code:getR.verification,
                             confirm_password:getR.checkPass,
                             qq_no:getR.qq,
-                            pcode:'',
+                            pcode:getR.user,
                             type:getR.resource
                         }
                         console.log(obj);

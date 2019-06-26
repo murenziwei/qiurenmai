@@ -797,9 +797,9 @@
 
                         //加购物车
                         if(pv.gocar){
-                            task.gocar=1;
+                            task.is_shopping_trolley=1;
                         }else{
-                            delete task.gocar;
+                            delete task.is_shopping_trolley;
                         }
 
 

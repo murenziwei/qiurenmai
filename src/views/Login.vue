@@ -3,7 +3,7 @@
         <div class="new-login">
 
             <el-card class="box-card">
-                <el-form :model="dataForm" :rules="ruleForm" ref="ruleForm">
+                <el-form :model="dataForm" :rules="ruleForm" ref="ruleForm" >
                     <el-form-item class="lf-topic">
                         <el-link type="primary" href="#/" class="l-t-home"><i class="el-icon-s-home"></i></el-link>
                         <span class="l-t-span">登录求人脉</span>
@@ -12,7 +12,7 @@
                         <el-input placeholder="手机号" v-model.number="dataForm.account" type="account"></el-input>
                     </el-form-item>
                     <el-form-item prop="password">
-                        <el-input placeholder="密码" show-password v-model="dataForm.password" type="password"></el-input>
+                        <el-input placeholder="密码" show-password v-model="dataForm.password" type="password"  ></el-input>
                     </el-form-item>
                     <el-row class="l-all">
                         <el-button type="success" class="l-a-btn" @click="submitForm('ruleForm')">登陆</el-button>
@@ -85,7 +85,6 @@
             }
         },
         methods:{
-
             submitForm(formName) {
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
@@ -93,9 +92,13 @@
                         ajax.post(`${base.api}/login/userLogin`,getR).then((res)=>{
                             res=res.data;
                             if(res.code){
+                                //store存储用户和密码
+                                this.$store.dispatch('setuser',getR);
                                 console.log(res,'res,sfefe');
-                                localStorage.setItem("login",JSON.stringify(res.data))
+
                                 localStorage.setItem("token",res.data.access_token);
+                                localStorage.setItem("user",JSON.stringify(getR))
+
                                 this.$loading({
                                     fullscreen:true,
                                     lock:true,

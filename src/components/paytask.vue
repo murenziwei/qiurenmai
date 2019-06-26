@@ -42,22 +42,22 @@
                     </el-form>
                     <el-divider></el-divider>
                     <div>
-                        <div class="an-item" v-for="(item,index) in 3" :key="index">
+                        <div class="an-item" v-for="(item,index) in payTaskArr.data" :key="index">
                             <el-row class="t-i-header" type="flex" align="middle" justify="space-between">
 
-                                <div class="tih-type">木人子韦</div>
+                                <div class="tih-type">{{item.shop_name}}</div>
                                 <div>
                                     <el-breadcrumb separator-class="el-icon-arrow-right">
-                                        <el-breadcrumb-item :to="{ path: '/' }">新版手机淘宝任务</el-breadcrumb-item>
-                                        <el-breadcrumb-item>总单数：1</el-breadcrumb-item>
-                                        <el-breadcrumb-item>任务编号：1008611</el-breadcrumb-item>
-                                        <el-breadcrumb-item>已置顶</el-breadcrumb-item>
+                                        <el-breadcrumb-item>{{item.platform_type|shops}}</el-breadcrumb-item>
+                                        <el-breadcrumb-item>总单数：{{item.task_num}}</el-breadcrumb-item>
+                                        <el-breadcrumb-item>任务编号：{{item.id}}</el-breadcrumb-item>
+                                        <el-breadcrumb-item><el-link :type="(item.is_top?'success':'info')" :underline="false">{{(item.is_top?'已置顶':'未置顶')}}</el-link></el-breadcrumb-item>
                                         <el-breadcrumb-item>
-                                            <el-link href="#/about?tagcount=-1" target="_blank">[查看详情]</el-link>
-                                            <el-link>[重新发布]</el-link>
+                                            <el-link :href="'#/about?tagcount=-1&id='+item.id" target="_blank">[查看详情]</el-link>
+                                            <el-link  @click="revokefn(item.id)">[撤销]</el-link>
                                         </el-breadcrumb-item>
                                         <el-breadcrumb-item>
-                                            <el-link type="success">已完成</el-link>
+                                            <el-link :type="(item.is_finish?'success':'error')" :underline="false">{{(item.is_finish?'已完成':'未完成')}}</el-link>
                                         </el-breadcrumb-item>
 
                                     </el-breadcrumb>
@@ -67,21 +67,21 @@
                                 <el-col class="tib-first tib-item" :span="9">
                                     <el-row type="flex" align="middle">
                                         <div>
-                                            <el-image :src="$store.state.urlimg" class="tf-img"></el-image>
+                                            <el-image :src="item.goods_img" class="tf-img"></el-image>
                                         </div>
 
 
                                         <el-col>
                                             <el-row class="tf-r-flex">
                                                 <el-col class="trf-text">
-                                                    蜂蜜洛神花茶自产土蜂蜜水果茶500g泡水喝的饮品花果养生蜂蜜茶
+                                                    {{item.goods_name}}
                                                 </el-col>
                                                 <el-col class="tf-b">
                                                     <div class="tf-b-r">
-                                                        未接单：0
+                                                        未接单：{{item.goods_status1||0}}
                                                     </div>
                                                     <div class="tf-b-l">
-                                                        2019-06-01 16:55:49
+                                                        {{item.create_at}}
                                                     </div>
 
                                                 </el-col>
@@ -90,31 +90,37 @@
                                     </el-row>
                                 </el-col>
                                 <el-col class="tib-first tib-item" :span="3">
-                                    <el-link type="info">待操作</el-link>
+                                    <el-link type="info">待操作:{{item.status2||0}}</el-link>
                                 </el-col>
 
                                 <el-col class="tib-first tib-item" :span="3">
-                                    <el-link type="danger">待返款发货</el-link>
+                                    <el-link type="danger">待返款发货:{{item.status3||0}}</el-link>
                                 </el-col>
 
                                 <el-col class="tib-first tib-item" :span="3">
-                                    <el-link type="info">待评价</el-link>
+                                    <el-link type="info">待评价:{{item.status4||0}}</el-link>
                                 </el-col>
                                 <el-col class="tib-first tib-item" :span="3">
-                                    <el-link type="info">待确认</el-link>
+                                    <el-link type="info">待确认:{{item.status5||0}}</el-link>
                                 </el-col>
 
                                 <el-col class="tib-first tib-item" :span="3">
-                                    <el-link type="info">已完成：1</el-link>
+                                    <el-link type="info">已完成：{{item.status6||0}}</el-link>
                                 </el-col>
                             </el-row>
+                            <el-divider></el-divider>
                         </div>
+                        <p v-if="!(payTaskArr.data?payTaskArr.data.length:false)">
+                            <el-link :underline="false">没有更多数据了</el-link>
+                        </p>
                     </div>
                     <div class="mt-cen" style="text-align:center;">
                         <el-pagination
+
+                                @current-change="bschange"
                                 background
                                 layout="prev, pager, next"
-                                :total="100">
+                                :total="payTaskArr.last_page*10">
                         </el-pagination>
                     </div>
                 </el-tab-pane>
@@ -515,6 +521,8 @@
         name: "paytask",
         data(){
             return {
+                payTaskArr:{},
+
                 paystatus:[
                     {name:'全部进行中'},
                     {name:'待操作'},
@@ -663,10 +671,64 @@
         created(){
             ajax.all([this.go_bs()]);
         },
+        filters:{
+
+            shops:function(value){
+                var del='/';
+                switch (value){
+                    case 1:del='淘宝';break;
+                    case 3:del='拼多多';break;
+                }
+                return del;
+            }
+        },
         methods:{
-            go_bs(){
-                return this.$api.ports.browseIndex().then((res)=>{
-                    console.log(res,'bs');
+            bschange(ee){
+                this.go_bs(ee);
+            },
+
+            revokefn(id){
+                console.log(id,'id');
+                this.$confirm('此操作将撤销该文件, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then((rs) => {
+                    console.log(rs);
+                    this.go_dr({id});
+                }).catch((ee) => {
+                    console.log(ee);
+                    this.$message({
+                        type: 'error',
+                        message: '撤销失败'
+                    });
+                });
+            },
+
+            go_dr(obj){
+                this.$api.ports.doRecallTask(obj).then((res)=>{
+                    console.log(res,'db');
+                    if(res.code){
+                        this.$message({
+                            type: 'success',
+                            message: '撤销成功!'
+                        });
+
+                    }else{
+                        this.$notify.error(res.message);
+                    }
+
+                })
+            },
+
+            go_bs(page){
+                return this.$api.ports.taskIndex(page).then((res)=>{
+                    if(res.code){
+                        console.log(res,'res');
+                        this.payTaskArr=res.data[0];
+                    }else{
+                        this.$notify.error(res.message);
+                    }
                 })
             },
 

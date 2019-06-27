@@ -22,13 +22,15 @@ const ports={
         obj.access_token=localStorage.getItem('token');
         return axios.post(`${base.jin}/topUpPost`,obj)
     },
+    getMoney(){
+        return axios.post(`${base.jin}/getMoney`,{
+            access_token:localStorage.getItem('token')
+        })
+    },
 
     /*垫付任务管理*/
 
-    feeInfo(obj){
-        obj.access_token=localStorage.getItem('token');
-        return axios.post(`${base.task}/feeInfo`,obj)
-    },
+
 
     //垫付任务详情
     taskInfo(obj){
@@ -36,11 +38,75 @@ const ports={
         return axios.post(`${base.task}/taskInfo`,obj)
     },
 
+    //垫付任务详情头部
+    taskInfoHead(obj){
+        obj.access_token=localStorage.getItem('token');
+        return axios.post(`${base.task}/taskInfoHead`,obj)
+    },
+
+    //垫付任务详情费用
+    feeInfo(obj){
+        obj.access_token=localStorage.getItem('token');
+        return axios.post(`${base.task}/feeInfo`,obj)
+    },
+
+    //商家确认完成
+    confFinish(obj){
+        obj.access_token=localStorage.getItem('token');
+        return axios.post(`${base.task}/feeInfo`,obj)
+    },
+
+    //进行中订单
+    feeUnderway(obj){
+        obj.access_token=localStorage.getItem('token');
+        return axios.post(`${base.task}/feeUnderway`,obj)
+    },
+    //已完成订单
+    feeFinish(obj){
+        obj.access_token=localStorage.getItem('token');
+        return axios.post(`${base.task}/feeFinish`,obj)
+    },
+    //已撤销订单
+    recallTask(obj){
+        obj.access_token=localStorage.getItem('token');
+        return axios.post(`${base.task}/recallTask`,obj)
+    },
+
+    //待接订单
+    feeWait(obj){
+        obj.access_token=localStorage.getItem('token');
+        return axios.post(`${base.task}/feeWait`,obj)
+    },
+
+
     //垫付任务管理首页
     taskIndex(page){
         var obj=page?{page}:{};
         obj.access_token=localStorage.getItem('token');
         return axios.post(`${base.task}/taskIndex`,obj)
+    },
+
+    //垫付任务返款管理
+    refTaskInfo(page){
+        var obj=page?{page}:{};
+        obj.access_token=localStorage.getItem('token');
+        return axios.post(`${base.task}/refTaskInfo`,obj)
+    },
+
+    //垫付任务返款管理
+    postNoInfo(page){
+        var obj=page?{page}:{};
+        obj.access_token=localStorage.getItem('token');
+        return axios.post(`${base.task}/postNoInfo`,obj)
+    },
+
+    //垫付进行中/垫付历史订单
+    underwayTask({page,type}){
+
+        var obj=page?{page}:{};
+        obj.type=type||1
+        obj.access_token=localStorage.getItem('token');
+        return axios.post(`${base.task}/underwayTask`,obj)
     },
 
     //垫付任务价格表
@@ -140,6 +206,22 @@ const ports={
         obj.access_token=localStorage.getItem('token');
         return axios.post(`${base.task}/payTask`,obj)
     },
+
+    /*资金流水记录*/
+    jinList(page){
+        var obj=page?{page}:{};
+        obj.access_token=localStorage.getItem('token');
+        return axios.post(`${base.jin}/jinList`,obj)
+    },
+
+    //提现佣金
+    withdMommis(obj){
+
+        obj.access_token=localStorage.getItem('token');
+
+        return axios.post(`${base.jin}/withdMommis`,obj)
+    },
+
 
     /*拉黑模块*/
     Mblacklist(){

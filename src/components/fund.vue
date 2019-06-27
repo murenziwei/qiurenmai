@@ -5,7 +5,7 @@
             <div slot="header" class="clearfix">
                 <span class="c-topic">账户明细</span>
                 <div class="c-right">
-                    <el-button type="success">提现</el-button>
+                    <el-button type="success">提现佣金</el-button>
                     <el-popover
                             placement="left"
                             width="400"
@@ -75,35 +75,44 @@
                 <div>
 
                     <el-table
-                            :data="tableData"
+                            :data="tableData.data"
                             border
                             style="width: 100%">
                         <el-table-column
                                 prop="date"
                                 label="时间"
                                 >
+                            <template slot-scope="scope">
+                                {{new Date(scope.row.created_at*1000).toLocaleString()}}
+                            </template>
                         </el-table-column>
                         <el-table-column
-                                prop="remark"
+                                prop="note"
                                 label="备注">
                         </el-table-column>
+
                         <el-table-column
-                                prop="account"
-                                label="账号">
+
+                                label="交易金额">
+
+                            <template slot-scope="scope">
+                                {{scope.row.from|fromfil}}：{{scope.row.num}}
+                            </template>
                         </el-table-column>
                         <el-table-column
-                                prop="money"
-                                label="交易本金">
-                        </el-table-column>
-                        <el-table-column
-                                prop="commission"
-                                label="佣金">
-                        </el-table-column>
-                        <el-table-column
-                                prop="balance"
+                                prop="after_num"
                                 label="余额">
                         </el-table-column>
                     </el-table>
+
+                    <div class="mt-cen" style="text-align:center;">
+                        <el-pagination
+                                @current-change="bschange"
+                                background
+                                layout="prev, pager, next"
+                                :total="tableData.last_page*10">
+                        </el-pagination>
+                    </div>
                 </div>
             </div>
         </el-card>
@@ -111,6 +120,7 @@
 </template>
 
 <script>
+    import ajax from 'axios';
     export default {
         name: "fund",
         data(){
@@ -135,7 +145,38 @@
                 }
             }
         },
+        created(){
+            ajax.all([this.go_money()]);
+        },
+        filters:{
+            fromfil:function(val){
+                var del='/';
+                switch (val){
+                    case 1:del='本金';break;
+
+                    case 2:del='佣金';break;
+                }
+                return del;
+            }
+        },
         methods:{
+
+            //资金分页
+            bschange(ee){
+                console.log();
+                this.go_money(ee);
+            },
+            //资金流水记录
+            go_money(page){
+                return this.$api.ports.jinList(page).then((res)=>{
+                    if(res.code){
+                        console.log(res,'jinList');
+                        this.tableData=res.data[0];
+                    }else{
+                        this.$notify.error(res.message);
+                    }
+                })
+            },
             onSubmit(){}
         }
     }

@@ -231,7 +231,7 @@
                                     </p>
 
                                     <p>
-                                        合计支付： 佣金<span class="danger-text">{{parseInt(allm.ym)}}</span>金
+                                        合计支付： 佣金<span class="danger-text">{{(allm.ym).toFixed(2)}}</span>金
                                     </p>
                                 </div>
                             </el-row>
@@ -621,13 +621,26 @@
             payissue(){
                 var id=Number(this.$store.state.taskid);
                 if(typeof (id)==='number'){
-                    this.$api.ports.payTask({id}).then((res)=>{
-                        if(res.code){
-                            this.$notify.success(res.message);
-                            this.nextfn(1);
-                        }else{
-                            this.$notify.error(res.message);
-                        }
+                    this.$confirm('再次确认是否付款？?', '提示', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                        type: 'warning'
+                    }).then(() => {
+
+
+                        this.$api.ports.payTask({id}).then((res)=>{
+                            if(res.code){
+                                this.$notify.success(res.message);
+                                this.nextfn(1);
+                            }else{
+                                this.$notify.error(res.message);
+                            }
+                        });
+                    }).catch(() => {
+                        this.$message({
+                            type: 'info',
+                            message: '已取消付款'
+                        });
                     });
                 }
             },

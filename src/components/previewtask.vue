@@ -3,7 +3,7 @@
 
         <el-card>
 
-            <el-tabs v-model="activeName">
+            <el-tabs v-model="activeName" @tab-click="tabChange">
                 <el-tab-pane label="浏览任务管理" name="first">
                     <el-form :inline="true" :model="formInline" class="demo-form-inline">
                         <el-form-item label="任务ID">
@@ -53,7 +53,7 @@
                                         <el-breadcrumb-item>任务编号：{{item.id}}</el-breadcrumb-item>
                                         <!--<el-breadcrumb-item>已置顶</el-breadcrumb-item>-->
                                         <el-breadcrumb-item>
-                                            <el-link><span class="nav-active">[查看详情]</span></el-link>
+                                            <el-link :href="'#/about?tagcount=-1&id='+item.id" target="_blank"><span class="nav-active">[查看详情]</span></el-link>
                                             <el-link  :underline="false" @click="revokefn(item.id)"><span class="nav-active">[撤销]</span></el-link>
                                         </el-breadcrumb-item>
                                         <!--<el-breadcrumb-item>-->
@@ -114,6 +114,7 @@
                     </div>
                     <div class="mt-cen" style="text-align:center;">
                         <el-pagination
+                                :current-page.sync="bsdata.current_page"
                                 @current-change="bschange"
                                 background
                                 layout="prev, pager, next"
@@ -146,7 +147,7 @@
                         </el-form>
 
                         <el-table
-                                :data="outData"
+                                :data="outData.data"
                                 border
                                 style="width: 100%">
                             <el-table-column
@@ -181,9 +182,11 @@
                         </el-table>
                         <div class="mt-cen" style="text-align:center;">
                             <el-pagination
+                                    :current-page.sync="outData.current_page"
+                                    @current-change="bschange"
                                     background
                                     layout="prev, pager, next"
-                                    :total="bsdata.last_page">
+                                    :total="outData.last_page*10">
                             </el-pagination>
                         </div>
                 </el-tab-pane>
@@ -358,12 +361,26 @@
         },
 
         created(){
-            ajax.all([this.go_bs(),this.go_rb()]);
+            ajax.all([this.tabChange()]);
         },
         methods:{
+
+            tabChange(){
+                var an=this.activeName;
+                console.log('是否有变化',this.activeName);
+                switch(an){
+                    case 'first':this.go_bs(this.bsdata.current_page);break;
+                    case 'second':this.go_rb(this.outData.current_page);break;
+                }
+            },
             //浏览任务的分页
             bschange(ee){
-                this.go_bs(ee);
+                var an=this.activeName;
+                console.log('是否有变化',this.activeName);
+                switch(an){
+                    case 'first':this.go_bs(ee);break;
+                    case 'second':this.go_rb(ee);break;
+                }
             },
 
             revokefn(id){
@@ -410,11 +427,11 @@
 
                 })
             },
-            go_rb(){
-                return this.$api.ports.recallBrowse().then((res)=>{
+            go_rb(page){
+                return this.$api.ports.recallBrowse(page).then((res)=>{
                     console.log(res,'rb');
                     if(res.code){
-                        // this.outData=res.data[0];
+                        this.outData=res.data[0];
                     }else{
                         this.$notify.error(res.message);
                     }

@@ -34,7 +34,7 @@
                                         :data="{access_token:token}"
                                         list-type="picture-card"
                                         accept="image/*"
-                                        :on-preview="handlePictureCardPreview"
+                                        :limit="1"
                                         :on-success="imgSuccess" :on-remove="imgRemove">
                                     <i class="el-icon-plus"></i>
                                 </el-upload>
@@ -708,7 +708,7 @@
                         //级别购买
 
                         if(io.only.sel){
-                            task.restrict_level=io.sex.selV
+                            task.restrict_level=io.only.selV
 
                         }else{
                             delete task.restrict_level;
@@ -968,14 +968,6 @@
                         });
                     });
                 }
-            },
-            //商品主图
-            handleRemove(file, fileList) {
-                console.log(file, fileList);
-            },
-            handlePictureCardPreview(file) {
-                this.dialogImageUrl = file.url;
-                this.dialogVisible = true;
             },
 
             taskSub(form){

@@ -20,7 +20,7 @@
             <el-link  @click="peoplecontrol('shopseting')" class="recharge"> {{userinfo.user.ue_account|strno}}</el-link>
           </div>
           <div class="at-xs">
-            本金：<span class="money">{{userinfo.user['ue_jin']}}</span>金<el-link type="primary" @click="peoplecontrol('itunes')" class="recharge">充值</el-link>
+            本金：<span class="money">{{ue_money['ue_jin']}}</span>金<el-link type="primary" @click="peoplecontrol('itunes')" class="recharge">充值</el-link>
           </div>
 
           <div class="at-xs">
@@ -142,6 +142,11 @@
   export default {
     data() {
       return {
+        ue_money:{
+
+            ue_jin: "554161.70"
+        },
+
         taskid:0,
         userinfo:{},
         passstatus:false,
@@ -180,7 +185,7 @@
       //获取用户信息
 
 
-      ajax.all([this.go_user()]);
+      ajax.all([this.go_user(),this.go_money()]);
     },
     filters:{
         strno:function(value){
@@ -196,6 +201,18 @@
         }
     },
     methods: {
+      go_money(){
+          console.log("是否知心");
+          return this.$api.ports.getMoney().then((res)=>{
+              if(res.code){
+                  console.log(res,'getMoney');
+                  this.ue_money=res.data[0];
+              }else{
+                  this.$notify.error(res.message);
+              }
+          })
+      },
+
       go_user(){
           this.userinfo=JSON.parse(localStorage.getItem('login'));
       },
@@ -458,6 +475,7 @@
 }
 .recharge{margin-left:.5rem;}
 .at-xs{
+  font-size:0.7rem;
   .flex(center,center,row);
   line-height:3;
   &:after{

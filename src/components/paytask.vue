@@ -116,7 +116,7 @@
                     </div>
                     <div class="mt-cen" style="text-align:center;">
                         <el-pagination
-
+                                :current-page.sync="payTaskArr.current_page"
                                 @current-change="bschange"
                                 background
                                 layout="prev, pager, next"
@@ -162,48 +162,109 @@
                                 show-icon>
                         </el-alert>
                         <el-table
-                                :data="outData"
+                                :data="outData.data"
                                 border
                                 style="width: 100%">
                             <el-table-column
                                     fixed
-                                    prop="orderinfo"
-                                    label="订单信息"
+                                    prop="shop_wang_id"
+                                    label="商家店铺ID"
                                     >
                             </el-table-column>
                             <el-table-column
-                                    prop="userinfo"
-                                    label="用户信息"
+                                    prop="task_id"
+                                    label="任务ID"
                                     >
                             </el-table-column>
                             <el-table-column
-                                    label="付款时间与截图"
+                                    label="付款时间"
                                     >
                                 <template slot-scope="scope">
-                                    <p>付款时间</p>
-                                    <p>截图</p>
+                                    {{new Date(scope.row.post_at*1000).toLocaleString()}}
                                 </template>
                             </el-table-column>
                             <el-table-column
-                                    prop="payless"
-                                    label="返款信息"
+
+                                    label="截图一"
                                     >
+                                <template slot-scope="scope">
+                                    <el-image :src="scope.row.search_img" class="tf-img"></el-image>
+                                </template>
                             </el-table-column>
+                            <el-table-column
+
+                                    label="截图二"
+                            >
+                                <template slot-scope="scope">
+                                    <el-image :src="scope.row.order_img" class="tf-img"></el-image>
+                                </template>
+                            </el-table-column>
+                            <el-table-column
+                                    prop="cash_pledge"
+                                    label="商家押金"
+                            >
+                            </el-table-column>
+                            <el-table-column
+                                    prop="real_pay"
+                                    label="用户付款"
+                            >
+                            </el-table-column>
+                            <el-table-column
+                                    prop="qq_no"
+                                    label="QQ"
+                            >
+                            </el-table-column>
+                            <el-table-column
+                                    prop="ue_account"
+                                    label="手机号"
+                            >
+                            </el-table-column>
+                            <el-table-column
+                                    prop="task_type"
+                                    label="任务类型"
+                            >
+                                <template slot-scope="scope">
+                                    {{scope.row.task_type|shoptype}}
+                                </template>
+                            </el-table-column>
+                            <el-table-column
+                                    prop="wangwang_id"
+                                    label="淘宝账号"
+                            >
+                            </el-table-column>
+                            <el-table-column
+                                    prop="user_id"
+                                    label="用户ID"
+                            >
+                            </el-table-column>
+                            <el-table-column
+                                    prop="order_id"
+                                    label="订单ID"
+                            >
+                            </el-table-column>
+                            <el-table-column
+                                    prop="tao_order_no"
+                                    label="买手提交单号"
+                            >
+                            </el-table-column>
+
                             <el-table-column
                                     fixed="right"
                                     label="操作"
                                     width="100">
                                 <template slot-scope="scope">
-                                    <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>
+                                    <el-button type="text" size="small">查看</el-button>
                                     <el-button type="text" size="small">编辑</el-button>
                                 </template>
                             </el-table-column>
                         </el-table>
                         <div class="mt-cen" style="text-align:center;">
                             <el-pagination
+                                    :current-page.sync="outData.current_page"
+                                    @current-change="bschange"
                                     background
                                     layout="prev, pager, next"
-                                    :total="100">
+                                    :total="outData.last_page*10">
                             </el-pagination>
                         </div>
                 </el-tab-pane>
@@ -246,6 +307,103 @@
                         </el-form-item>
                     </el-form>
 
+
+                    <el-table
+                            :data="postNI.data"
+                            border
+                            style="width: 100%">
+                        <el-table-column
+                                fixed
+                                prop="shop_wang_id"
+                                label="商家店铺ID"
+                        >
+                        </el-table-column>
+                        <el-table-column
+                                prop="task_id"
+                                label="任务ID"
+                        >
+                        </el-table-column>
+                        <el-table-column
+                                label="付款时间"
+                        >
+                            <template slot-scope="scope">
+                                {{new Date(scope.row.post_at*1000).toLocaleString()}}
+                            </template>
+                        </el-table-column>
+                        <el-table-column
+
+                                label="截图一"
+                        >
+                            <template slot-scope="scope">
+                                <el-image :src="scope.row.search_img" class="tf-img"></el-image>
+                            </template>
+                        </el-table-column>
+                        <el-table-column
+
+                                label="截图二"
+                        >
+                            <template slot-scope="scope">
+                                <el-image :src="scope.row.order_img" class="tf-img"></el-image>
+                            </template>
+                        </el-table-column>
+                        <el-table-column
+                                prop="cash_pledge"
+                                label="商家押金"
+                        >
+                        </el-table-column>
+                        <el-table-column
+                                prop="real_pay"
+                                label="用户付款"
+                        >
+                        </el-table-column>
+                        <el-table-column
+                                prop="qq_no"
+                                label="QQ"
+                        >
+                        </el-table-column>
+                        <el-table-column
+                                prop="ue_account"
+                                label="手机号"
+                        >
+                        </el-table-column>
+                        <el-table-column
+                                prop="task_type"
+                                label="任务类型"
+                        >
+                            <template slot-scope="scope">
+                                {{scope.row.task_type|shoptype}}
+                            </template>
+                        </el-table-column>
+                        <el-table-column
+                                prop="wangwang_id"
+                                label="淘宝账号"
+                        >
+                        </el-table-column>
+                        <el-table-column
+                                prop="user_id"
+                                label="用户ID"
+                        >
+                        </el-table-column>
+                        <el-table-column
+                                prop="order_id"
+                                label="订单ID"
+                        >
+                        </el-table-column>
+                        <el-table-column
+                                prop="tao_order_no"
+                                label="买手提交单号"
+                        >
+                        </el-table-column>
+                        <el-table-column
+                                fixed="right"
+                                label="操作"
+                                width="100">
+                            <template slot-scope="scope">
+                                <el-button type="text" size="small">查看</el-button>
+                                <el-button type="text" size="small">编辑</el-button>
+                            </template>
+                        </el-table-column>
+                    </el-table>
                     <el-alert
                             class="an-item"
                             type="error"
@@ -254,9 +412,11 @@
                     </el-alert>
                     <div class="mt-cen" style="text-align:center;">
                         <el-pagination
+                                :current-page.sync="postNI.current_page"
+                                @current-change="bschange"
                                 background
                                 layout="prev, pager, next"
-                                :total="100">
+                                :total="postNI.last_page*10">
                         </el-pagination>
                     </div>
                 </el-tab-pane>
@@ -316,7 +476,7 @@
                     </el-form>
 
                     <el-table
-                            :data="payplayData"
+                            :data="payplayData.data"
                             border
                             style="width: 100%">
                         <el-table-column
@@ -324,62 +484,79 @@
                                 prop="ordertime"
                                 label="接单时间"
                         >
-                        </el-table-column>
-                        <el-table-column
-                                prop="orderiid"
-                                label="订单id"
-                        >
                             <template slot-scope="scope">
-                                <el-link href="#/about?tagcount=-2" type="primary" target="_blank">{{scope.row.orderid}}</el-link>
+                                {{new Date(scope.row.accept_at*1000).toLocaleString()}}
                             </template>
                         </el-table-column>
                         <el-table-column
 
-                                prop="taskid"
+                                label="订单id"
+                        >
+                            <template slot-scope="scope">
+                                <el-link :href="'#/about?tagcount=-2&id='+scope.row.id" type="primary" target="_blank">{{scope.row.id}}</el-link>
+                            </template>
+                        </el-table-column>
+                        <el-table-column
+
+                                prop="task_id"
                                 label="任务id"
                         >
                         </el-table-column>
                         <el-table-column
-                                prop="id"
+                                prop="user_id"
                                 label="买手id"
                         >
                         </el-table-column>
                         <el-table-column
-                                prop="bank"
+                                prop="wangwang_id"
                                 label="接单账号"
                         >
                         </el-table-column>
                         <el-table-column
-                                prop="orderstatus"
+                                prop="status"
                                 label="订单状态"
                         >
                         </el-table-column>
                         <el-table-column
-                                prop="shopsize"
-                                label="商品规格"
-                        >
-                        </el-table-column>
-                        <el-table-column
-                                prop="tasktype"
+
                                 label="任务类型"
                         >
+                            <template slot-scope="scope">
+                                {{scope.row.task_type|shoptype}}
+                            </template>
                         </el-table-column>
                         <el-table-column
-                                prop="shop"
-                                label="商品"
+                                prop="goods_name"
+                                label="商品名称"
                         >
                         </el-table-column>
                         <el-table-column
-                                prop="isc"
-                                label="确认完成"
+
+                                label="商品链接"
                         >
+                            <template slot-scope="scope">
+                                <el-link :href="scope.row.goods_link">{{scope.row.goods_link}}</el-link>
+                            </template>
+                        </el-table-column>
+
+                        <el-table-column
+                                fixed="right"
+                                label="操作"
+                                width="100">
+                            <template slot-scope="scope">
+                                <el-button @click="handleClick(scope.row.task_id)" type="text" size="small">确认完成</el-button>
+
+                            </template>
                         </el-table-column>
                     </el-table>
                     <div class="mt-cen" style="text-align:center;">
+
                         <el-pagination
+                                :current-page.sync="payplayData.current_page"
+                                @current-change="bschange"
                                 background
                                 layout="prev, pager, next"
-                                :total="100">
+                                :total="payplayData.last_page*10">
                         </el-pagination>
                     </div>
                 </el-tab-pane>
@@ -445,73 +622,82 @@
                     </el-form>
 
                     <el-table
-                            :data="payhistoryData"
+                            :data="payhistoryData.data"
                             border
                             style="width: 100%">
                         <el-table-column
-
+                                fixed
                                 prop="ordertime"
-                                label="完成时间"
-                        >
-                        </el-table-column>
-                        <el-table-column
-                                label="订单id"
+                                label="接单时间"
                         >
                             <template slot-scope="scope">
-                                <el-link href="#/about?tagcount=-2" type="primary" target="_blank">{{scope.row.orderid}}</el-link>
+                                {{new Date(scope.row.accept_at*1000).toLocaleString()}}
                             </template>
                         </el-table-column>
                         <el-table-column
 
-                                prop="taskid"
+                                label="订单id"
+                        >
+                            <template slot-scope="scope">
+                                <el-link :href="'#/about?tagcount=-2&id='+scope.row.id" type="primary" target="_blank">{{scope.row.id}}</el-link>
+                            </template>
+                        </el-table-column>
+                        <el-table-column
+
+                                prop="task_id"
                                 label="任务id"
                         >
                         </el-table-column>
                         <el-table-column
-                                prop="id"
+                                prop="user_id"
                                 label="买手id"
                         >
                         </el-table-column>
                         <el-table-column
-                                prop="bank"
+                                prop="wangwang_id"
                                 label="接单账号"
                         >
                         </el-table-column>
                         <el-table-column
-                                prop="orderstatus"
+                                prop="status"
                                 label="订单状态"
                         >
                         </el-table-column>
                         <el-table-column
-                                prop="shopsize"
-                                label="商品规格"
-                        >
-                        </el-table-column>
-                        <el-table-column
-                                prop="shop"
-                                label="商品"
-                                width="150"
+
+                                label="任务类型"
                         >
                             <template slot-scope="scope">
-                                <el-link type="primary" :href="scope.row.nav">{{scope.row.name}}</el-link>
+                                {{scope.row.task_type|shoptype}}
                             </template>
                         </el-table-column>
                         <el-table-column
-                                prop="typetask"
-                                label="任务类型"
+                                prop="goods_name"
+                                label="商品名称"
                         >
+                        </el-table-column>
+                        <el-table-column
+
+                                label="商品链接"
+                        >
+                            <template slot-scope="scope">
+                                <el-link :href="scope.row.goods_link">{{scope.row.goods_link}}</el-link>
+                            </template>
                         </el-table-column>
                     </el-table>
                     <div class="mt-cen" style="text-align:center;">
                         <el-pagination
+                                :current-page.sync="payhistoryData.current_page"
+                                @current-change="bschange"
                                 background
                                 layout="prev, pager, next"
-                                :total="100">
+                                :total="payhistoryData.last_page*10">
                         </el-pagination>
                     </div>
                 </el-tab-pane>
             </el-tabs>
         </el-card>
+
     </div>
 </template>
 
@@ -521,6 +707,9 @@
         name: "paytask",
         data(){
             return {
+                postNI:{},
+
+
                 payTaskArr:{},
 
                 paystatus:[
@@ -669,10 +858,23 @@
             }
         },
         created(){
-            ajax.all([this.go_bs()]);
+
+            ajax.all([this.tabChange()]);
         },
         filters:{
 
+
+            shoptype:function(value){
+                var del='/';
+                switch (value){
+                    case 1:del='淘宝任务';break;
+                    case 2:del='淘口令任务';break;
+                    case 3:del='预售任务';break;
+                    case 4:del='拼多多任务';break;
+                    case 5:del='浏览任务';break;
+                }
+                return del;
+            },
             shops:function(value){
                 var del='/';
                 switch (value){
@@ -683,8 +885,56 @@
             }
         },
         methods:{
+            handleClick(id){
+
+                this.$confirm('再次确认是否完成？?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+
+                    this.$api.ports.confFinish({id}).then((res)=>{
+                        if(res.code){
+
+                            this.$notify.success('确认成功')
+                            this.activeName='firth';
+
+
+                        }else{
+                            this.$notify.error(res.message);
+                        }
+                    });
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '已取消确认'
+                    });
+                });
+            },
+
+            tabChange(){
+                var an=this.activeName;
+                console.log('是否有变化',this.activeName);
+                switch(an){
+                    case 'first':this.go_bs(this.payTaskArr.current_page||1);break;
+                    case 'second':this.go_rti(this.outData.current_page||1);break;
+                    case 'third':this.go_pni(this.postNI.current_page||1);break;
+                    case 'fourth':this.go_ut_load(this.payplayData.current_page||1);break;
+                    case 'fifth':this.go_ut_done(this.payhistoryData.current_page||1);break;
+
+                }
+            },
+            //垫付任务的分页
             bschange(ee){
-                this.go_bs(ee);
+                var an=this.activeName;
+                console.log('是否有变化',this.activeName);
+                switch(an){
+                    case 'first':this.go_bs(ee);break;
+                    case 'second':this.go_rb(ee);break;
+                    case 'third':this.go_pni(ee);break;
+                    case 'fourth':this.go_ut_load(ee);break;
+                    case 'fifth':this.go_ut_done(ee);break;
+                }
             },
 
             revokefn(id){
@@ -721,6 +971,7 @@
                 })
             },
 
+            //垫付任务管理
             go_bs(page){
                 return this.$api.ports.taskIndex(page).then((res)=>{
                     if(res.code){
@@ -732,8 +983,66 @@
                 })
             },
 
+            //垫付任务返款管理
+            go_rti(page){
+                return this.$api.ports.refTaskInfo(page).then((res)=>{
+                    if(res.code){
+                        console.log(res,'outData');
+                        this.outData=res.data[0];
+                    }else{
+                        this.$notify.error(res.message);
+                    }
+                })
+            },
+
+            //快递单号管理
+            go_pni(page){
+                return this.$api.ports.postNoInfo(page).then((res)=>{
+                    if(res.code){
+                        console.log(res,'postNI');
+                        this.postNI=res.data[0];
+                    }else{
+                        this.$notify.error(res.message);
+                    }
+                })
+            },
+
+            //垫付进行中
+            go_ut_load(page){
+
+                return this.$api.ports.underwayTask({page,type:1}).then((res)=>{
+                    if(res.code){
+                        console.log(res,'payplayData');
+                        this.payplayData=res.data[0];
+                    }else{
+                        this.$notify.error(res.message);
+                    }
+                })
+            },
+
+
+            //垫付历史
+            go_ut_done(page){
+
+                return this.$api.ports.underwayTask({page,type:2}).then((res)=>{
+                    if(res.code){
+                        console.log(res,'payhistoryData');
+                        this.payhistoryData=res.data[0];
+                    }else{
+                        this.$notify.error(res.message);
+                    }
+                })
+            },
+
+
             onSubmit(f){
                 console.log(f);
+            }
+        },
+        //监听属性
+        watch:{
+            "activeName":function(){
+                this.tabChange();
             }
         }
     }

@@ -20,7 +20,7 @@
 
                 <el-table
                         border
-                        :data="tableData"
+                        :data="tableData.data"
                         style="width: 100%"
                         stripe>
 
@@ -39,7 +39,7 @@
                     <el-table-column
                             label="操作">
                         <template slot-scope="scope">
-                            <el-button size="mini" type="primary">编辑</el-button>
+                            <el-button size="mini" type="primary">拉黑</el-button>
                             <el-button size="mini" type="primary">删除</el-button>
                         </template>
                     </el-table-column>
@@ -47,9 +47,11 @@
 
                 <div class="mt-cen" style="text-align:center;">
                     <el-pagination
+                            :current-page.sync="tableData.current_page"
+                            @current-change="bschange"
                             background
                             layout="prev, pager, next"
-                            :total="100">
+                            :total="tableData.last_page*10">
                     </el-pagination>
                 </div>
             </div>
@@ -71,11 +73,15 @@
             ajax.all([this.go_list()]);
         },
         methods:{
+            bschange(ee){
+                this.go_list(ee);
+            },
+
             go_list(){
                 return this.$api.ports.Mblacklist().then((res)=>{
                     console.log(res,'res');
                     if(res.code){
-                        this.tableData=res.data[0].list;
+                        this.tableData=res.data[0];
                     }else{
                         this.$message.error(res.message);
                     }

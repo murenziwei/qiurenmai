@@ -34,8 +34,8 @@
                                         :data="{access_token:token}"
                                         list-type="picture-card"
                                         accept="image/*"
-                                        :on-preview="handlePictureCardPreview"
-                                        :on-success="imgSuccess" :on-remove="imgRemove">
+                                        :limit="1"
+                                        :on-success="imgSuccess" :on-remove="imgRemove" >
                                     <i class="el-icon-plus"></i>
                                 </el-upload>
                                 <el-dialog :visible.sync="dialogVisible">
@@ -1319,14 +1319,6 @@
                         });
                     });
                 }
-            },
-            //商品主图
-            handleRemove(file, fileList) {
-                console.log(file, fileList);
-            },
-            handlePictureCardPreview(file) {
-                this.dialogImageUrl = file.url;
-                this.dialogVisible = true;
             },
 
             taskSub(form){

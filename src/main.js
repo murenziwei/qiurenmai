@@ -13,6 +13,11 @@ import api from './api';//封装接口
 //将api挂载在Vue原型上
 Vue.prototype.$api=api;
 
+//自定义图片预览组件
+import lwImg from './components/lwImg'
+
+Vue.component(lwImg.name,lwImg);
+
 //复制功能
 import VueClipboard from 'vue-clipboard2'
 

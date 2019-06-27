@@ -4,22 +4,22 @@
             <div slot="header">
                 <div class="h-flex">
 
-                    <span class="clearfix">`
+                    <span class="clearfix">
                        {{detaildata.task_type|shoptype}}
                     </span>
                     <el-row type="flex" align="middle" justify="flex-end">
                         <el-breadcrumb separator="|">
-                            <el-breadcrumb-item>木人子韦</el-breadcrumb-item>
-                            <el-breadcrumb-item>任务编号：11323232</el-breadcrumb-item>
-                            <el-breadcrumb-item>2019-06-19 18：00：00</el-breadcrumb-item>
-                            <el-breadcrumb-item>状态：已完成</el-breadcrumb-item>
+                            <el-breadcrumb-item>{{headdata.shop_name||'**'}}</el-breadcrumb-item>
+                            <el-breadcrumb-item>任务编号：{{headdata.id||'**'}}</el-breadcrumb-item>
+                            <el-breadcrumb-item>{{new Date(headdata.create_at*1000).toLocaleString()||'**'}}</el-breadcrumb-item>
+                            <el-breadcrumb-item>状态：{{headdata.status|statusfilter}}</el-breadcrumb-item>
                         </el-breadcrumb>
                     </el-row>
                 </div>
             </div>
             <div>
                 <div>
-                    <el-steps :active="detaildata.status" simple  finish-status="success" >
+                    <el-steps :active="headdata.status" simple  finish-status="success" >
                         <el-step title="提交任务等待付款"></el-step>
                         <!--<el-step title="已付款，等候审核"></el-step>-->
                         <el-step title="任务进行中"></el-step>
@@ -30,31 +30,31 @@
                 <div>
                     <el-breadcrumb separator="|">
                         <el-breadcrumb-item>
-                            任务生成订单总数：1单
+                            任务生成订单总数：{{headdata.task_num||'**'}}单
                         </el-breadcrumb-item>
                         <el-breadcrumb-item>
-                            待放出：0 单
+                            待放出：{{headdata.status0||'**'}} 单
                         </el-breadcrumb-item>
                         <el-breadcrumb-item>
-                            未接单：0 单
+                            未接单：{{headdata.status1||'**'}} 单
                         </el-breadcrumb-item>
                         <el-breadcrumb-item>
-                            未操作：0 单
+                            未操作：{{headdata.status2||'**'}} 单
                         </el-breadcrumb-item>
                         <el-breadcrumb-item>
-                            待返款发货：0 单
+                            待返款发货：{{headdata.status3||'**'}} 单
                         </el-breadcrumb-item>
                         <el-breadcrumb-item>
-                            待评价：0 单
+                            待评价：{{headdata.status4||'**'}} 单
                         </el-breadcrumb-item>
                         <el-breadcrumb-item>
-                            待确认：0 单
+                            待确认：{{headdata.status5||'**'}} 单
                         </el-breadcrumb-item>
                         <el-breadcrumb-item>
-                            已撤销：0 单
+                            已完成：{{headdata.status6||'**'}} 单
                         </el-breadcrumb-item>
                         <el-breadcrumb-item>
-                            已完成：1 单
+                            已撤销：{{headdata.status7||'**'}} 单
                         </el-breadcrumb-item>
                     </el-breadcrumb>
                 </div>
@@ -84,7 +84,7 @@
                                         <el-col :span="12">
                                             <div class="task-flex">
                                                 <div class="tf-left">
-                                                    <el-image class="t-l-img" :src="detaildata.goods_img" alt="" />
+                                                    <lw-img class-data="t-l-img" :src-data="detaildata.goods_img" alt="" />
                                                 </div>
                                                 <div class="tf-right">
                                                     <p class="t-r-top">
@@ -184,7 +184,7 @@
                                 </div>
                             </el-card>
 
-                            <el-card class="box-card">
+                            <el-card class="box-card" v-if="judgeObj[1]">
                                 <div slot="header">
                                     <el-row type="flex" align="middle">
                                         <el-col >
@@ -192,7 +192,7 @@
                                         </el-col>
                                     </el-row>
                                 </div>
-                                <div v-for="(cval) in filterarr(detaildata.comment_info)">
+                                <div v-for="(cval) in filterarr(judgeObj[1])">
 
                                     <el-row type="flex" align="middle" justify="flex-end">
                                         <el-col :span="7">
@@ -213,6 +213,107 @@
                                     <el-link type="info" v-show="!(detaildata.comment_info?detaildata.comment_info.length:false)">没有更多数据了</el-link>
                                 </p>
                             </el-card>
+
+
+                            <el-card class="box-card" v-if="judgeObj[2]">
+                                <div slot="header">
+                                    <el-row type="flex" align="middle">
+                                        <el-col >
+                                            <span class="b-font">指定文字好评</span>
+                                        </el-col>
+                                    </el-row>
+                                </div>
+                                <div v-for="(cval) in filterarr(judgeObj[2])">
+
+                                    <el-row type="flex" align="middle" justify="flex-end">
+                                        <el-col :span="7">
+                                            <div>
+                                                <span class="trt-text">搜索关键词：</span><el-link class="trt-text" type="primary">{{cval.text}}</el-link>
+                                            </div>
+                                        </el-col>
+                                        <el-col :span="7">
+                                            <div>
+                                                <span class="trt-text">任务单数：</span><el-link class="trt-text" type="primary">{{cval.count}}</el-link>
+                                            </div>
+                                        </el-col>
+                                    </el-row>
+                                    <el-divider></el-divider>
+                                </div>
+
+                                <p>
+                                    <el-link type="info" v-show="!(detaildata.comment_info?detaildata.comment_info.length:false)">没有更多数据了</el-link>
+                                </p>
+                            </el-card>
+
+                            <el-card class="box-card" v-if="judgeObj[3]">
+                                <div slot="header">
+                                    <el-row type="flex" align="middle">
+                                        <el-col >
+                                            <span class="b-font">图片好评</span>
+                                        </el-col>
+                                    </el-row>
+                                </div>
+                                <div v-for="(cval) in judgeObj[3]">
+
+                                    <el-row type="flex" align="middle" justify="flex-end">
+                                        <el-col :span="7">
+                                            <div>
+                                                <span class="trt-text">搜索关键词：</span><el-link class="trt-text" type="primary">{{cval.search_word}}</el-link>
+                                            </div>
+                                        </el-col>
+                                    </el-row>
+                                    <p>图片列表</p>
+                                    <el-row class="task-flex">
+
+                                            <lw-img alt=""  v-for="ev in (cval.imgs).split(',')" :src-data="ev" />
+
+
+                                    </el-row>
+                                    <el-divider></el-divider>
+                                </div>
+
+                                <p>
+                                    <el-link type="info" v-show="!(detaildata.comment_info?detaildata.comment_info.length:false)">没有更多数据了</el-link>
+                                </p>
+                            </el-card>
+
+                            <el-card class="box-card" v-if="judgeObj[4]">
+                                <div slot="header">
+                                    <el-row type="flex" align="middle">
+                                        <el-col >
+                                            <span class="b-font">视频好评</span>
+                                        </el-col>
+                                    </el-row>
+                                </div>
+                                <div v-for="(cval) in judgeObj[4]">
+
+                                    <el-row type="flex" align="middle" justify="flex-end">
+                                        <el-col :span="7">
+                                            <div>
+                                                <span class="trt-text">搜索关键词：</span><el-link class="trt-text" type="primary">{{cval.search_word}}</el-link>
+                                            </div>
+                                        </el-col>
+                                    </el-row>
+                                    <p>图片列表</p>
+                                    <el-row class="task-flex">
+
+                                        <lw-img alt=""  v-for="ev in (cval.imgs).split(',')" :src-data="ev" />
+
+
+                                    </el-row>
+
+                                    <p>视频列表</p>
+                                    <el-row class="task-flex">
+                                        <video controls class="v-w1"  v-for="ev in (cval.video).split(',')" :src="ev" ></video>
+                                    </el-row>
+                                    <el-divider></el-divider>
+                                </div>
+
+                                <p>
+                                    <el-link type="info" v-show="!(detaildata.comment_info?detaildata.comment_info.length:false)">没有更多数据了</el-link>
+                                </p>
+                            </el-card>
+
 
                             <el-card class="box-card">
                                 <div slot="header">
@@ -276,37 +377,93 @@
                             </el-card>
                         </el-tab-pane>
                         <el-tab-pane label="费用详情">
+
                             <el-table
                                     :data="tableData"
-                                    :span-method="objectSpanMethod"
+
                                     border
-                                    stripe
                                     style="width: 100%; margin-top: 20px">
                                 <el-table-column
-                                        prop="id"
-                                        label="分类"
-                                        width="180">
+                                        label="返款本金"
+                                >
+                                    <template slot-scope="scope">
+                                        {{scope.row.every_cash_pledge||'/'}}
+                                    </template>
+                                </el-table-column>
+
+                                <el-table-column
+                                        label="基础佣金"
+                                >
+                                    <template slot-scope="scope">
+                                        {{scope.row.every_commission||'/'}}
+                                    </template>
                                 </el-table-column>
                                 <el-table-column
-                                        prop="name"
-                                        label="费用明细">
+                                        label="数量"
+                                >
+                                    <template slot-scope="scope">
+                                        {{scope.row.task_num||'/'}}
+                                    </template>
                                 </el-table-column>
                                 <el-table-column
-                                        prop="amount1"
-                                        label="数量">
+                                        label="千人千面"
+                                >
+                                    <template slot-scope="scope">
+                                        {{scope.row.platform_fee||'/'}}
+                                    </template>
                                 </el-table-column>
                                 <el-table-column
-                                        prop="amount2"
-                                        label="小计">
+                                        label="空包服务费"
+                                >
+                                    <template slot-scope="scope">
+                                        {{scope.row.empty_parcel_fee||'/'}}
+                                    </template>
+                                </el-table-column>
+                                <el-table-column
+                                        label="收藏加购服务费"
+                                >
+                                    <template slot-scope="scope">
+                                        {{scope.row.favorites_fee||'/'}}
+                                    </template>
+                                </el-table-column>
+                                <el-table-column
+                                        label="置顶"
+                                >
+                                    <template slot-scope="scope">
+                                        {{scope.row.top_fee||'/'}}
+                                    </template>
+                                </el-table-column>
+                                <el-table-column
+                                        label="加赏佣金（每单）"
+                                >
+                                    <template slot-scope="scope">
+                                        {{scope.row.add_fee||'/'}}
+                                    </template>
+                                </el-table-column>
+                                <el-table-column
+                                        label="评论需求"
+                                >
+                                    <template slot-scope="scope">
+                                        {{scope.row.comment_fee||'/'}}
+                                    </template>
                                 </el-table-column>
                             </el-table>
-                            <el-row >
-                                <div class="t-r">
-                                    <p>合计单数： <el-link type="primary">2</el-link>单</p>
-                                    <p>合计支付： 本金<el-link type="danger">192.00</el-link>{{$store.state.mtext}},佣金<el-link type="danger">19</el-link>金</p>
+                            <div style="text-align:right;">
+                                <p>
+                                    合计单数： <span class="success-text">{{allm.yn||0}}</span>单
+                                </p>
 
-                                </div>
-                            </el-row>
+                                <p>
+                                    合计支付： 佣金<span class="danger-text">{{(allm.ym).toFixed(2)}}</span>金
+                                </p>
+                            </div>
+                            <div v-if="headdata.status==1">
+                                <el-row type="flex" align="middle" justify="center" :gutter="30" class="b-c-box">
+
+                                    <!--<el-button type="primary" @click="nextfn(-1)">上一步</el-button>-->
+                                    <el-button type="primary" @click="payissue">付款并发布任务</el-button>
+                                </el-row>
+                            </div>
                         </el-tab-pane>
                         <el-tab-pane label="进行中订单">
 
@@ -316,41 +473,47 @@
                                     stripe
                                     style="width: 100%; margin-top: 20px">
                                 <el-table-column
-                                        prop="ordertime"
                                         label="接单时间"
                                         >
+                                    <template slot-scope="scope">
+                                        {{new Date(scope.row.accept_at*1000).toLocaleString()}}
+                                    </template>
                                 </el-table-column>
                                 <el-table-column
-                                        prop="orderid"
+                                        prop="id"
                                         label="订单ID"
                                 >
                                 </el-table-column>
 
                                 <el-table-column
-                                        prop="peopleid"
+                                        prop="user_id"
                                         label="买手ID"
                                 >
                                 </el-table-column>
                                 <el-table-column
-                                        prop="orderbank"
+                                        prop="wangwang_id"
                                         label="接单账号"
                                 >
                                 </el-table-column>
 
                                 <el-table-column
-                                        prop="payment"
+                                        prop="cash_pledge"
                                         label="垫付押金"
                                 >
                                 </el-table-column>
                                 <el-table-column
-                                        prop="payback"
+                                        prop="real_pay"
                                         label="返款金额"
                                 >
                                 </el-table-column>
                                 <el-table-column
-                                        prop="orderstatus"
+
                                         label="订单状态"
                                 >
+
+                                    <template slot-scope="scope">
+                                        {{scope.row.status|statusfn}}
+                                    </template>
                                 </el-table-column>
                             </el-table>
                         </el-tab-pane>
@@ -362,34 +525,37 @@
                                     stripe
                                     style="width: 100%; margin-top: 20px">
                                 <el-table-column
-                                        prop="donetime"
+
                                         label="完成时间"
                                 >
+                                    <template slot-scope="scope">
+                                        {{new Date(scope.row.finish_at*1000).toLocaleString()}}
+                                    </template>
                                 </el-table-column>
                                 <el-table-column
-                                        prop="orderid"
+                                        prop="id"
                                         label="订单ID"
                                 >
                                 </el-table-column>
 
                                 <el-table-column
-                                        prop="peopleid"
+                                        prop="user_id"
                                         label="买手ID"
                                 >
                                 </el-table-column>
                                 <el-table-column
-                                        prop="orderbank"
+                                        prop="wangwang_id"
                                         label="接单账号"
                                 >
                                 </el-table-column>
 
                                 <el-table-column
-                                        prop="payment"
+                                        prop="cash_pledge"
                                         label="垫付押金"
                                 >
                                 </el-table-column>
                                 <el-table-column
-                                        prop="payback"
+                                        prop="real_pay"
                                         label="返款金额"
                                 >
                                 </el-table-column>
@@ -403,32 +569,29 @@
                                     stripe
                                     style="width: 100%; margin-top: 20px">
                                 <el-table-column
-                                        prop="annultime"
                                         label="撤销时间"
                                 >
+                                    <template slot-scope="scope">
+                                        {{new Date(scope.row.recall_at*1000).toLocaleString()}}
+                                    </template>
                                 </el-table-column>
                                 <el-table-column
-                                        prop="annulcount"
+                                        prop="id"
                                         label="撤销单号"
                                 >
                                 </el-table-column>
 
                                 <el-table-column
-                                        prop="paycash"
+                                        prop="cash_pledge"
                                         label="垫付押金"
                                 >
                                 </el-table-column>
                                 <el-table-column
-                                        prop="orderbank"
+                                        prop="note"
                                         label="备注"
                                 >
                                 </el-table-column>
 
-                                <el-table-column
-                                        prop="remark"
-                                        label="备注"
-                                >
-                                </el-table-column>
                             </el-table>
                         </el-tab-pane>
 
@@ -484,6 +647,16 @@
         props:['id'],
         data(){
             return {
+                judgeObj:{},
+
+                allm:{
+                    ym:0,
+                    yn:0
+                },
+
+                //头部信息
+                headdata:{},
+
                 detaildata:{},
 
                 loadOrder:[],
@@ -524,6 +697,30 @@
             }
         },
         filters:{
+            statusfn:function(value){
+
+                var del='--';
+                switch (value){
+                    case 1:del='未接单';break;
+                    case 2:del='待操作';break;
+                    case 3:del='待返款发货';break;
+                    case 4:del='待评价';break;
+                    case 5:del='待确认';break;
+                    case 6:del='已完成';break;
+                }
+                return del;
+            },
+            statusfilter:function(value){
+
+                var del='--';
+                switch (value){
+                    case 1:del='提交任务等待付款';break;
+                    case 2:del='进行中';break;
+                    case 3:del='任务全部完成';break;
+                }
+                return del;
+            },
+
             sexs:function(value){
                 var del='--';
                 switch (value){
@@ -545,15 +742,52 @@
             }
         },
         created(){
-            console.log(this.id,'id');
-
-            ajax.all([this.go_detail(this.id)])
+            //任务详情、详情头部、任务详情费用、进行中订单、已完成订单、已撤销订单、待接订单
+            ajax.all([
+                this.go_detail(this.id),
+                this.go_head(this.id),
+                this.go_fi(this.id),
+                this.go_fu(this.id),
+                this.go_ff(this.id),
+                this.go_rt(this.id),
+                this.go_fw(this.id)
+            ])
         },
         methods:{
+
+            payissue(){
+                var id=this.id;
+                this.$confirm('再次确认是否付款？?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+
+                    this.$api.ports.payTask({id}).then((res)=>{
+                        if(res.code){
+
+                            this.$notify.success('付款成功');
+                            setTimeout(()=>{
+
+                                this.$router.go(0);
+                            },500)
+                        }else{
+                            this.$notify.error(res.message);
+                        }
+                    });
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '已取消付款'
+                    });
+                });
+            },
+
 
             filterarr:function(val){
 
                 if(typeof val=='object'){
+
 
                     var sar=[],duijiao=[],tarr=[];
                     val.forEach((v)=>{
@@ -580,7 +814,6 @@
                         }
                     })
 
-                    console.log(tarr,'tarr');
                     return tarr;
                 }else{
                     return [];
@@ -590,7 +823,6 @@
             go_bs(){
                 return this.$api.ports.taskIndex().then((res)=>{
                     if(res.code){
-                        console.log(res,'res');
                         this.payTaskArr=res.data[0].list;
                     }else{
                         this.$notify.error(res.message);
@@ -599,15 +831,118 @@
             },
             go_detail(id){
                 return this.$api.ports.taskInfo({id}).then((res)=>{
+                    console.log(res,'go_detail')
                     if(res.code){
+
+
+                        var judgeObj={};
+
+                        var fenarr=res.data[0].comment_info;
+
+                        fenarr.forEach((v,i)=>{
+
+                            if(judgeObj[v.type]){
+                                judgeObj[v.type].push(v);
+                            }else{
+                                judgeObj[v.type]=[v]
+                            }
+                        })
+
                         this.detaildata=res.data[0];
-                        console.log(res,'res,re,sef');
+
+                        this.judgeObj=judgeObj;
+
+
+                        console.log(judgeObj,'judgeObj');
                     }else{
                         this.$notify.error(res.message);
                     }
                 })
             },
 
+            go_head(id){
+                return this.$api.ports.taskInfoHead({id}).then((res)=>{
+                    console.log(res,'提交人数');
+                    if(res.code){
+                        this.headdata=res.data[0];
+                    }else{
+                        this.$notify.error(res.message);
+                    }
+                })
+            },
+
+            go_fi(id){
+                return this.$api.ports.feeInfo({id}).then((res)=>{
+                    if(res.code){
+                        console.log(res,'333');
+                        this.tableData=res.data;
+                        var ap=0,np=0;
+                        res.data.forEach((v)=>{
+                            //总单数
+                            np+=Number(v.task_num)||0;
+
+                            //总金额
+                            ap+=((Number(v.every_cash_pledge)||0)+(Number(v.every_commission)||0)+(Number(v.thousand_fee)||0)+(Number(v.empty_parcel_fee)||0)+(Number(v.favorites_fee)||0)+(Number(v.add_fee)||0))*(Number(v.task_num)||1)
+
+                            ap+=(Number(v.platform_fee)||0)+(Number(v.top_fee)||0)+(Number(v.comment_fee)||0);
+                        });
+                        this.allm.ym=ap;
+                        this.allm.yn=np;
+                    }else{
+                        this.$notify.error(res.message);
+                    }
+                });
+            },
+            //进行中
+            go_fu(id){
+                return this.$api.ports.feeUnderway({id}).then((res)=>{
+                    if(res.code){
+                        console.log(res,'loadOrder');
+                        this.loadOrder=res.data;
+
+                    }else{
+                        this.$notify.error(res.message);
+                    }
+                });
+            },
+
+            //已完成
+            go_ff(id){
+                return this.$api.ports.feeFinish({id}).then((res)=>{
+                    if(res.code){
+                        console.log(res,'doneOrder');
+                        this.doneOrder=res.data;
+
+                    }else{
+                        this.$notify.error(res.message);
+                    }
+                });
+            },
+
+            //已撤销
+            go_rt(id){
+                return this.$api.ports.recallTask({id}).then((res)=>{
+                    if(res.code){
+                        console.log(res,'annulOrder');
+                        this.annulOrder=res.data;
+
+                    }else{
+                        this.$notify.error(res.message);
+                    }
+                });
+            },
+            //待接订单
+            go_fw(id){
+                return this.$api.ports.feeWait({id}).then((res)=>{
+                    if(res.code){
+                        console.log(res,'waitOrder');
+                        this.waitOrder=res.data;
+
+                    }else{
+                        this.$notify.error(res.message);
+                    }
+                });
+            },
             objectSpanMethod({ row, column, rowIndex, columnIndex }) {
                 if (columnIndex === 0) {
                     if (rowIndex % 2 === 0) {
@@ -631,6 +966,10 @@
 </script>
 
 <style lang="less" scoped>
+.v-w1{
+    width:100%;
+}
+
 .t-r{
     text-align:right;
 }
@@ -656,6 +995,7 @@
 
     .flex(center,flex-start,row);
     .t-l-img{
+        margin:.5rem;
         width:6rem;
         height:6rem;
 

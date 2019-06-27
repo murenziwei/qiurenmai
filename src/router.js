@@ -111,106 +111,121 @@ const about={
   ]
 };
 
-const maishou={
-    name:'maishou',
-    val:[
+
+const maishou = {
+    name: 'maishou',
+    val: [
         {
-            path:'',
-            component:()=>import('./components/notice.vue'),
-            data:{
-                name:'买手公告',
-                icon:'el-icon-picture-outline-round'
+            path: '',
+            component: () => import('./components/maishou/notice.vue'),
+            data: {
+                name: '买手公告',
+                icon: 'el-icon-picture-outline-round'
             }
         },
         {
-            path:'issue',
-            component:()=>import('./components/issue.vue'),
-            data:{
-                name:'任务列表',
-                icon:'el-icon-plus'
+            path: 'issue',
+            component: () => import('./components/maishou/task.vue'),
+            data: {
+                name: '任务列表',
+                icon: 'el-icon-plus'
             }
         },
         {
-            path:'pricetable',
-            component:()=>import('./components/pricetable.vue'),
-            data:{
-                name:'账号管理',
-                icon:'el-icon-s-grid'
+            path: 'pricetable',
+            component: () => import('./components/maishou/account.vue'),
+            data: {
+                name: '账号管理',
+                icon: 'el-icon-s-grid'
+            },
+            children: [
+                {
+                    path: 'binding',
+                    name: 'binding',
+                    component: () => import('./components/maishou/children/account_binding.vue'),
+                }
+            ]
+        },
+        {
+            path: 'shopseting',
+            component: () => import('./components/maishou/unfinished.vue'),
+            data: {
+                name: '待完成订单',
+                icon: 'el-icon-setting'
             }
         },
         {
-            path:'shopseting',
-            component:()=>import('./components/shopseting.vue'),
-            data:{
-                name:'待完成订单',
-                icon:'el-icon-setting'
+            path: 'paytask',
+            component: () => import('./components/paytask.vue'),
+            data: {
+                name: '资金明细',
+                icon: 'el-icon-c-scale-to-original'
             }
         },
         {
-            path:'paytask',
-            component:()=>import('./components/paytask.vue'),
-            data:{
-                name:'资金明细',
-                icon:'el-icon-c-scale-to-original'
+            path: 'previewtask',
+            component: () => import('./components/maishou/virtual.vue'),
+            data: {
+                name: '虚拟币提现',
+                icon: 'el-icon-camera-solid'
             }
         },
         {
-            path:'previewtask',
-            component:()=>import('./components/previewtask.vue'),
-            data:{
-                name:'虚拟币提现',
-                icon:'el-icon-camera-solid'
-            }
+            path: 'noorder',
+            component: () => import('./components/maishou/bank.vue'),
+            data: {
+                name: '提现设置',
+                icon: 'el-icon-s-operation'
+            },
+            children: [
+                {
+                    path: 'bank',
+                    name: 'bank',
+                    component: () => import('./components/maishou/children/bank_children.vue'),
+                }
+            ]
         },
         {
-            path:'noorder',
-            component:()=>import('./components/noorder.vue'),
-            data:{
-                name:'提现设置',
-                icon:'el-icon-s-operation'
-            }
-        },
-        {
-            path:'fund',
-            component:()=>import('./components/fund.vue'),
-            data:{
-                name:'申诉中心',
-                icon:'el-icon-bank-card'
+            path: 'fund',
+            component: () => import('./components/fund.vue'),
+            data: {
+                name: '申诉中心',
+                icon: 'el-icon-bank-card'
             }
         }
         ,
         {
-            path:'itunes',
-            component:()=>import('./components/itunes.vue'),
-            data:{
-                name:'账号充值',
-                icon:'el-icon-s-finance'
+            path: 'itunes',
+            component: () => import('./components/itunes.vue'),
+            data: {
+                name: '账号充值',
+                icon: 'el-icon-s-finance'
             }
         }
         ,
         {
-            path:'appeall',
-            component:()=>import('./components/appeall.vue'),
-            data:{
-                name:'申诉中心',
-                icon:'el-icon-chat-line-square'
+            path: 'appeall',
+            component: () => import('./components/appeall.vue'),
+            data: {
+                name: '申诉中心',
+                icon: 'el-icon-chat-line-square'
             }
         },
         {
-            path:'invite',
-            component:()=>import('./components/invite.vue'),
-            data:{
-                name:'邀请好友',
-                icon:'el-icon-document-copy'
+            path: 'invite',
+            component: () => import('./components/invite.vue'),
+            data: {
+                name: '邀请好友',
+                icon: 'el-icon-document-copy'
             }
         }
         ,
         {
-            path:'blacklist',
-            component:()=>import('./components/blacklist.vue'),
-            data:{
-                name:'黑名单',
-                icon:'el-icon-user-solid'
+            path: 'blacklist',
+            component: () => import('./components/blacklist.vue'),
+            data: {
+                name: '黑名单',
+                icon: 'el-icon-user-solid'
             }
         }
     ]

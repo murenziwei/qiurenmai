@@ -97,7 +97,7 @@
                                 console.log(res,'res,sfefe');
 
                                 localStorage.setItem("token",res.data.access_token);
-                                localStorage.setItem("user",JSON.stringify(getR))
+                                localStorage.setItem("login",JSON.stringify(res.data))
 
                                 this.$loading({
                                     fullscreen:true,

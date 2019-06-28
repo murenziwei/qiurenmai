@@ -5,7 +5,7 @@
             <div slot="header" class="clearfix">
                 <span class="c-topic">账户充值</span>
                 <div class="c-right">
-                    当前账户本金余额：<span class="bold-red">0.00</span>金
+                    当前账户本金余额：<span class="bold-red">{{Number(ue_jin).toFixed(2)||'**'}}</span>金
                 </div>
             </div>
             <div>
@@ -146,10 +146,13 @@
 </template>
 
 <script>
+    import ajax from 'axios';
     export default {
         name: "itunes",
         data(){
             return {
+                ue_jin:'',
+
                 tableData:[],
                 banks:[
                     {
@@ -194,7 +197,22 @@
                 activeName:'first'
             }
         },
+        created(){
+            ajax.all([this.go_money()]);
+        },
         methods:{
+
+            go_money(){
+                console.log("是否知心");
+                return this.$api.ports.getMoney().then((res)=>{
+                    if(res.code){
+                        console.log(res,'getMoney');
+                        this.ue_jin=(res.data[0].ue_jin);
+                    }else{
+                        this.$notify.error(res.message);
+                    }
+                })
+            },
             moneySubmit(formName) {
                 this.$refs[formName].validate((valid) => {
                     if (valid) {

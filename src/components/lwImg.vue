@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div style="text-align:center;">
         <template>
             <el-image
                  style="width:6rem;height:6rem;margin:.5rem;"

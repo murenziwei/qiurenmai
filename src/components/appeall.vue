@@ -8,61 +8,66 @@
 
                 <el-form :inline="true" :model="payplay" class="demo-form-inline">
 
-                    <el-form-item label="申诉种类">
-                        <el-select v-model="payplay.appeall">
-                            <el-option  v-for="(item,index) in kinds" :value="item.name" :label="item.name" :key="index"></el-option>
-                        </el-select>
-                    </el-form-item>
-                    <el-form-item label="申诉状态">
+                    <!--<el-form-item label="申诉种类">-->
+                        <!--<el-select v-model="payplay.appeall">-->
+                            <!--<el-option  v-for="(item,index) in kinds" :value="item.name" :label="item.name" :key="index"></el-option>-->
+                        <!--</el-select>-->
+                    <!--</el-form-item>-->
+                    <!--<el-form-item label="申诉状态">-->
 
-                        <el-select v-model="payplay.status">
-                            <el-option v-for="(item,index) in aStatus" :value="item.name"  :label="item.name" :key="index"></el-option>
-                        </el-select>
-                    </el-form-item>
-                    <el-form-item label="任务ID">
-                        <el-input v-model="payplay.taskid"></el-input>
-                    </el-form-item>
+                        <!--<el-select v-model="payplay.status">-->
+                            <!--<el-option v-for="(item,index) in aStatus" :value="item.name"  :label="item.name" :key="index"></el-option>-->
+                        <!--</el-select>-->
+                    <!--</el-form-item>-->
+                    <!--<el-form-item label="任务ID">-->
+                        <!--<el-input v-model="payplay.taskid"></el-input>-->
+                    <!--</el-form-item>-->
 
 
                     <el-form-item>
-                        <el-button type="primary" @click="onSubmit">查询</el-button>
+                        <!--<el-button type="primary" @click="onSubmit">查询</el-button>-->
                         <el-popover
                                 placement="top"
                                 width="600"
                         >
-                            <el-form :model="aform">
+                            <el-form :model="aform" ref="aform" :rules="arules">
                                 <div>
                                     <span class="a-topic">发起申诉</span>
                                 </div>
-                                <el-form-item label="填写订单编号">
+                                <el-form-item label="填写订单编号" prop="son_task_id">
 
-                                    <el-input v-model="aform.orderid" placeholder="订单编号"></el-input>
+                                    <el-input v-model="aform.son_task_id" placeholder="订单编号" type="son_task_id"></el-input>
                                 </el-form-item>
 
-                                <el-form-item label="选择投诉类型">
+                                <el-form-item label="选择投诉类型"  prop="type">
 
-                                    <el-select v-model="aform.atype" placeholder="请选择" class="ml1">
+                                    <el-select v-model="aform.type" placeholder="请选择" class="ml1" type="type">
                                         <el-option v-for="(item) in atypes" :key="item.text"
                                                    :label="item.text"
-                                                   :value="item.text"></el-option>
+                                                   :value="item.value"></el-option>
                                     </el-select>
                                 </el-form-item>
 
-                                <el-form-item label="填写投诉说明">
+                                <el-form-item label="填写投诉说明" prop="note">
                                     <el-input
-                                            type="textarea"
+                                            type="note"
                                             :rows="5"
                                             placeholder="请输入内容"
-                                            v-model="aform.content">
+                                            v-model="aform.note">
                                     </el-input>
                                 </el-form-item>
                                 <el-form-item label="添加图片证据">
                                     <div>
                                         <el-upload
-                                                action="https://jsonplaceholder.typicode.com/posts/"
-                                                list-type="picture-card">
+                                                action="/api/Other/upload"
+                                                :data="{access_token:token}"
+                                                :on-success="imgSuccess" :on-remove="imgRemove"
+                                                list-type="picture-card"
+                                                accept="image/*"
+                                                :limit="2"
+                                        >
                                             <i class="el-icon-plus"></i>
-                                            <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+                                            <div slot="tip" class="el-upload__tip">最多只能上传2张！</div>
                                         </el-upload>
                                         <el-dialog :visible.sync="dialogVisible">
                                             <img width="100%" :src="dialogImageUrl" alt="" />
@@ -71,8 +76,8 @@
                                 </el-form-item>
                                 <el-divider></el-divider>
                                 <el-row style="text-align:right;">
-                                    <el-button type="success" icon="el-icon-circle-check">确认提交</el-button>
-                                    <el-button type="danger" icon="el-icon-circle-close">取消退出</el-button>
+                                    <el-button type="success" icon="el-icon-circle-check" @click="onSubmit('aform')">确认提交</el-button>
+                                    <!--<el-button type="danger" icon="el-icon-circle-close">取消退出</el-button>-->
                                 </el-row>
                             </el-form>
                             <el-button slot="reference" type="primary" class="ml1">发起申诉</el-button>
@@ -83,53 +88,71 @@
 
                 <el-table
                         border
-                        :data="tableData"
+                        :data="tableData.data"
                         style="width: 100%"
                         stripe>
 
                     <el-table-column
-                            prop="aplay"
+
                             label="申诉进程">
+                        <template slot-scope="scope">
+                            {{scope.row.status?'待查看':'已处理'}}
+                        </template>
                     </el-table-column>
                     <el-table-column
                             prop="atime"
                             label="申诉时间">
-                    </el-table-column>
-                    <el-table-column
-                            prop="akind"
-                            label="申诉种类">
-                    </el-table-column>
-                    <el-table-column
-                            prop="atype"
-                            label="申诉类型">
+                        <template  slot-scope="scope">
+                            {{new Date(scope.row.create_at*1000).toLocaleString()}}
+                        </template>
                     </el-table-column>
 
                     <el-table-column
-                            prop="orderid"
+                            label="申诉类型">
+
+                        <template  slot-scope="scope">
+                            {{scope.row.type|typefn}}
+                        </template>
+                    </el-table-column>
+
+                    <el-table-column
+                            prop="son_task_id"
                             label="订单id">
                     </el-table-column>
 
                     <el-table-column
-                            prop="isapeople"
+                            prop="user_id"
                             label="被申诉人id">
                     </el-table-column>
 
                     <el-table-column
-                            prop="pic"
-                            label="图片">
+                            label="图片1">
+                        <template slot-scope="scope">
+                            <lw-img :src-data="scope.row.img1"></lw-img>
+                        </template>
                     </el-table-column>
 
                     <el-table-column
-                            prop="content"
+                            label="图片2">
+                        <template slot-scope="scope">
+                            <lw-img :src-data="scope.row.img2"></lw-img>
+                        </template>
+                    </el-table-column>
+
+                    <el-table-column
+                            prop="note"
                             label="申诉内容">
                     </el-table-column>
                 </el-table>
 
+
                 <div class="mt-cen" style="text-align:center;">
                     <el-pagination
+                            :current-page.sync="tableData.current_page"
+                            @current-change="bschange"
                             background
                             layout="prev, pager, next"
-                            :total="100">
+                            :total="tableData.last_page*10">
                     </el-pagination>
                 </div>
             </div>
@@ -138,22 +161,54 @@
 </template>
 
 <script>
+
+    import ajax from 'axios';
+
     export default {
         name: "noorder",
         data(){
             return {
+                arules:{
+                    son_task_id:[
+                        {required:true,message:'请输入订单编号',trigger:'blur'}
+                    ],
+                    type:[
+                        {required:true,message:'请选择投诉类型',trigger:'blur'}
+                    ],
+
+                    note:[
+                        {required:true,message:'填写投诉说明',trigger:'blur'}
+                    ],
+                },
+
                 dialogImageUrl: '',
                 dialogVisible: false,
                 aform:{
-                    orderid:'',
-                    atype:'',
-                    content:'',
-
+                    son_task_id:'',
+                    type:'',
+                    note:'',
+                    imgs:[]
                 },
                 atypes:[
                     {
-                      text:'任务操作问题'
-
+                      text:'买手未按要求操作',
+                      value:1
+                    },
+                    {
+                        text:'买手退款',
+                        value:2
+                    },
+                    {
+                        text:'买手给差评',
+                        value:3
+                    },
+                    {
+                        text:'金额有误',
+                        value:4
+                    },
+                    {
+                        text:'其它',
+                        value:5
                     }
                 ],
                 aStatus:[
@@ -183,11 +238,115 @@
 
                 ],
                 payplay:{taskid:'',status:'',appeall:''},
-                tableData: []
+                tableData: [],
+
+
+                token:localStorage.getItem('token')||(()=>{this.$route.replace('/login')})()
             }
         },
+        filters:{
+            typefn:function(value){
+
+                var del='--';
+                switch (value){
+                    case 1:del='买手未按要求操作';break;
+                    case 2:del='买手退款';break;
+                    case 3:del='买手给差评';break;
+                    case 4:del='金额有误';break;
+                    case 5:del='其它';break;
+                }
+                return del;
+            }
+        },
+        created(){
+            ajax.all([this.go_list()]);
+        },
         methods:{
-            onSubmit(){}
+
+            imgSuccess(response, file, fileList){
+                    this.aform.imgs=fileList;
+            },
+            imgRemove(file, fileList){
+                    this.aform.imgs=fileList;
+            },
+
+            //重置表单
+            resetForm(formName) {
+                this.$refs[formName].resetFields();
+            },
+
+            bschange(ee){
+                this.go_list(ee);
+            },
+
+            go_list(){
+                return this.$api.ports.complainList().then((res)=>{
+                    console.log(res,'res');
+                    if(res.code){
+                        this.tableData=res.data[0];
+                    }else{
+                        this.$message.error(res.message);
+                    }
+                })
+            },
+
+
+            //执行申诉
+            go_ac(obj){
+
+                this.$confirm('此申诉操作将无法撤销, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'error'
+                }).then(() => {
+
+                    this.$api.ports.addComplain(obj).then((res)=>{
+                        if(res.code){
+                            this.$notify.success('提交成功')
+                            setTimeout(()=>{
+
+                                this.$router.go(0);
+                            },500)
+                        }else{
+                            this.$notify.error(res.message);
+                        }
+                    });
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '已取消申诉'
+                    });
+                });
+            },
+            onSubmit(formName){
+                this.$refs[formName].validate((valid) => {
+                    if (valid) {
+                        var getR=this.aform,img1='',img2='';
+
+                        if(getR.imgs[0]){
+
+                            img1=getR.imgs[0].response.data[0].filePath
+                        }
+
+                        if(getR.imgs[1]){
+                            img2=getR.imgs[1].response.data[0].filePath;
+                        }
+
+                        var obj={
+                            son_task_id:getR.son_task_id,
+                            type:getR.type,
+                            note:getR.note,
+                            img1,
+                            img2
+                        }
+
+                        this.go_ac(obj);
+
+                    } else {
+                        return false;
+                    }
+                });
+            }
         }
     }
 </script>

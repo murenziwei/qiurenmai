@@ -625,9 +625,12 @@
                                 </el-table-column>
 
                                 <el-table-column
-                                        prop="remark"
-                                        label="备注"
-                                >
+                                        fixed="right"
+                                        label="操作"
+                                        width="100">
+                                    <template slot-scope="scope">
+                                        <el-button type="text" size="small" @click="go_dr({id:scope.row.id})">撤销</el-button>
+                                    </template>
                                 </el-table-column>
                             </el-table>
                         </el-tab-pane>
@@ -754,6 +757,35 @@
             ])
         },
         methods:{
+
+            go_dr(obj){
+
+                this.$confirm('此撤销操作是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'error'
+                }).then(() => {
+
+                    this.$api.ports.doRecallTask(obj).then((res)=>{
+                        console.log(res,'db');
+                        if(res.code){
+                            this.$message({
+                                type: 'success',
+                                message: '撤销成功!'
+                            });
+
+                        }else{
+                            this.$notify.error(res.message);
+                        }
+
+                    })
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '已取消撤销'
+                    });
+                });
+            },
 
             payissue(){
                 var id=this.id;

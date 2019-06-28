@@ -226,6 +226,7 @@
                     ],
                     deal:[
                         {
+                            required:true,
                             validator:validatesel,
                             trigger:'change'
                         }

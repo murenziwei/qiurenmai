@@ -5,12 +5,11 @@
             <div slot="header" class="clearfix">
                 <span class="c-topic">账户明细</span>
                 <div class="c-right">
-                    <el-button type="success">提现佣金</el-button>
                     <el-popover
                             placement="left"
                             width="400"
                     >
-                        <el-form :model="moneyForm">
+                        <el-form :model="commissionForm" ref="commissionForm" :rules="crule">
                             <div class="mbottom1">
                                 <span class="box-clear">本金转佣金</span>
                             </div>
@@ -19,9 +18,42 @@
                                     type="info"
                                     show-icon class="mt1">
                             </el-alert>
-                            <el-form-item label="充值金币">
+                            <el-form-item label="提现佣金" prop="money">
                                 <el-row type="flex" align="middle">
-                                    <div><el-input v-model="moneyForm.money"></el-input></div>
+                                    <div>
+                                        <el-input v-model.number="commissionForm.money" type="money"></el-input>
+                                    </div>
+                                    <span>
+                                        金
+                                    </span>
+                                </el-row>
+                            </el-form-item>
+                            <el-divider></el-divider>
+                            <el-row>
+                                <el-button type="success" icon="el-icon-circle-check" @click="getCfn('commissionForm')">确认提交</el-button>
+                            </el-row>
+                        </el-form>
+                        <el-button slot="reference" type="success" class="ml1" @click="resetForm('commissionForm')">提现佣金</el-button>
+                    </el-popover>
+
+                    <el-popover
+                            placement="left"
+                            width="400"
+                    >
+                        <el-form :model="moneyForm" ref="moneyForm" :rules="crule">
+                            <div class="mbottom1">
+                                <span class="box-clear">本金转佣金</span>
+                            </div>
+                            <el-alert
+                                    title="1个金币=1.00元，10起充"
+                                    type="info"
+                                    show-icon class="mt1">
+                            </el-alert>
+                            <el-form-item label="佣金充值" prop="money">
+                                <el-row type="flex" align="middle">
+                                    <div>
+                                        <el-input v-model.number="moneyForm.money" type="money"></el-input>
+                                    </div>
                                     <span>
                                         金
                                     </span>
@@ -36,11 +68,10 @@
                             </el-alert>
                             <el-divider></el-divider>
                             <el-row>
-                                <el-button type="success" icon="el-icon-circle-check">确认提交</el-button>
-                                <el-button type="danger" icon="el-icon-circle-close">取消退出</el-button>
+                                <el-button type="success" icon="el-icon-circle-check" @click="getCfn('moneyForm')">确认提交</el-button>
                             </el-row>
                         </el-form>
-                        <el-button slot="reference" type="primary" class="ml1">佣金充值</el-button>
+                        <el-button slot="reference" type="primary" class="ml1" @click="resetForm('moneyForm')">充值佣金</el-button>
                     </el-popover>
                 </div>
             </div>
@@ -105,7 +136,7 @@
                         </el-table-column>
                     </el-table>
 
-                    <div class="mt-cen" style="text-align:center;">
+                    <div class="mt-cen mt1" style="text-align:center;">
                         <el-pagination
                                 @current-change="bschange"
                                 background
@@ -125,6 +156,18 @@
         name: "fund",
         data(){
             return {
+                commissionForm:{
+                    money:0
+                },
+                crule: {
+                    money:
+                        [
+                            { required: true, message: '请输入金额', trigger: 'blur' },
+                            { type: 'number',min:1, message: '请输入正确的金额', trigger: ['blur', 'change'] }
+                        ]
+
+                },
+
                 xieyi:{
                     title:'佣金充值方式',
                     arr:[
@@ -160,6 +203,52 @@
             }
         },
         methods:{
+            //重置表单
+
+            resetForm(formName) {
+                this.$refs[formName].resetFields();
+            },
+
+            //提现佣金
+            go_wm(money){
+                this.$confirm('再次确认是否提现？', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+
+                    this.$api.ports.withdMommis({money}).then((res)=>{
+                        if(res.code){
+
+                            this.$notify.success('提现成功');
+                            setTimeout(()=>{
+
+                                this.$router.go(0);
+                            },500)
+                        }else{
+                            this.$notify.error(res.message);
+                        }
+                    });
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '已取消'
+                    });
+                });
+            },
+
+            getCfn(formName) {
+                this.$refs[formName].validate((valid) => {
+                    if (valid) {
+                        switch(formName){
+                            case 'commissionForm':this.go_wm(this.commissionForm.money);break;
+                            case 'moneyForm':this.go_mf(this.moneyForm.money);break;
+                        }
+                    } else {
+                        return false;
+                    }
+                });
+            },
 
             //资金分页
             bschange(ee){

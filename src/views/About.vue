@@ -20,7 +20,7 @@
             <el-link  @click="peoplecontrol('shopseting')" class="recharge"> {{userinfo.user.ue_account|strno}}</el-link>
           </div>
           <div class="at-xs">
-            本金：<span class="money">{{ue_money['ue_jin']}}</span>金<el-link type="primary" @click="peoplecontrol('itunes')" class="recharge">充值</el-link>
+            佣金：<span class="money">{{ue_money['commission']}}</span>金<el-link type="primary" @click="peoplecontrol('itunes')" class="recharge">充值</el-link>
           </div>
 
           <div class="at-xs">
@@ -94,7 +94,7 @@
 
       <div v-if="tagCount==-2">
         <div class="pa1">
-          <paydetail></paydetail>
+          <paydetail :id="taskid"></paydetail>
         </div>
       </div>
       <div v-if="tagCount==-1">

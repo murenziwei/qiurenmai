@@ -37,7 +37,7 @@
                             </el-date-picker>
                         </el-form-item>
                         <el-form-item>
-                            <el-button type="primary" @click="onSubmit">查询</el-button>
+                            <el-button type="primary" >查询</el-button>
                         </el-form-item>
                     </el-form>
                     <el-divider></el-divider>
@@ -54,7 +54,7 @@
                                         <el-breadcrumb-item><el-link :type="(item.is_top?'success':'info')" :underline="false">{{(item.is_top?'已置顶':'未置顶')}}</el-link></el-breadcrumb-item>
                                         <el-breadcrumb-item>
                                             <el-link :href="'#/about?tagcount=-1&id='+item.id" target="_blank">[查看详情]</el-link>
-                                            <el-link  @click="revokefn(item.id)">[撤销]</el-link>
+                                            <!--<el-link  @click="revokefn(item.id)">[撤销]</el-link>-->
                                         </el-breadcrumb-item>
                                         <el-breadcrumb-item>
                                             <el-link :type="(item.is_finish?'success':'error')" :underline="false">{{(item.is_finish?'已完成':'未完成')}}</el-link>
@@ -253,8 +253,7 @@
                                     label="操作"
                                     width="100">
                                 <template slot-scope="scope">
-                                    <el-button type="text" size="small">查看</el-button>
-                                    <el-button type="text" size="small">编辑</el-button>
+                                    <el-button type="text" size="small" @click="confirm_pay({id:scope.row.task_id})">返款管理</el-button>
                                 </template>
                             </el-table-column>
                         </el-table>
@@ -399,8 +398,16 @@
                                 label="操作"
                                 width="100">
                             <template slot-scope="scope">
-                                <el-button type="text" size="small">查看</el-button>
-                                <el-button type="text" size="small">编辑</el-button>
+                                <template v-if="scope.row.empty_parcel_serve==null">
+
+                                    <el-button @click="cdv('aform',scope.row.id)" slot="reference" type="primary" size="small">获取快递单号</el-button>
+                                </template>
+                                <template v-else>
+                                    <p>
+                                        快递号：{{scope.row.post_no||'**'}}
+                                    </p>
+                                    <el-button type="success" size="small">发货</el-button>
+                                </template>
                             </template>
                         </el-table-column>
                     </el-table>
@@ -698,6 +705,26 @@
             </el-tabs>
         </el-card>
 
+        <el-dialog :visible.sync="centerDialogVisible"
+                   modal
+                   close-on-click-modal
+                   custom-class="dialog">
+            <div>
+                <el-form :model="aform" ref="aform" :rules="arules">
+                    <el-form-item label="填写快递单号" prop="note">
+                        <el-input
+                                type="note"
+                                placeholder="请输入快递单号"
+                                v-model="aform.note">
+                        </el-input>
+                    </el-form-item>
+                    <el-divider></el-divider>
+                    <el-row style="text-align:right;">
+                        <el-button type="success" icon="el-icon-circle-check" @click="onSubmitOne('aform')">确认提交</el-button>
+                    </el-row>
+                </el-form>
+            </div>
+        </el-dialog>
     </div>
 </template>
 
@@ -707,6 +734,19 @@
         name: "paytask",
         data(){
             return {
+                kuaidi:-1,
+
+                centerDialogVisible:false,
+
+                aform:{
+                    note:''
+                },
+                arules:{
+                    note:[
+                        {required:true,message:'快递单号不能为空！',trigger:'blur'}
+                    ]
+                },
+
                 postNI:{},
 
 
@@ -885,6 +925,16 @@
             }
         },
         methods:{
+            cdv(f,id){
+                this.resetForm(f);
+                this.kuaidi=id;
+                this.centerDialogVisible=true;
+
+            },
+            //重置表单
+            resetForm(formName) {
+                this.$refs[formName].resetFields();
+            },
             handleClick(id){
 
                 this.$confirm('再次确认是否完成？?', '提示', {
@@ -994,6 +1044,34 @@
                     }
                 })
             },
+            confirm_pay(obj){
+
+                this.$confirm('此返款确认操作是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'error'
+                }).then(() => {
+
+                    this.$api.ports.confRefund(obj).then((res)=>{
+                        console.log(res,'db');
+                        if(res.code){
+                            this.$message({
+                                type: 'success',
+                                message: '确认成功!'
+                            });
+
+                        }else{
+                            this.$notify.error(res.message);
+                        }
+
+                    })
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '已取消确认'
+                    });
+                });
+            },
 
             //快递单号管理
             go_pni(page){
@@ -1034,10 +1112,31 @@
                 })
             },
 
-
-            onSubmit(f){
-                console.log(f);
+            go_apn(obj){
+                return this.$api.ports.addPostNo(obj).then((res)=>{
+                    if(res.code){
+                        this.tabChange();
+                        console.log(res,'addPostNo');
+                    }else{
+                        this.$notify.error(res.message);
+                    }
+                });
+            },
+            onSubmitOne(formName){
+                console.log(this.aform,'aform');
+                this.$refs[formName].validate((valid) => {
+                    if (valid) {
+                        var obj={
+                            id:this.kuaidi||'-1',
+                            post_no:this.aform.note||'**'
+                        }
+                        this.go_apn(obj);
+                    } else {
+                        return false;
+                    }
+                });
             }
+
         },
         //监听属性
         watch:{

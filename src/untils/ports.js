@@ -32,11 +32,32 @@ const ports={
 
 
 
+
     //垫付任务详情
     taskInfo(obj){
         obj.access_token=localStorage.getItem('token');
         return axios.post(`${base.task}/taskInfo`,obj)
     },
+
+    //填写快递单号
+    addPostNo(obj){
+        obj.access_token=localStorage.getItem('token');
+        return axios.post(`${base.task}/addPostNo`,obj)
+    },
+
+
+    //任务流程详情
+    taskFlow(obj){
+        obj.access_token=localStorage.getItem('token');
+        return axios.post(`${base.task}/taskFlow`,obj)
+    },
+
+    //确认返款
+    confRefund(obj){
+        obj.access_token=localStorage.getItem('token');
+        return axios.post(`${base.task}/confRefund`,obj)
+    },
+
 
     //垫付任务详情头部
     taskInfoHead(obj){
@@ -207,6 +228,18 @@ const ports={
         return axios.post(`${base.task}/payTask`,obj)
     },
 
+    /*申诉模块*/
+    //申诉列表
+    complainList(){
+        return axios.post(`${base.complain}/complainList`,{
+            access_token:localStorage.getItem('token')
+        })
+    },
+    addComplain(obj){
+        obj.access_token=localStorage.getItem('token');
+        return axios.post(`${base.complain}/addComplain`,obj)
+    },
+
     /*资金流水记录*/
     jinList(page){
         var obj=page?{page}:{};
@@ -224,10 +257,23 @@ const ports={
 
 
     /*拉黑模块*/
-    Mblacklist(){
-        return axios.post(`${base.member}/blacklist`,{
-            access_token:localStorage.getItem('token')
-        })
+    //黑名单列表
+    Mblacklist(page){
+        var obj=page?{page}:{};
+        obj.access_token=localStorage.getItem('token');
+        return axios.post(`${base.member}/blacklist`,obj)
+    },
+
+    //执行拉黑
+    doBlack(obj){
+        obj.access_token=localStorage.getItem('token');
+        return axios.post(`${base.member}/doBlack`,obj)
+    },
+
+    //删除黑名单
+    cancelBlack(obj){
+        obj.access_token=localStorage.getItem('token');
+        return axios.post(`${base.member}/doBlack`,obj)
     }
 
 }

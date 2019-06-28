@@ -7,5 +7,6 @@ const base={
     task:'api/Task',
     member:'api/Member',
     jin:'api/Jin',
+    complain:'api/Complain'
 }
 export default base;

@@ -124,7 +124,7 @@ const maishou = {
             }
         },
         {
-            path: 'issue',
+            path: 'task',
             component: () => import('./components/maishou/task.vue'),
             data: {
                 name: '任务列表',
@@ -132,7 +132,7 @@ const maishou = {
             }
         },
         {
-            path: 'pricetable',
+            path: 'account',
             component: () => import('./components/maishou/account.vue'),
             data: {
                 name: '账号管理',
@@ -142,7 +142,12 @@ const maishou = {
                 {
                     path: 'binding',
                     name: 'binding',
-                    component: () => import('./components/maishou/children/account_binding.vue'),
+                    component: () => import('./components/maishou/children/bindshop.vue'),
+                },
+                {
+                    path: 'shopchange',
+                    name: 'shopchange',
+                    component: () => import('./components/maishou/children/shopchange.vue'),
                 }
             ]
         },

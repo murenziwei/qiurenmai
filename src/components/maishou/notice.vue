@@ -7,65 +7,63 @@
             </div>
             <div class="n-content">
                 <div>
-                    <p>账号：<span class="color">1231241342</span></p>
-                    <p>会员等级：<span class="color">vip会员</span></p>
-                    <p>到期时间：<span class="color">2017-20-12</span></p>
-                    <el-button type="text" @click="dialogVisible = true">续费会员</el-button>
+                    <p>账号：<span class="color">{{consumer.member.ue_account||'***'}}</span></p>
+                    <p>会员等级：<span class="color">{{consumer.member.is_vip?'VIP会员':'非会员'}}</span></p>
+                    <p>到期时间：<span class="color">{{new Date(consumer.member.vip*1000).toLocaleString()||'***'}}</span></p>
+                    <div>
 
-                    <el-dialog
+                        <el-popover
+                            placement="bottom"
+                            width="300"
+                            trigger="manual"
 
-                            title="提示"
-                            :visible.sync="dialogVisible"
-                            width="30%"
-                            :before-close="handleClose"
-                            class="el-alert-a"
-                    >
-                        <div class="alert-box">
-                            <span>账号：123456789</span>
-                            <span>当前为VIP会员</span>
-                            <span>有效期剩余：30天</span>
-                        </div>
-
-                        <div class="radio">
-                            <h5>选择开通时间</h5>
+                            v-model="dialogVisible">
                             <div>
-                                <el-radio-group v-model="radio" class="radio-box">
-                                    <el-radio :label="3">3个月40金币</el-radio>
-                                    <el-radio :label="6">6个月80金币</el-radio>
-                                    <el-radio :label="9">12个月150金币</el-radio>
-                                </el-radio-group>
+                                <div class="alert-box">
+                                    <p>账号：{{consumer.member.ue_account||'***'}}</p>
+                                    <p>当前为{{consumer.member.is_vip?'VIP':'非'}}会员</p>
+                                    <p>到期时间：<span class="color">{{new Date(consumer.member.vip*1000).toLocaleString()||'***'}}</span></p>
+                                </div>
+
+                                <div class="radio">
+                                    <h5>选择开通时间</h5>
+                                    <div class="s-h">
+
+                                        <el-radio-group v-model="vipValue">
+                                            <div class="r-childs" v-for="(vipV) in vdata">
+
+                                                <el-radio :label="vipV">
+                                                    续费{{vipV.month||'**'}}月，价格：{{vipV.price||'**'}}{{$store.state.mtext}}，介绍：<el-link :underline="false" type="danger">{{vipV.discount||'**'}}</el-link>
+                                                </el-radio>
+                                            </div>
+                                        </el-radio-group>
+                                    </div>
+                                </div>
+
+                                <p>
+                                    需支付：{{vipValue.price||'**'}}金币
+                                </p>
+                                <div slot="footer" class="dialog-footer">
+                                    <el-button @click="dialogVisible = false">取 消</el-button>
+                                    <el-button type="primary" @click="payissue(vipValue.id)">确 定</el-button>
+                                </div>
                             </div>
-                        </div>
-
-                        <div>
-                            <el-alert
-                                    title="您已选择购买VIP  有效期至：2019-09-09（原VIP会员剩余4天）"
-                                    type="warning">
-                            </el-alert>
-                        </div>
-                        <div>
-                            需支付：40金币
-                        </div>
-                        <span slot="footer" class="dialog-footer">
-                            <el-button @click="dialogVisible = false">取 消</el-button>
-                            <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
-                        </span>
-                    </el-dialog>
-
-
+                            <el-button class="pa1" type="text" slot="reference" @click="vipdata">续费会员</el-button>
+                    </el-popover>
+                    </div>
                 </div>
                 <div>
-                    <p>当前本金余额为：<span class="color">200金币</span></p>
-                    <p>当前佣金余额为：<span class="color">20金币</span></p>
+                    <p>当前本金余额为：<span class="color">{{consumer.member.ue_jin||'***'}}金币</span></p>
+                    <p>当前佣金余额为：<span class="color">{{consumer.member.commission||'***'}}金币</span></p>
                 </div>
                 <div>
-                    <p>已冻结的本金：<span class="color">200金币</span></p>
-                    <p>已冻结的佣金：<span class="color">20金币</span></p>
+                    <p>已冻结的本金：<span class="color">{{consumer.freeze_jin["freeze_cash_pledge"]||'***'}}金币</span></p>
+                    <p>已冻结的佣金：<span class="color">{{consumer.freeze_jin["freeze_commission"]||'***'}}金币</span></p>
                 </div>
                 <div>
-                    <p>待返还笔数：<span class="color">20 笔</span></p>
-                    <p>待商家返款本金：<span class="color">20金币</span></p>
-                    <p>待商家返款佣金：<span class="color">20金币</span></p>
+                    <p>待返还笔数：<span class="color">{{consumer.wait_jin["wait_count"]||'***'}} 笔</span></p>
+                    <p>待商家返款本金：<span class="color">{{consumer.wait_jin["wait_commission"]||'***'}}金币</span></p>
+                    <p>待商家返款佣金：<span class="color">{{consumer.wait_jin["wait_cash_pledge"]||'***'}}金币</span></p>
                 </div>
             </div>
         </el-card>
@@ -75,52 +73,108 @@
             <div slot="header" class="clearfix">
                 <span class="c-topic">买手公告</span>
             </div>
-            <div class="n-content">
-                <p>
-                    阿萨德阿萨德阿萨德阿萨德阿萨德阿萨德阿萨德阿萨德阿萨德阿萨德阿萨德阿萨德阿萨德阿萨德阿萨德阿萨德
-                    阿萨德阿萨德阿萨德阿萨德阿萨德阿萨德阿萨德阿萨德阿萨德阿萨德阿萨德阿萨德阿萨德阿萨德阿萨德阿萨德
-                </p>
-            </div>
+            <div class="n-content" v-html="consumer.note"></div>
         </el-card>
 
         <el-card class="box-card">
             <div slot="header" class="clearfix">
                 <span class="c-topic">任务管理</span>
             </div>
+
             <div>
-                <ul class="nav-list">
-                    <li>任务编号</li>
-                    <li>接单账号</li>
-                    <li>标题</li>
-                    <li>主图</li>
-                    <li>状态</li>
-                    <li>佣金</li>
-                    <li>操作</li>
-                </ul>
-                <ul v-for="item of 5" class="nav-list-item">
-                    <li>123456789</li>
-                    <li class="icon"><i><img src="./../../assets/bg-1.jpg" alt=""></i>123456789</li>
-                    <li>这是个标题.....</li>
-                    <li class="img"><img src="./../../assets/bg-1.jpg" alt=""></li>
-                    <li>待完成</li>
-                    <li class="color">¥20</li>
-                    <li>
-                        <el-button type="text">
-                            <span>继续</span>&nbsp;
-                            <span @click="open">放弃</span>
-                        </el-button>
-                    </li>
-                </ul>
+                <el-row v-for="(tval,tind) in task.data">
+                    <el-col :xs="24" :sm="12" :lg="6">
+
+                        <span>任务编号：</span>
+                        <span>{{tval.id||'**'}}</span>
+                    </el-col>
+                    <el-col :xs="24" :sm="12" :lg="6">
+
+                        <span>接单账号：</span>
+                        <span>{{tval.wangwang_id||'**'}}</span>
+                    </el-col>
+                    <el-col :xs="24" :sm="12" :lg="6">
+
+                        <span>状态：</span>
+                        <span>{{tval.status|statusfn}}</span>
+                    </el-col>
+                    <el-col :xs="24" :sm="12" :lg="6">
+
+                        <span>佣金：</span>
+                        <span>{{tval.real_commission||'**'}}</span>
+                    </el-col>
+                    <el-col :xs="24" :sm="12" :lg="6">
+
+                        <span>标题：</span>
+                        <span>{{tval.goods_name||'**'}}</span>
+                    </el-col>
+                    <el-col :xs="24" :sm="12" :lg="6">
+
+                        <p>主图：</p>
+
+                        <div>
+                            <lw-img v-for="(gval,gind) in (tval.goods_img)?(tval.goods_img).split(','):[tval,goods_img]" :src-data="gval"></lw-img>
+                        </div>
+                    </el-col>
+                    <el-col :xs="24" :sm="12" :lg="6">
+
+                        <span>平台类型：</span>
+                        <span>{{tval.platform_type|shops}}</span>
+
+                    </el-col>
+
+                    <el-col :xs="24">
+                        <el-button type="primary">继续</el-button>
+                        <el-button type="danger">放弃</el-button>
+                    </el-col>
+                </el-row>
+                <p style="text-align:center;" v-if="task.data.length===0"><el-link type="info" :underline="false">没有更多数据了</el-link></p>
+            </div>
+
+            <div class="mt-cen" style="text-align:center;">
+                <el-pagination
+                        :current-page.sync="task.current_page"
+                        @current-change="bschange"
+                        background
+                        layout="prev, pager, next"
+                        :total="task.last_page*10">
+                </el-pagination>
             </div>
         </el-card>
     </div>
 </template>
 
 <script>
+    import ajax from 'axios';
     export default {
         name: "notice",
         data() {
             return {
+                vipValue:{},
+
+                vdata:[],
+
+                task:{
+                    current_page: 0,
+                    data: [],
+                    last_page: 0,
+                    per_page: 0,
+                    total: 0
+                },
+                consumer:{
+                    freeze_jin:{
+
+                    },
+                    member: {
+                        commission:'',
+                        is_vip: '',
+                        ue_account: "15770830356",
+                        ue_jin: '',
+                        vip: ''
+                    },
+                    note:``,
+                    wait_jin:[]
+                },
                 count: 10,
                 loading: false,
                 arr: [
@@ -131,12 +185,114 @@
                 radio: 3
             }
         },
+        created(){
+            ajax.all([this.go_consumer(),this.go_task()]);
+        },
         computed: {
             noMore() {
                 return this.count >= 20
             }
         },
+        filters:{
+
+            shops:function(value){
+                var del='**';
+                switch (value){
+                    case 1:del='淘宝';break;
+                    case 3:del='拼多多';break;
+                }
+                return del;
+            },
+            statusfn:function(value){
+
+                var del='--';
+                switch (value){
+                    case 1:del='未接单';break;
+                    case 2:del='待操作';break;
+                    case 3:del='待返款发货';break;
+                    case 4:del='待评价';break;
+                    case 5:del='待确认';break;
+                    case 6:del='已完成';break;
+                }
+                return del;
+            },
+        },
         methods: {
+
+            payissue(id){
+                if(id){
+                    this.$confirm('再次确认是否续费？', '提示', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                        type: 'success'
+                    }).then(() => {
+
+                        this.$api.ports.buyVip({id}).then((res)=>{
+                            if(res.code){
+
+                                this.$notify.success('续费成功');
+                                setTimeout(()=>{
+
+                                    this.$router.go(0);
+                                },500)
+                            }else{
+                                this.$notify.error(res.message);
+                            }
+                        });
+                    }).catch(() => {
+                        this.$message({
+                            type: 'info',
+                            message: '已取消续费'
+                        });
+                    });
+                }else{
+                    this.$notify.error('请你选择开通时间！');
+                }
+            },
+
+            vipdata(){
+                if(!this.dialogVisible){
+                    return this.$api.ports.vipUI().then((res)=>{
+                        if(res.code){
+                            console.log(res,'vip');
+                            this.dialogVisible=true;
+                            this.vdata=res.data;
+                        }else{
+                            this.$notify.error(res.message);
+                        }
+                    })
+                }
+            },
+
+            //分页
+            bschange(page){
+                this.go_task(page);
+            },
+
+            //任务列表
+            go_task(page){
+                return this.$api.ports.consumerTask(page).then((res)=>{
+                    if(res.code){
+                        console.log(res,'task');
+                        this.task=res.data[0];
+                    }else{
+                        this.$notify.error(res.message);
+                    }
+                })
+            },
+
+
+            go_consumer(){
+                return this.$api.ports.consumerIndex().then((res)=>{
+                    if(res.code){
+                        console.log(res,'gsney');
+                        this.consumer=res.data[0];
+                    }else{
+                        this.$notify.error(res.message);
+                    }
+                })
+            },
+
             open() {
                 this.$confirm('确定放弃？', '放弃', {
                     confirmButtonText: '确定',
@@ -171,6 +327,20 @@
 </script>
 
 <style lang="less" scoped>
+    .s-h{
+        max-height:200px;
+        overflow-y:scroll;
+    }
+
+    .r-childs{
+        margin:1rem;
+        display:inline-block;
+        .el-radio{
+            white-space:normal;
+            line-height:2;
+        }
+    }
+
     .alert-box {
         span {
             margin: 0 5px;
@@ -178,7 +348,7 @@
     }
 
     .el-alert-a{
-        height:510px;
+
         div{
             margin: 5px 0;
         }
@@ -220,6 +390,7 @@
         div {
             display: flex;
             flex-wrap: wrap;
+            align-items:center;
             p {
                 padding: 5px 10px;
                 border-right: 1px solid #ccc;

@@ -1,187 +1,566 @@
 <template>
-    <div class="notice">
+    <div>
         <router-view></router-view>
-        <div v-if="!flag">
-            <el-card class="box-card">
-                <div slot="header" class="clearfix">
-                    <span class="c-topic">账号管理</span>
-                </div>
-                <div class="n-content">
-                    <h3>您还没有绑定账号，请先绑定买号及对应的收货信息，才可以接手任务</h3>
-                    <div @click="addAccount('tb')" class="addAccount">
-                        <i class="el-icon-plus"></i>
-                        添加淘宝账号 <span class="color">（最多允许绑定3个买号）</span>
-                    </div>
-                    <div @click="addAccount('pdd')" class="addAccount">
-                        <i class="el-icon-plus"></i>
-                        添加拼多多账号 <span class="color">（最多允许绑定3个买号）</span>
-                    </div>
-                    <div>
-                        <el-alert
-                                title="提示：买号提交审核后，平台预计在24小时内完成审核操作，只有通过的买号才能接手任务"
-                                type="info">
-                        </el-alert>
-                    </div>
+        <el-card class="box-card" v-if="isChild">
+            <div slot="header" class="clearfix">
+                <span class="c-topic">账号管理</span>
+            </div>
 
-                    <div>
-                        <h4>请注意</h4>
-                        <p>1.xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</p>
-                        <p>2.xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</p>
-                        <p>3.xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</p>
-                        <p>4.xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</p>
-                    </div>
-                </div>
-            </el-card>
-        </div>
+            <div>
+                <el-row>
+                    <el-col>
+                        <span class="ss-title">绑定店铺</span>
+                        <el-button type="text" class="ml1" @click="childfn">+增加绑定店铺</el-button>
+                    </el-col>
+                    <el-col>
+                        <el-link type="info">温馨提示 :店铺请填写自己店铺首页地址，不可绑定其他卖家的地址，否则会被处罚</el-link>
+                    </el-col>
+                </el-row>
+                <el-table class="mt1" border ref="filterTable" :data="shopData" style="width:100%;">
+                    <el-table-column label="全部" prop="type" :filters="typeFilters" :filter-method="filterType" width="200">
+                        <template slot-scope="scope">
+                            {{scope.row.type|shops}}
+                        </template>
+                    </el-table-column>
+                    <el-table-column label="ID" prop="id" width="200"></el-table-column>
+                    <el-table-column label="旺旺名称" prop="wwname" width="200"></el-table-column>
+                    <el-table-column label="常用登录地" prop="often_area" width="200"></el-table-column>
 
-        <div v-if="flag">
-            <el-card class="box-card">
-                <div slot="header" class="clearfix">
-                    <span class="c-topic">绑定账号</span>
+                    <el-table-column label="支付宝认证姓名" prop="zhifu_name" width="200"></el-table-column>
+                    <el-table-column label="审核状态" prop="status" width="200">
+                        <template slot-scope="scope">
+                            <el-link :type="scope.row.status.type" :underline="false">{{scope.row.status.text}}</el-link>
+                        </template>
+                    </el-table-column>
 
-                    <div class="binding">
-                        <div @click="addAccount('tb')" class="addAccount">
-                            <i class="el-icon-plus"></i>
-                            增加淘宝绑定账号
-                        </div>
-                        <div @click="addAccount('pdd')" class="addAccount">
-                            <i class="el-icon-plus"></i>
-                            增加拼多多绑定账号
-                        </div>
-                    </div>
-                </div>
-                <div>
-                    <ul class="nav-list">
-                        <li>全部</li>
-                        <li>ID</li>
-                        <li>支付宝认证姓名</li>
-                        <li>常用登陆地</li>
-                        <li>审核状态</li>
-                        <li>操作</li>
-                    </ul>
-                    <ul v-for="item of 5" class="nav-list-item">
-                        <li>123456789</li>
-                        <li>Red</li>
-                        <li>小红</li>
-                        <li>广东省 - 广州市</li>
-                        <li>已通过</li>
-                        <li>
-                            <el-button type="text">
-                                <span @click="open">删除</span>&nbsp;
-                                <span @click="amend">修改</span>
-                            </el-button>
-                        </li>
-                    </ul>
-                </div>
-            </el-card>
-        </div>
+                    <el-table-column label="修改" prop="set" width="200">
+                        <template slot-scope="scope">
+                            <el-row >
+                                <el-link class="kz_item" type="success" :href="'#/maishou/account/shopchange?id='+scope.row.id">修改</el-link>
+                                <el-button  class="kz_item" type="text"  @click="deleteT(scope.row.id)">删除</el-button>
+                            </el-row>
+                        </template>
+                    </el-table-column>
+                </el-table>
+            </div>
+        </el-card>
     </div>
 </template>
 
 <script>
+    import {provs_data, citys_data, dists_data} from 'lwarea';
+    import ajax from 'axios';
     export default {
-        name: "notice",
-        data() {
+        name: "shopseting",
+        data(){
+            var validateType=(rule, value, callback) => {
+                if (value=='') {
+                    callback(new Error('平台不能为空'));
+                } else {
+                    callback();
+                }
+            };
+
+            var validateName=(rule, value, callback) => {
+                if (value=='') {
+                    callback(new Error('店铺名称不能为空'));
+                } else {
+                    callback();
+                }
+            };
+
+
+            var validateUrl=(rule, value, callback) => {
+                if (value=='') {
+                    callback(new Error('店铺链接不能为空'));
+                } else {
+                    callback();
+                }
+            };
+
+
+            var validateWwid=(rule, value, callback) => {
+                if (value=='') {
+                    callback(new Error('旺旺ID不能为空'));
+                } else {
+                    callback();
+                }
+            };
+
+            var validateAddress=(rule, value, callback) => {
+                var sf=this.shopform;
+                if(sf.pdata==''){
+                    callback(new Error('发货地选择省不能为空'));
+                }else if(sf.cdata==''){
+
+                    callback(new Error('发货地选择市不能为空'));
+                }else if(sf.ddata==''){
+
+                    callback(new Error('发货地选择区不能为空'));
+                }else{
+                    this.shopform.address=sf.pdata.text+sf.cdata.text+sf.ddata.text;
+                    callback();
+                }
+            };
+
+            var validateDaddress=(rule, value, callback) => {
+                if (value=='') {
+                    callback(new Error('街道地址不能为空'));
+                } else {
+                    callback();
+                }
+            };
+
+
+            var checkPhone = (rule, value, callback) => {
+                if (!value) {
+                    return callback(new Error('手机号不能为空'));
+                }
+                setTimeout(() => {
+                    if (!Number.isInteger(value)) {
+                        callback(new Error('请输入手机号'));
+                    } else if(value.toString().length<11){
+                        callback(new Error('请输入11位数的手机号码'));
+                    }
+                    else {
+                        callback();
+                    }
+                }, 100);
+            };
+
+
             return {
-                flag: true
+                isChild:true,
+
+                member:{
+
+                },
+                shoprule:{
+                    type:[
+                        {
+                            required:true,validator:validateType, trigger: 'blur'
+                        }
+                    ],
+
+                    shopname:[
+                        {
+                            required:true,validator:validateName, trigger: 'blur'
+                        }
+                    ],
+                    shopurl:[
+                        {
+                            required:true,validator:validateUrl, trigger: 'blur'
+                        }
+                    ],
+
+                    wwid:[
+                        {
+                            required:true,validator:validateWwid, trigger: 'blur'
+                        }
+                    ],
+
+                    address:[
+                        {
+                            required:true,validator:validateAddress, trigger: 'blur'
+                        }
+                    ],
+
+                    detailed_address:[
+                        {
+                            required:true,validator:validateDaddress, trigger: 'blur'
+                        }
+                    ],
+                    phone:[
+                        {required:true,validator:checkPhone,trigger:'blur'}
+                    ],
+                    address_1:[
+                        {
+                            required:true,message:'发货地不能为空',trigger:'blur'
+                        }
+                    ]
+                },
+                bindshop:{},
+                provs_data, citys_data, dists_data,
+                shopformStatus:false,
+                shop_table:{
+                    detailed_address:'',
+                    type:'',
+                    shopname:'',
+                    shopurl:'',
+                    wwid:'',
+                    address_1:'',
+                    wwname:'',
+                    link:'',
+                    pdata:'',
+                    cdata:'',
+                    ddata:'',
+                    interval:'',
+                    status:'',
+                    set:'',
+                    phone:''
+                },
+                shopform:{
+                    detailed_address:'',
+                    type:'',
+                    shopname:'',
+                    shopurl:'',
+                    wwid:'',
+                    address:'',
+                    wwname:'',
+                    link:'',
+                    pdata:'',
+                    cdata:'',
+                    ddata:'',
+                    interval:'',
+                    status:'',
+                    set:'',
+                    phone:''
+                },
+                visible:false,
+                typeFilters:[
+                    {
+                        text:'淘宝',
+                        value:1
+                    },
+
+                    {
+                        text:'拼多多',
+                        value:3
+                    }
+                ],
+                shopData:[
+                    {
+                        type:'淘宝',
+                        shopname:'小仙女也分',
+                        wwname:'pdd212323232',
+                        link:'www.baidu.com',
+                        pdata:'江苏省',
+                        cdata:'泰州市',
+                        ddata:'海陵区',
+                        shipper:'江苏省-泰州市-海陵区',
+                        interval:33,
+                        status:'已通过',
+                        set:''
+                    },
+                    {
+                        type:'拼多多',
+                        shopname:'小仙女也分',
+                        wwname:'pdd212323232',
+                        link:'www.baidu.com',
+                        shipper:'江苏省-泰州市-海陵区',
+                        interval:33,
+                        status:'已通过',
+                        set:''
+                    }
+                ],
+                shopInd:-1
             }
         },
-        computed: {},
-        methods: {
-            open() {
-                this.$confirm('是否删除账号？', '删除账号', {
+
+        filters:{
+            shops:function(value){
+                var del='/';
+                switch (value){
+                    case 1:del='淘宝';break;
+                    case 3:del='拼多多';break;
+                }
+                return del;
+            },
+            filstr:function(value){
+                if(value){
+                    return value;
+                }else{
+                    return '***'
+                }
+            },
+            strno:function(value){
+                if(typeof value=='string'&&value.length>4){
+                    var arr=value.split('');
+                    arr.splice(-4);
+                    value=arr.join('');
+                    value+='***';
+                    return value;
+                }else{
+                    return '***'
+                }
+            }
+        },
+        created(){
+
+
+            this.$notify.info({title:'消息',duration:0,showClose:true,message:'任务期间请务必保持店铺名与淘宝平台一致，勿随意修改店铺名称，否则用户提交不了任务就会去退款！'});
+
+            //并发请求
+            ajax.all([this.go_route(this.$route)]);
+        },
+        methods:{
+            deleteT(id){
+
+                this.$confirm('再次确认是否删除？?', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
 
+                    this.$api.ports.doDelBuyNo({id}).then((res)=>{
+                        if(res.code){
+
+                            this.$notify.success('删除成功');
+                            this.go_shops();
+                        }else{
+                            this.$notify.error(res.message);
+                        }
+                    });
                 }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '已取消删除'
+                    });
+                });
+
+            },
+
+            //跳转子页面绑定店铺
+            childfn(){
+                this.$router.push({
+                    name:"binding"
+                })
+            },
+
+            popchnage(id,change,index){
+
+                var obj={id};
+
+                this.$api.ports.editBuyNo(obj).then((res)=>{
+                    console.log(res,'数据？');
+                    if(res.code){
+                        this.shopData[index].change=true;
+                        var getD=res.data[0];
+                        this.shop_table={
+                            id:getD.id,
+                            detailed_address:getD.detailed_address,
+                            type:getD.platform_type,
+                            shopname:getD.shop_name,
+                            shopurl:getD.shop_url,
+                            wwid:getD.wangwang_id,
+                            address_1:getD.address,
+                            wwname:getD.wangwang_id,
+                            set:'',
+                            phone:parseInt(getD.phone)
+                        };
+                    }else{
+                        this.shopData[index].change=false;
+                        this.$notify.error(res.message);
+                    }
 
                 });
             },
-            addAccount() {
-                this.$router.push({
-                    name: 'binding'
+            popfalse(index){
+                this.shopData[index].change=false;
+            },
+            pdatafn(e){
+                console.log(e,'change');
+            },
+            sfsfn(jude){
+                this.shopformStatus=jude
+            },
+
+            submitShop(formName) {
+                this.$refs[formName].validate((valid) => {
+                    if (valid) {
+                        var getR=this.shopform;
+                        console.log(getR,'getR');
+                        var obj={
+                            platform_type:getR.type,
+                            shop_name:getR.shopname,
+                            shop_url:getR.shopurl,
+                            wangwang_id:getR.wwid,
+                            address:getR.address,
+                            detailed_address:getR.detailed_address,
+                            phone:getR.phone
+                        }
+                        this.$api.ports.bindShop(obj).then((res)=>{
+                            if(res.code){
+                                this.$alert('提交成功，待1~3天平台审核', '温馨提示', {
+                                    confirmButtonText: '确定',
+                                    callback: action => {this.$router.go(0);
+                                        //this.sfsfn(false);
+                                    }
+                                });
+                            }else{
+                                this.$message.error(res.message);
+                            }
+                        }).catch((err)=>{
+                            console.log(err,'失败');
+                        })
+                    } else {
+                        return false;
+                    }
+                });
+            },
+
+            submitShopO(formName,index) {
+                console.log(index,'index');
+
+                this.$refs[formName].validate((valid) => {
+                    if (valid) {
+                        var getR=this.shop_table;
+                        console.log(getR,'getR');
+                        var obj={
+                            id:getR.id,
+                            platform_type:getR.type,
+                            shop_name:getR.shopname,
+                            shop_url:getR.shopurl,
+                            wangwang_id:getR.wwid,
+                            address:getR.address_1,
+                            detailed_address:getR.detailed_address,
+                            phone:getR.phone
+                        }
+                        this.$api.ports.doEditShop(obj).then((res)=>{
+                            if(res.code){
+                                this.$alert('提交成功，待1~3天平台审核', '温馨提示', {
+                                    confirmButtonText: '确定',
+                                    callback: action => {this.popfalse(index);this.$router.go(0)}
+                                });
+                            }else{
+                                this.$message.error(res.message);
+                            }
+                        }).catch((err)=>{
+                            console.log(err,'失败');
+                        })
+                    } else {
+                        return false;
+                    }
+                });
+            },
+            intervalfalse(index,count){
+                this.shopData[index].setCount=false;
+                if(count){
+                    this.shopData[index].interval=count;
+                }
+            },
+            submitShopT(id,change,index,take_interval){
+                if(take_interval>=15&&take_interval<=45){
+                    var obj={
+                        take_interval,id
+                    }
+                    console.log(obj);
+                    this.$api.ports.editInterval(obj).then((res)=>{
+                        console.log(res,'ss');
+                        if(res.code){
+
+                            this.$alert('修改成功', '温馨提示', {
+                                confirmButtonText: '确定',
+                                callback: action => {this.intervalfalse(index,take_interval)}
+                            });
+
+                        }else{
+                            this.$message.error(res.message);
+                        }
+                    }).catch((err)=>{
+                        console.log(err,'失败');
+                    })
+                }else{
+                    this.$notify.error('注意：取值在15~45之间！');
+                    return false;
+                }
+
+            },
+            go_shops(){
+                return this.$api.ports.buyNoList().then((res)=>{
+                    console.log(res,'buyNoList');
+                    if(res.code){
+
+                        var clearArr=res.data.map((v,i)=>{
+                            return {
+                                isCount:33,
+                                index:i,
+                                change:false,
+                                setCount:false,
+                                id:v.id,
+                                type:v.platform_type,
+                                wwname:v.wang_id,
+                                often_area:v.often_area,
+                                zhifu_name:v.zhifu_name,
+                                status:(()=>{
+                                    var del={type:'',text:'/'};
+                                    switch(v.status){
+                                        case 0:del={type:'info',text:'未审核'};break;
+                                        case 1:del={type:'success',text:'通过'};break;
+                                        case 2:del={type:'error',text:'未通过'};break;
+                                    }
+                                    return del;
+                                })(),
+                                set:''
+                            }
+                        });
+                        console.log(clearArr,'ca');
+
+                        this.shopData=clearArr;
+                    }else{
+                        this.$notify.error({
+                            title: '错误',
+                            message: res.message
+                        });
+                    }
+
                 })
             },
-            amend() {
-                this.$router.push({
-                    name: 'binding'
-                })
+            copy(ev){
+
+            },
+            go_route(to){
+                if(to.name==="binding"||to.name==='shopchange'){
+                    this.isChild=false;
+                }else{
+                    this.go_shops();
+                    this.isChild=true;
+                }
+            },
+            copySuccess(){
+                this.$message.success('复制成功');
+            },
+
+            copyError(){
+                this.$message.error('复制失败');
+            },
+
+            changeInter(count){
+                this.shopInd=count;
+            },
+            filterType(value, row, column) {
+                const property = column['property'];
+                return row[property] === value;
+            }
+        },
+        watch:{
+            "shopform.pdata"(){
+                this.shopform.cdata='';
+                this.shopform.ddata='';
+            },
+            "shopform.cdata"(){
+                this.shopform.ddata='';
+            },
+            "$route"(to){
+
+                this.go_route(to);
+
             }
         }
     }
 </script>
 
 <style lang="less" scoped>
-    .binding {
-        display: flex;
-        div {
-            margin-right: 20px;
-        }
+    .kz_item{
+        margin-right:.5rem;
     }
-
-    .margin-top {
-        margin-top: 30px;
+    .ss-title{
+        font-weight:bold;
     }
-
-    .box-card {
-        margin-bottom: 2rem;
+    .ml1{
+        margin:0 1rem;
     }
-
-    .loading-lw {
-        text-align: center;
-
+    .mt1{
+        margin:1rem 0;
     }
-
-    .addAccount {
-        margin-top: 10px;
-        line-height: 30px;
-        color: #409EFF;
-        cursor: pointer;
-    }
-
-    .clearfix {
-        text-align: left;
-        .c-topic {
-            font-size: 1.5rem;
-            color: #000;
-            font-weight: bold;
-            opacity: .8;
-        }
-    }
-
-    .n-content {
-        div {
-            margin: 10px 0;
-        }
-    }
-
-    .color {
-        color: #ccc;
-    }
-
-    .nav-list {
-        background: #ccc;
-        display: flex;
-        text-align: center;
-        list-style: none;
-        li {
-            flex: 1;
-            padding: 10px 0;
-        }
-    }
-
-    .nav-list-item {
-        display: flex;
-        text-align: center;
-        list-style: none;
-        align-items: center;
-        font-size: 14px;
-        li {
-            flex: 1;
-            padding: 10px 0;
-        }
-    }
-
 </style>

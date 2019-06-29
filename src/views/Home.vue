@@ -6,8 +6,8 @@
       <el-col class="wow bounceInDown hh-frame hidden-xs-only" data-wow-delay=".1s"   :xs="0" :sm="24">
         <div class="hh-left">
           <div class="h-l-btns">
-            <div class="hlb hlb-login">登录</div>
-            <div class="hlb hlb-register">注册</div>
+            <div class="hlb hlb-login" @click="loginnav">登录</div>
+            <div class="hlb hlb-register" @click="registernav">注册</div>
           </div>
           <ul class="h-l-ul">
 
@@ -69,7 +69,7 @@
             <el-row class="wow bounceInRight" data-wow-delay=".3s"  >
               <el-col :xs="24" :sm="12">
                 <div class="h-login h-btn" @click="loginnav">
-                  登陆
+                  登录
                   <div class="hb-icon"></div>
                 </div>
               </el-col>
@@ -396,7 +396,7 @@ export default {
   },
   mounted(){
     var that=this;
-    document.addEventListener('scroll',function(scro){
+    document.addEventListener('scroll',function(){
       that.scrolly=window.scrollY;
     })
   },

@@ -27,9 +27,13 @@
                     <el-table-column
                             prop="create_at"
                             label="拉黑时间">
+                        <template slot-scope="scope">
+                            {{new Date(scope.row.create_at*1000).toLocaleString()}}
+                        </template>
+                        {{}}
                     </el-table-column>
                     <el-table-column
-                            prop="id"
+                            prop="block_id"
                             label="用户id">
                     </el-table-column>
                     <el-table-column

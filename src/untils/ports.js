@@ -2,6 +2,77 @@ import base from './base';//导入接口域名列表
 import axios from './https';//导入http中创建的axios案例
 
 const ports={
+    /*买手端*/
+
+    /*买手vip模块*/
+
+    //购买vip界面
+    vipUI(){
+        return axios.post(`${base.vip}/vipUI`,{
+            access_token:localStorage.getItem('token')
+        })
+    },
+    //购买会员
+    buyVip(obj){
+        obj.access_token=localStorage.getItem('token');
+        return axios.post(`${base.vip}/buyVip`,obj)
+    },
+    /*页面*/
+    consumerIndex(){
+        return axios.post(`${base.member}/consumerIndex`,{
+            access_token:localStorage.getItem('token')
+        })
+    },
+    //页面任务
+    consumerTask(page){
+        var obj=page?{page}:{};
+        obj.access_token=localStorage.getItem('token');
+        return axios.post(`${base.member}/consumerTask`,obj)
+    },
+
+    //待完成订单页面
+
+    waitTaskList(page){
+        var obj=page?{page}:{};
+        obj.access_token=localStorage.getItem('token');
+        return axios.post(`${base.member}/waitTaskList`,obj)
+    },
+
+    /*账号管理模块*/
+
+    //绑定账号
+
+    bindBugNo(obj){
+        obj.access_token=localStorage.getItem('token');
+        return axios.post(`${base.member}/bindBugNo`,obj)
+    },
+
+    //绑定账号列表
+    buyNoList(){
+        return axios.post(`${base.member}/buyNoList`,{
+            access_token:localStorage.getItem('token')
+        })
+    },
+
+    //绑定账号列表
+    doEditbuyNo(obj){
+        obj.access_token=localStorage.getItem('token');
+        return axios.post(`${base.member}/doEditbuyNo`,obj)
+    },
+
+    //删除绑定账号
+    doDelBuyNo(obj){
+        obj.access_token=localStorage.getItem('token');
+        return axios.post(`${base.member}/doDelBuyNo`,obj)
+    },
+
+    //执行修改绑定账号
+    editBuyNo(obj){
+        obj.access_token=localStorage.getItem('token');
+        return axios.post(`${base.member}/editBuyNo`,obj)
+    },
+
+    /*商家端*/
     /*图片上传*/
     imgupload(){
 
@@ -273,7 +344,7 @@ const ports={
     //删除黑名单
     cancelBlack(obj){
         obj.access_token=localStorage.getItem('token');
-        return axios.post(`${base.member}/doBlack`,obj)
+        return axios.post(`${base.member}/cancelBlack`,obj)
     }
 
 }

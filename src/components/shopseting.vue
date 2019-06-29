@@ -211,11 +211,11 @@
 
                                 <el-popover
                                         placement="left"
-                                        width="800"
+                                        width="600"
                                         v-model="scope.row.change"
                                 >
 
-                                    <el-form :model="shop_table" :ref="'shop_table'+scope.row.index" :rules="shoprule">
+                                    <el-form style="height:70vh;overflow-y:auto;" :model="shop_table" :ref="'shop_table'+scope.row.index" :rules="shoprule">
                                         <el-form-item label="请选择平台" prop="type">
 
                                             <el-select placeholder="请选择" v-model="shop_table.type" type="type">

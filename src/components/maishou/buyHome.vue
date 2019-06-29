@@ -52,10 +52,13 @@
 </template>
 
 <script>
+    import ajax from 'axios';
     export default {
         name: "but-home",
         data(){
             return {
+                consumer:{},
+
                 count: 10,
                 loading: false,
                 activeName:'first',
@@ -65,12 +68,26 @@
                 ]
             }
         },
+        created(){
+            ajax.all([this.go_consumer()]);
+        },
         computed: {
             noMore () {
                 return this.count >= 20
             }
         },
         methods:{
+            go_consumer(){
+                return this.$api.ports.consumerIndex().then((res)=>{
+                    if(res.code){
+                        console.log(res,'getMoney');
+                        this.consumer=res.data[0];
+                    }else{
+                        this.$notify.error(res.message);
+                    }
+                })
+            },
+
             load () {
                 if(!this.noMore){
 

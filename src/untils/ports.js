@@ -4,6 +4,20 @@ import axios from './https';//导入http中创建的axios案例
 const ports={
     /*买手端*/
 
+    /*买手任务流程*/
+    //任务列表
+    filtTask(obj){
+        obj.access_token=localStorage.getItem('token');
+        return axios.post(`${base.dotask}/filtTask`,obj)
+    },
+
+    //接受任务
+    takeTask(obj){
+        obj.access_token=localStorage.getItem('token');
+        return axios.post(`${base.dotask}/filtTask`,obj)
+    },
+
+
     /*买手vip模块*/
 
     //购买vip界面
@@ -89,14 +103,61 @@ const ports={
     },
 
     /*资金模块*/
+    //充值提交记录列表
+    topUpList(page){
+
+        var obj=page?{page}:{};
+        obj.access_token=localStorage.getItem('token');
+        return axios.post(`${base.jin}/topUpList`,obj)
+    },
+
+    //提现金额表
+    withdrawTable(page){
+
+        var obj=page?{page}:{};
+        obj.access_token=localStorage.getItem('token');
+        return axios.post(`${base.jin}/withdrawTable`,obj)
+    },
+    //提现本金
+    withdrawPost(obj){
+        obj.access_token=localStorage.getItem('token');
+        return axios.post(`${base.jin}/withdrawPost`,obj)
+    },
+    //提现佣金
+    withdMommis(obj){
+        obj.access_token=localStorage.getItem('token');
+        return axios.post(`${base.jin}/withdMommis`,obj)
+    },
+    //提现界面
+
+    withdrawList(){
+        return axios.post(`${base.jin}/withdrawList`,{
+            access_token:localStorage.getItem('token')
+        })
+    },
+
     topUpPost(obj){
         obj.access_token=localStorage.getItem('token');
         return axios.post(`${base.jin}/topUpPost`,obj)
     },
+
     getMoney(){
         return axios.post(`${base.jin}/getMoney`,{
             access_token:localStorage.getItem('token')
         })
+    },
+
+    bindBankCard(){
+        return axios.post(`${base.jin}/bindBankCard`,{
+            access_token:localStorage.getItem('token')
+        })
+    },
+
+
+    //绑定银行卡
+    doBindBankCard(obj){
+        obj.access_token=localStorage.getItem('token');
+        return axios.post(`${base.jin}/doBindBankCard`,obj)
     },
 
     /*垫付任务管理*/

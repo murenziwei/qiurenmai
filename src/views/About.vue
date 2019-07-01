@@ -20,7 +20,7 @@
             <el-link  @click="peoplecontrol('shopseting')" class="recharge"> {{userinfo.user.ue_account|strno}}</el-link>
           </div>
           <div class="at-xs">
-            佣金：<span class="money">{{ue_money['commission']}}</span>金<el-link type="primary" @click="peoplecontrol('itunes')" class="recharge">充值</el-link>
+            本金：<span class="money">{{ue_money['ue_jin']|strno}}</span>金<el-link type="primary" @click="peoplecontrol('itunes')" class="recharge">充值</el-link>
           </div>
 
           <div class="at-xs">

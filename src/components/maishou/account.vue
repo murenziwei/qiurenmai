@@ -33,7 +33,7 @@
                         </template>
                     </el-table-column>
 
-                    <el-table-column label="修改" prop="set" width="200">
+                    <el-table-column label="修改" prop="set" width="200" fixed="right">
                         <template slot-scope="scope">
                             <el-row >
                                 <el-link class="kz_item" type="success" :href="'#/maishou/account/shopchange?id='+scope.row.id">修改</el-link>
@@ -542,9 +542,7 @@
                 this.shopform.ddata='';
             },
             "$route"(to){
-
                 this.go_route(to);
-
             }
         }
     }

@@ -5,42 +5,42 @@
 
             <el-tabs v-model="activeName" @tab-click="tabChange">
                 <el-tab-pane label="浏览任务管理" name="first">
-                    <el-form :inline="true" :model="formInline" class="demo-form-inline">
-                        <el-form-item label="任务ID">
-                            <el-input v-model="formInline.id"></el-input>
-                        </el-form-item>
-                        <el-form-item label="店铺">
-                            <el-select v-model="formInline.region">
-                                <el-option v-for="(item,index) in shops" :key="index" :label="item.name" :value="item.name"></el-option>
+                    <!--<el-form :inline="true" :model="formInline" class="demo-form-inline">-->
+                        <!--<el-form-item label="任务ID">-->
+                            <!--<el-input v-model="formInline.id"></el-input>-->
+                        <!--</el-form-item>-->
+                        <!--<el-form-item label="店铺">-->
+                            <!--<el-select v-model="formInline.region">-->
+                                <!--<el-option v-for="(item,index) in shops" :key="index" :label="item.name" :value="item.name"></el-option>-->
 
-                            </el-select>
-                        </el-form-item>
-                        <el-form-item label="类型">
-                            <el-select v-model="formInline.type">
-                                <el-option v-for="(item,index) in tasks" :key="index" :label="item.name" :value="index"></el-option>
+                            <!--</el-select>-->
+                        <!--</el-form-item>-->
+                        <!--<el-form-item label="类型">-->
+                            <!--<el-select v-model="formInline.type">-->
+                                <!--<el-option v-for="(item,index) in tasks" :key="index" :label="item.name" :value="index"></el-option>-->
 
-                            </el-select>
-                        </el-form-item>
-                        <el-form-item label="状态">
-                            <el-select v-model="formInline.status">
-                                <el-option v-for="(item,index) in status" :key="index" :label="item.name" :value="index"></el-option>
+                            <!--</el-select>-->
+                        <!--</el-form-item>-->
+                        <!--<el-form-item label="状态">-->
+                            <!--<el-select v-model="formInline.status">-->
+                                <!--<el-option v-for="(item,index) in status" :key="index" :label="item.name" :value="index"></el-option>-->
 
-                            </el-select>
-                        </el-form-item>
-                        <el-form-item label="发布时间">
-                            <el-date-picker
-                                    v-model="formInline.issuetime"
-                                    type="daterange"
-                                    range-separator="至"
-                                    start-placeholder="开始日期"
-                                    end-placeholder="结束日期">
-                            </el-date-picker>
-                        </el-form-item>
-                        <el-form-item>
-                            <el-button type="primary" @click="onSubmit">查询</el-button>
-                        </el-form-item>
-                    </el-form>
-                    <el-divider></el-divider>
+                            <!--</el-select>-->
+                        <!--</el-form-item>-->
+                        <!--<el-form-item label="发布时间">-->
+                            <!--<el-date-picker-->
+                                    <!--v-model="formInline.issuetime"-->
+                                    <!--type="daterange"-->
+                                    <!--range-separator="至"-->
+                                    <!--start-placeholder="开始日期"-->
+                                    <!--end-placeholder="结束日期">-->
+                            <!--</el-date-picker>-->
+                        <!--</el-form-item>-->
+                        <!--<el-form-item>-->
+                            <!--<el-button type="primary" @click="onSubmit">查询</el-button>-->
+                        <!--</el-form-item>-->
+                    <!--</el-form>-->
+                    <!--<el-divider></el-divider>-->
                     <div>
                         <div class="an-item" v-for="(item,index) in bsdata.data" :key="index">
                             <el-row class="t-i-header" type="flex" align="middle" justify="space-between">
@@ -111,6 +111,10 @@
 
                             <el-divider></el-divider>
                         </div>
+
+                        <p v-if="!(bsdata.data?bsdata.data.length:false)" style="text-align:center">
+                            <el-link :underline="false" >没有更多数据了</el-link>
+                        </p>
                     </div>
                     <div class="mt-cen" style="text-align:center;">
                         <el-pagination
@@ -123,28 +127,28 @@
                     </div>
                 </el-tab-pane>
                 <el-tab-pane label="浏览撤销订单" name="second">
-                        <el-form :inline="true" :model="formOutline" class="demo-form-inline">
+                        <!--<el-form :inline="true" :model="formOutline" class="demo-form-inline">-->
 
-                            <el-form-item label="店铺">
-                                <el-select v-model="formOutline.region">
-                                    <el-option v-for="(item,index) in shops" :key="index" :label="item.name" :value="item.name"></el-option>
+                            <!--<el-form-item label="店铺">-->
+                                <!--<el-select v-model="formOutline.region">-->
+                                    <!--<el-option v-for="(item,index) in shops" :key="index" :label="item.name" :value="item.name"></el-option>-->
 
-                                </el-select>
-                            </el-form-item>
+                                <!--</el-select>-->
+                            <!--</el-form-item>-->
 
-                            <el-form-item label="类型">
-                                <el-select v-model="formOutline.type">
-                                    <el-option v-for="(item,index) in tasks" :key="index" :label="item.name" :value="index"></el-option>
+                            <!--<el-form-item label="类型">-->
+                                <!--<el-select v-model="formOutline.type">-->
+                                    <!--<el-option v-for="(item,index) in tasks" :key="index" :label="item.name" :value="index"></el-option>-->
 
-                                </el-select>
-                            </el-form-item>
-                            <el-form-item label="任务ID">
-                                <el-input v-model="formOutline.taskid"></el-input>
-                            </el-form-item>
-                            <el-form-item>
-                                <el-button type="primary" @click="onSubmit">查询</el-button>
-                            </el-form-item>
-                        </el-form>
+                                <!--</el-select>-->
+                            <!--</el-form-item>-->
+                            <!--<el-form-item label="任务ID">-->
+                                <!--<el-input v-model="formOutline.taskid"></el-input>-->
+                            <!--</el-form-item>-->
+                            <!--<el-form-item>-->
+                                <!--<el-button type="primary" @click="onSubmit">查询</el-button>-->
+                            <!--</el-form-item>-->
+                        <!--</el-form>-->
 
                         <el-table
                                 :data="outData.data"

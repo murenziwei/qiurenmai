@@ -4,105 +4,105 @@
         <el-card class="box-card">
             <div slot="header" class="clearfix">
                 <span class="c-topic">账户明细</span>
-                <div class="c-right">
-                    <el-popover
-                            placement="left"
-                            width="400"
-                    >
-                        <el-form :model="commissionForm" ref="commissionForm" :rules="crule">
-                            <div class="mbottom1">
-                                <span class="box-clear">本金转佣金</span>
-                            </div>
-                            <el-alert
-                                    title="1个金币=1.00元，10起充"
-                                    type="info"
-                                    show-icon class="mt1">
-                            </el-alert>
-                            <el-form-item label="提现佣金" prop="money">
-                                <el-row type="flex" align="middle">
-                                    <div>
-                                        <el-input v-model.number="commissionForm.money" type="money"></el-input>
-                                    </div>
-                                    <span>
-                                        金
-                                    </span>
-                                </el-row>
-                            </el-form-item>
-                            <el-divider></el-divider>
-                            <el-row>
-                                <el-button type="success" icon="el-icon-circle-check" @click="getCfn('commissionForm')">确认提交</el-button>
-                            </el-row>
-                        </el-form>
-                        <el-button slot="reference" type="success" class="ml1" @click="resetForm('commissionForm')">提现佣金</el-button>
-                    </el-popover>
+                <!--<div class="c-right">-->
+                    <!--<el-popover-->
+                            <!--placement="left"-->
+                            <!--width="400"-->
+                    <!--&gt;-->
+                        <!--<el-form :model="commissionForm" ref="commissionForm" :rules="crule">-->
+                            <!--<div class="mbottom1">-->
+                                <!--<span class="box-clear">本金转佣金</span>-->
+                            <!--</div>-->
+                            <!--<el-alert-->
+                                    <!--title="1个金币=1.00元，10起充"-->
+                                    <!--type="info"-->
+                                    <!--show-icon class="mt1">-->
+                            <!--</el-alert>-->
+                            <!--<el-form-item label="提现佣金" prop="money">-->
+                                <!--<el-row type="flex" align="middle">-->
+                                    <!--<div>-->
+                                        <!--<el-input v-model.number="commissionForm.money" type="money"></el-input>-->
+                                    <!--</div>-->
+                                    <!--<span>-->
+                                        <!--金-->
+                                    <!--</span>-->
+                                <!--</el-row>-->
+                            <!--</el-form-item>-->
+                            <!--<el-divider></el-divider>-->
+                            <!--<el-row>-->
+                                <!--<el-button type="success" icon="el-icon-circle-check" @click="getCfn('commissionForm')">确认提交</el-button>-->
+                            <!--</el-row>-->
+                        <!--</el-form>-->
+                        <!--<el-button slot="reference" type="success" class="ml1" @click="resetForm('commissionForm')">提现佣金</el-button>-->
+                    <!--</el-popover>-->
 
-                    <el-popover
-                            placement="left"
-                            width="400"
-                    >
-                        <el-form :model="moneyForm" ref="moneyForm" :rules="crule">
-                            <div class="mbottom1">
-                                <span class="box-clear">本金转佣金</span>
-                            </div>
-                            <el-alert
-                                    title="1个金币=1.00元，10起充"
-                                    type="info"
-                                    show-icon class="mt1">
-                            </el-alert>
-                            <el-form-item label="佣金充值" prop="money">
-                                <el-row type="flex" align="middle">
-                                    <div>
-                                        <el-input v-model.number="moneyForm.money" type="money"></el-input>
-                                    </div>
-                                    <span>
-                                        金
-                                    </span>
-                                </el-row>
-                            </el-form-item>
+                    <!--<el-popover-->
+                            <!--placement="left"-->
+                            <!--width="400"-->
+                    <!--&gt;-->
+                        <!--<el-form :model="moneyForm" ref="moneyForm" :rules="crule">-->
+                            <!--<div class="mbottom1">-->
+                                <!--<span class="box-clear">本金转佣金</span>-->
+                            <!--</div>-->
+                            <!--<el-alert-->
+                                    <!--title="1个金币=1.00元，10起充"-->
+                                    <!--type="info"-->
+                                    <!--show-icon class="mt1">-->
+                            <!--</el-alert>-->
+                            <!--<el-form-item label="佣金充值" prop="money">-->
+                                <!--<el-row type="flex" align="middle">-->
+                                    <!--<div>-->
+                                        <!--<el-input v-model.number="moneyForm.money" type="money"></el-input>-->
+                                    <!--</div>-->
+                                    <!--<span>-->
+                                        <!--金-->
+                                    <!--</span>-->
+                                <!--</el-row>-->
+                            <!--</el-form-item>-->
 
-                            <el-alert type="error">
-                                <p>
-                                    {{xieyi.title}}
-                                </p>
-                                <p class="didi" v-for="(item,index) in xieyi.arr" :key="index">{{index+1}}.{{item}}</p>
-                            </el-alert>
-                            <el-divider></el-divider>
-                            <el-row>
-                                <el-button type="success" icon="el-icon-circle-check" @click="getCfn('moneyForm')">确认提交</el-button>
-                            </el-row>
-                        </el-form>
-                        <el-button slot="reference" type="primary" class="ml1" @click="resetForm('moneyForm')">充值佣金</el-button>
-                    </el-popover>
-                </div>
+                            <!--<el-alert type="error">-->
+                                <!--<p>-->
+                                    <!--{{xieyi.title}}-->
+                                <!--</p>-->
+                                <!--<p class="didi" v-for="(item,index) in xieyi.arr" :key="index">{{index+1}}.{{item}}</p>-->
+                            <!--</el-alert>-->
+                            <!--<el-divider></el-divider>-->
+                            <!--<el-row>-->
+                                <!--<el-button type="success" icon="el-icon-circle-check" @click="getCfn('moneyForm')">确认提交</el-button>-->
+                            <!--</el-row>-->
+                        <!--</el-form>-->
+                        <!--<el-button slot="reference" type="primary" class="ml1" @click="resetForm('moneyForm')">充值佣金</el-button>-->
+                    <!--</el-popover>-->
+                <!--</div>-->
             </div>
             <div class="body">
-                <div>
+                <div style="margin:1rem 0;">
                     <el-breadcrumb separator="/">
                         <el-breadcrumb-item>
-                            本金账户： <el-link type="primary">0.00</el-link> 金  => <el-link type="primary">明细</el-link>
+                            本金账户： <el-link type="primary">{{ue_money.ue_jin||'**'}}</el-link> 金
                         </el-breadcrumb-item>
                         <el-breadcrumb-item>
-                            拥金账户： <el-link type="primary" class="number-nav">0.00</el-link> 金  => <el-link type="primary" class="number-nav">明细</el-link>
+                            拥金账户： <el-link type="primary" class="number-nav">{{ue_money.commission||'**'}}</el-link> 金
                         </el-breadcrumb-item>
                     </el-breadcrumb>
                 </div>
-                <div class="mt1">
-                    <el-form :inline="true" :model="formInline" class="demo-form-inline">
-                        <el-form-item label="时间设置">
+                <!--<div class="mt1">-->
+                    <!--<el-form :inline="true" :model="formInline" class="demo-form-inline">-->
+                        <!--<el-form-item label="时间设置">-->
 
-                            <el-date-picker
-                                    v-model="formInline.time"
-                                    type="daterange"
-                                    range-separator="至"
-                                    start-placeholder="开始日期"
-                                    end-placeholder="结束日期">
-                            </el-date-picker>
-                        </el-form-item>
-                        <el-form-item>
-                            <el-button type="primary" @click="onSubmit">查询</el-button>
-                        </el-form-item>
-                    </el-form>
-                </div>
+                            <!--<el-date-picker-->
+                                    <!--v-model="formInline.time"-->
+                                    <!--type="daterange"-->
+                                    <!--range-separator="至"-->
+                                    <!--start-placeholder="开始日期"-->
+                                    <!--end-placeholder="结束日期">-->
+                            <!--</el-date-picker>-->
+                        <!--</el-form-item>-->
+                        <!--<el-form-item>-->
+                            <!--<el-button type="primary" @click="onSubmit">查询</el-button>-->
+                        <!--</el-form-item>-->
+                    <!--</el-form>-->
+                <!--</div>-->
                 <div>
 
                     <el-table
@@ -112,6 +112,7 @@
                         <el-table-column
                                 prop="date"
                                 label="时间"
+                                width="200"
                                 >
                             <template slot-scope="scope">
                                 {{new Date(scope.row.created_at*1000).toLocaleString()}}
@@ -119,12 +120,14 @@
                         </el-table-column>
                         <el-table-column
                                 prop="note"
-                                label="备注">
+                                label="备注"
+                                width="200">
                         </el-table-column>
 
                         <el-table-column
 
-                                label="交易金额">
+                                label="交易金额"
+                                width="200">
 
                             <template slot-scope="scope">
                                 {{scope.row.from|fromfil}}：{{scope.row.num}}
@@ -132,7 +135,8 @@
                         </el-table-column>
                         <el-table-column
                                 prop="after_num"
-                                label="余额">
+                                label="余额"
+                                width="200">
                         </el-table-column>
                     </el-table>
 
@@ -156,6 +160,10 @@
         name: "fund",
         data(){
             return {
+                ue_money:{
+
+                },
+
                 commissionForm:{
                     money:0
                 },
@@ -189,7 +197,7 @@
             }
         },
         created(){
-            ajax.all([this.go_money()]);
+            ajax.all([this.go_money(),this.go_qian()]);
         },
         filters:{
             fromfil:function(val){
@@ -203,6 +211,18 @@
             }
         },
         methods:{
+
+            go_qian(){
+                return this.$api.ports.getMoney().then((res)=>{
+                    if(res.code){
+                        console.log(res,'getMoney');
+                        this.ue_money=res.data[0];
+                    }else{
+                        this.$notify.error(res.message);
+                    }
+                })
+            },
+
             //重置表单
 
             resetForm(formName) {
@@ -288,7 +308,7 @@
         margin:0 1rem;
     }
     .c-topic{
-        float:left;
+        /*float:left;*/
     }
     .c-right{
         text-align:right;

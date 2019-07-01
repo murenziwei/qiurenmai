@@ -46,26 +46,25 @@
                                     </p>
                                     <div class="mt1">
                                         <el-popover
+                                                v-model="popstatus1"
                                                 placement="top"
-                                                width="600"
+                                                width="300"
                                         >
-                                            <el-form :model="moneyForm" :rules="moneyRule" ref="moneyForm">
+                                            <el-form style="height:70vh;overflow-y:scroll;" :model="moneyForm" :rules="moneyRule" ref="moneyForm">
                                                 <div class="mt1">
                                                     <span class="box-clear">提交转账信息</span><el-link type="danger">（请勿通过支付宝转账）</el-link>
                                                 </div>
                                                 <el-divider></el-divider>
 
                                                 <el-form-item label="转账银行名称" prop="bank">
-                                                    <el-select v-model="moneyForm.bank" type="bank">
-                                                        <el-option v-for="(item,index) in banks" :label="item.name" :key="index" :value="item.name"></el-option>
-                                                    </el-select>
+                                                    <el-input v-model="moneyForm.bank"></el-input>
                                                 </el-form-item>
                                                 <el-form-item label="转账银行卡号" prop="card_no">
                                                     <el-input v-model="moneyForm.card_no" type="card_no"></el-input>
                                                 </el-form-item>
 
                                                 <el-form-item label="转账银行名字"  prop="card_name">
-                                                    <el-input v-model="moneyForm.card_name"  type="card_name"></el-input>
+                                                    <el-input v-model="moneyForm.card_name" ></el-input>
                                                     <el-link type="info">填写你转出银行卡开户账号的姓名，方便财务核对，不要填手机号</el-link>
                                                 </el-form-item>
                                                 <el-form-item label="转账金额（元）"  prop="money">
@@ -83,7 +82,7 @@
                                                     提交充值申请。没有转账就提交充值申请，视为恶意提交。
                                                 </el-alert>
                                             </el-form>
-                                            <el-button slot="reference">提交转账信息</el-button>
+                                            <el-button slot="reference" @click="submitMoney">提交转账信息</el-button>
                                         </el-popover>
                                     </div>
                                 </div>
@@ -98,43 +97,50 @@
                         <div>
 
                             <el-table
-                                    :data="tableData"
+                                    :data="tableData.data"
                                     border
-                                    style="width: 100%">
+                                    style="width: 100%" >
                                 <el-table-column
-                                        prop="time"
+                                        width="200"
                                         label="提交时间"
                                         >
+                                    <template slot-scope="scope">
+                                        {{new Date(scope.row.create_at*1000).toLocaleString()||'**'}}
+                                    </template>
                                 </el-table-column>
                                 <el-table-column
-                                        prop="bank"
+                                        width="200"
+                                        label="金额"
+                                >
+                                    <template slot-scope="scope">
+                                        {{scope.row.money||'**'}}
+                                    </template>
+                                </el-table-column>
+                                <el-table-column
+                                        width="200"
                                         label="转账银行"
-                                        >
+                                >
+                                    <template slot-scope="scope">
+                                        {{scope.row.bank||'**'}}
+                                    </template>
                                 </el-table-column>
                                 <el-table-column
-                                        prop="name"
-                                        label="开户名">
-                                </el-table-column>
-                                <el-table-column
-                                        prop="money"
-                                        label="金额">
+                                        width="200"
+                                        label="开户名"
+                                >
+                                    <template slot-scope="scope">
+                                        {{scope.row.card_name||'**'}}
+                                    </template>
                                 </el-table-column>
 
-                                <el-table-column
-                                        prop="status"
-                                        label="审核状态">
-                                </el-table-column>
-
-                                <el-table-column
-                                        prop="shtime"
-                                        label="审核时间">
-                                </el-table-column>
                             </el-table>
-                            <div class="mt1" style="text-align:center;">
+                            <div class="mt-cen mt1" style="text-align:center;">
                                 <el-pagination
+                                        :current-page.sync="tableData.current_page"
+                                        @current-change="bschange"
                                         background
                                         layout="prev, pager, next"
-                                        :total="100">
+                                        :total="tableData.last_page*10">
                                 </el-pagination>
                             </div>
                         </div>
@@ -151,6 +157,10 @@
         name: "itunes",
         data(){
             return {
+                popstatus1:false,
+
+                isbind:false,
+
                 ue_jin:'',
 
                 tableData:[],
@@ -198,9 +208,49 @@
             }
         },
         created(){
-            ajax.all([this.go_money()]);
+            ajax.all([this.go_money(),this.haveData(),this.go_bbc()]);
         },
         methods:{
+            submitMoney(){
+                if(!this.isbind){
+                    this.$notify.error("你未绑定银行卡！")
+                }
+
+            },
+
+            go_bbc(){
+                return this.$api.ports.bindBankCard().then((res)=>{
+                    if(res.code){
+                        console.log(res,'bindBankCard');
+                        if(res.data[0]){
+                            var o=res.data[0];
+                            this.isbind=true;
+                            this.moneyForm={bank:o.bank,card_name:o.name,card_no:o.card_no}
+
+                        }else{
+                            this.isbind=false;
+                        }
+                    }else{
+                        this.$notify.error(res.message);
+                    }
+                })
+            },
+
+            bschange(e){
+                this.haveData(e);
+            },
+
+            haveData(page){
+
+                return this.$api.ports.topUpList(page).then((res)=>{
+                    if(res.code){
+                        console.log(res,'page');
+                        this.tableData=res.data[0];
+                    }else{
+                        this.$notify.error(res.message);
+                    }
+                })
+            },
 
             go_money(){
                 console.log("是否知心");
@@ -220,10 +270,11 @@
                         console.log(getR,'getR');
                         this.$api.ports.topUpPost(getR).then((res)=>{
                             if(res.code){
-                                this.$alert('充值成功','温馨提示',{
+                                this.$alert('提交成功，待审核！','温馨提示',{
                                     confirmButtonText: '确定',
-                                    callback: action => {
-                                        this.$router.go(0);
+                                    callback: () => {
+                                        this.popstatus1=false;
+                                        this.haveData();
                                     }
                                 })
 

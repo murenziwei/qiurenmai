@@ -5,41 +5,41 @@
 
             <el-tabs v-model="activeName">
                 <el-tab-pane label="垫付任务管理" name="first">
-                    <el-form :inline="true" :model="formInline" class="demo-form-inline">
-                        <el-form-item label="任务ID">
-                            <el-input v-model="formInline.id"></el-input>
-                        </el-form-item>
-                        <el-form-item label="店铺">
-                            <el-select v-model="formInline.region">
-                                <el-option v-for="(item,index) in shops" :key="index" :label="item.name" :value="item.name"></el-option>
+                    <!--<el-form :inline="true" :model="formInline" class="demo-form-inline">-->
+                        <!--<el-form-item label="任务ID">-->
+                            <!--<el-input v-model="formInline.id"></el-input>-->
+                        <!--</el-form-item>-->
+                        <!--<el-form-item label="店铺">-->
+                            <!--<el-select v-model="formInline.region">-->
+                                <!--<el-option v-for="(item,index) in shops" :key="index" :label="item.name" :value="item.name"></el-option>-->
 
-                            </el-select>
-                        </el-form-item>
-                        <el-form-item label="类型">
-                            <el-select v-model="formInline.type">
-                                <el-option v-for="(item,index) in tasks" :key="index" :label="item.name" :value="index"></el-option>
+                            <!--</el-select>-->
+                        <!--</el-form-item>-->
+                        <!--<el-form-item label="类型">-->
+                            <!--<el-select v-model="formInline.type">-->
+                                <!--<el-option v-for="(item,index) in tasks" :key="index" :label="item.name" :value="index"></el-option>-->
 
-                            </el-select>
-                        </el-form-item>
-                        <el-form-item label="状态">
-                            <el-select v-model="formInline.status">
-                                <el-option v-for="(item,index) in status" :key="index" :label="item.name" :value="index"></el-option>
+                            <!--</el-select>-->
+                        <!--</el-form-item>-->
+                        <!--<el-form-item label="状态">-->
+                            <!--<el-select v-model="formInline.status">-->
+                                <!--<el-option v-for="(item,index) in status" :key="index" :label="item.name" :value="index"></el-option>-->
 
-                            </el-select>
-                        </el-form-item>
-                        <el-form-item label="发布时间">
-                            <el-date-picker
-                                    v-model="formInline.issuetime"
-                                    type="daterange"
-                                    range-separator="至"
-                                    start-placeholder="开始日期"
-                                    end-placeholder="结束日期">
-                            </el-date-picker>
-                        </el-form-item>
-                        <el-form-item>
-                            <el-button type="primary" >查询</el-button>
-                        </el-form-item>
-                    </el-form>
+                            <!--</el-select>-->
+                        <!--</el-form-item>-->
+                        <!--<el-form-item label="发布时间">-->
+                            <!--<el-date-picker-->
+                                    <!--v-model="formInline.issuetime"-->
+                                    <!--type="daterange"-->
+                                    <!--range-separator="至"-->
+                                    <!--start-placeholder="开始日期"-->
+                                    <!--end-placeholder="结束日期">-->
+                            <!--</el-date-picker>-->
+                        <!--</el-form-item>-->
+                        <!--<el-form-item>-->
+                            <!--<el-button type="primary" >查询</el-button>-->
+                        <!--</el-form-item>-->
+                    <!--</el-form>-->
                     <el-divider></el-divider>
                     <div>
                         <div class="an-item" v-for="(item,index) in payTaskArr.data" :key="index">
@@ -110,8 +110,8 @@
                             </el-row>
                             <el-divider></el-divider>
                         </div>
-                        <p v-if="!(payTaskArr.data?payTaskArr.data.length:false)">
-                            <el-link :underline="false">没有更多数据了</el-link>
+                        <p v-if="!(payTaskArr.data?payTaskArr.data.length:false)" style="text-align:center">
+                            <el-link :underline="false" >没有更多数据了</el-link>
                         </p>
                     </div>
                     <div class="mt-cen" style="text-align:center;">
@@ -125,34 +125,34 @@
                     </div>
                 </el-tab-pane>
                 <el-tab-pane label="垫付任务返款管理" name="second">
-                        <el-form :inline="true" :model="formOutline" class="demo-form-inline">
+                        <!--<el-form :inline="true" :model="formOutline" class="demo-form-inline">-->
 
-                            <el-form-item label="店铺">
-                                <el-select v-model="formOutline.region">
-                                    <el-option v-for="(item,index) in shops" :key="index" :label="item.name" :value="item.name"></el-option>
+                            <!--<el-form-item label="店铺">-->
+                                <!--<el-select v-model="formOutline.region">-->
+                                    <!--<el-option v-for="(item,index) in shops" :key="index" :label="item.name" :value="item.name"></el-option>-->
 
-                                </el-select>
-                            </el-form-item>
-                            <el-form-item label="买手ID">
-                                <el-input v-model="formOutline.id"></el-input>
-                            </el-form-item>
-                            <el-form-item label="任务ID">
-                                <el-input v-model="formOutline.taskid"></el-input>
-                            </el-form-item>
-                            <el-form-item label="订单ID">
-                                <el-input v-model="formOutline.orderid"></el-input>
-                            </el-form-item>
-                            <el-form-item label="旺旺号">
-                                <el-input v-model="formOutline.ww"></el-input>
-                            </el-form-item>
+                                <!--</el-select>-->
+                            <!--</el-form-item>-->
+                            <!--<el-form-item label="买手ID">-->
+                                <!--<el-input v-model="formOutline.id"></el-input>-->
+                            <!--</el-form-item>-->
+                            <!--<el-form-item label="任务ID">-->
+                                <!--<el-input v-model="formOutline.taskid"></el-input>-->
+                            <!--</el-form-item>-->
+                            <!--<el-form-item label="订单ID">-->
+                                <!--<el-input v-model="formOutline.orderid"></el-input>-->
+                            <!--</el-form-item>-->
+                            <!--<el-form-item label="旺旺号">-->
+                                <!--<el-input v-model="formOutline.ww"></el-input>-->
+                            <!--</el-form-item>-->
 
-                            <el-form-item label="旺旺ID">
-                                <el-input v-model="formOutline.wwid"></el-input>
-                            </el-form-item>
-                            <el-form-item>
-                                <el-button type="primary" @click="onSubmit">查询</el-button>
-                            </el-form-item>
-                        </el-form>
+                            <!--<el-form-item label="旺旺ID">-->
+                                <!--<el-input v-model="formOutline.wwid"></el-input>-->
+                            <!--</el-form-item>-->
+                            <!--<el-form-item>-->
+                                <!--<el-button type="primary" @click="onSubmit">查询</el-button>-->
+                            <!--</el-form-item>-->
+                        <!--</el-form>-->
 
                         <el-alert
                                 class="an-item"
@@ -268,43 +268,43 @@
                         </div>
                 </el-tab-pane>
                 <el-tab-pane label="快递单号管理" name="third">
-                    <el-form :inline="true" :model="expressform" class="demo-form-inline">
+                    <!--<el-form :inline="true" :model="expressform" class="demo-form-inline">-->
 
-                        <el-form-item label="店铺">
-                            <el-select v-model="expressform.region">
-                                <el-option v-for="(item,index) in shops" :key="index" :label="item.name" :value="item.name"></el-option>
+                        <!--<el-form-item label="店铺">-->
+                            <!--<el-select v-model="expressform.region">-->
+                                <!--<el-option v-for="(item,index) in shops" :key="index" :label="item.name" :value="item.name"></el-option>-->
 
-                            </el-select>
-                        </el-form-item>
-                        <el-form-item label="订单状态">
-                            <el-select v-model="expressform.status">
-                                <el-option v-for="(item,index) in orderstatus" :key="index" :label="item.name" :value="item.name"></el-option>
+                            <!--</el-select>-->
+                        <!--</el-form-item>-->
+                        <!--<el-form-item label="订单状态">-->
+                            <!--<el-select v-model="expressform.status">-->
+                                <!--<el-option v-for="(item,index) in orderstatus" :key="index" :label="item.name" :value="item.name"></el-option>-->
 
-                            </el-select>
-                        </el-form-item>
+                            <!--</el-select>-->
+                        <!--</el-form-item>-->
 
-                        <el-form-item label="接单时间">
-                            <el-date-picker
-                                    v-model="expressform.issuetime"
-                                    type="daterange"
-                                    range-separator="至"
-                                    start-placeholder="开始日期"
-                                    end-placeholder="结束日期">
-                            </el-date-picker>
-                        </el-form-item>
-                        <el-form-item label="任务ID">
-                            <el-input v-model="expressform.taskid"></el-input>
-                        </el-form-item>
-                        <el-form-item label="订单ID">
-                            <el-input v-model="expressform.orderid"></el-input>
-                        </el-form-item>
-                        <el-form-item label="第三方订单ID">
-                            <el-input v-model="expressform.wwid" placeholder="淘宝/拼多多等ID"></el-input>
-                        </el-form-item>
-                        <el-form-item>
-                            <el-button type="primary" @click="onSubmit">查询</el-button>
-                        </el-form-item>
-                    </el-form>
+                        <!--<el-form-item label="接单时间">-->
+                            <!--<el-date-picker-->
+                                    <!--v-model="expressform.issuetime"-->
+                                    <!--type="daterange"-->
+                                    <!--range-separator="至"-->
+                                    <!--start-placeholder="开始日期"-->
+                                    <!--end-placeholder="结束日期">-->
+                            <!--</el-date-picker>-->
+                        <!--</el-form-item>-->
+                        <!--<el-form-item label="任务ID">-->
+                            <!--<el-input v-model="expressform.taskid"></el-input>-->
+                        <!--</el-form-item>-->
+                        <!--<el-form-item label="订单ID">-->
+                            <!--<el-input v-model="expressform.orderid"></el-input>-->
+                        <!--</el-form-item>-->
+                        <!--<el-form-item label="第三方订单ID">-->
+                            <!--<el-input v-model="expressform.wwid" placeholder="淘宝/拼多多等ID"></el-input>-->
+                        <!--</el-form-item>-->
+                        <!--<el-form-item>-->
+                            <!--<el-button type="primary" @click="onSubmit">查询</el-button>-->
+                        <!--</el-form-item>-->
+                    <!--</el-form>-->
 
 
                     <el-table
@@ -429,58 +429,58 @@
                 </el-tab-pane>
                 <el-tab-pane label="垫付进行中订单" name="fourth">
 
-                    <el-form :inline="true" :model="payplay" class="demo-form-inline">
+                    <!--<el-form :inline="true" :model="payplay" class="demo-form-inline">-->
 
-                        <el-form-item label="店铺">
-                            <el-select v-model="payplay.region">
-                                <el-option v-for="(item,index) in shops" :key="index" :label="item.name" :value="item.name"></el-option>
+                        <!--<el-form-item label="店铺">-->
+                            <!--<el-select v-model="payplay.region">-->
+                                <!--<el-option v-for="(item,index) in shops" :key="index" :label="item.name" :value="item.name"></el-option>-->
 
-                            </el-select>
-                        </el-form-item>
-                        <el-form-item label="类型">
-                            <el-select v-model="payplay.type">
-                                <el-option v-for="(item,index) in tasks" :key="index" :label="item.name" :value="index"></el-option>
+                            <!--</el-select>-->
+                        <!--</el-form-item>-->
+                        <!--<el-form-item label="类型">-->
+                            <!--<el-select v-model="payplay.type">-->
+                                <!--<el-option v-for="(item,index) in tasks" :key="index" :label="item.name" :value="index"></el-option>-->
 
-                            </el-select>
-                        </el-form-item>
+                            <!--</el-select>-->
+                        <!--</el-form-item>-->
 
-                        <el-form-item label="状态">
-                            <el-select v-model="payplay.status">
-                                <el-option v-for="(item,index) in paystatus" :key="index" :label="item.name" :value="index"></el-option>
+                        <!--<el-form-item label="状态">-->
+                            <!--<el-select v-model="payplay.status">-->
+                                <!--<el-option v-for="(item,index) in paystatus" :key="index" :label="item.name" :value="index"></el-option>-->
 
-                            </el-select>
-                        </el-form-item>
+                            <!--</el-select>-->
+                        <!--</el-form-item>-->
 
-                        <el-form-item label="接单时间">
-                            <el-date-picker
-                                    v-model="payplay.issuetime"
-                                    type="daterange"
-                                    range-separator="至"
-                                    start-placeholder="开始日期"
-                                    end-placeholder="结束日期">
-                            </el-date-picker>
-                        </el-form-item>
-                        <el-form-item label="买手ID">
-                            <el-input v-model="payplay.id"></el-input>
-                        </el-form-item>
-                        <el-form-item label="任务ID">
-                            <el-input v-model="payplay.taskid"></el-input>
-                        </el-form-item>
-                        <el-form-item label="订单ID">
-                            <el-input v-model="payplay.orderid"></el-input>
-                        </el-form-item>
-                        <el-form-item label="旺旺号">
-                            <el-input v-model="payplay.ww"></el-input>
-                        </el-form-item>
+                        <!--<el-form-item label="接单时间">-->
+                            <!--<el-date-picker-->
+                                    <!--v-model="payplay.issuetime"-->
+                                    <!--type="daterange"-->
+                                    <!--range-separator="至"-->
+                                    <!--start-placeholder="开始日期"-->
+                                    <!--end-placeholder="结束日期">-->
+                            <!--</el-date-picker>-->
+                        <!--</el-form-item>-->
+                        <!--<el-form-item label="买手ID">-->
+                            <!--<el-input v-model="payplay.id"></el-input>-->
+                        <!--</el-form-item>-->
+                        <!--<el-form-item label="任务ID">-->
+                            <!--<el-input v-model="payplay.taskid"></el-input>-->
+                        <!--</el-form-item>-->
+                        <!--<el-form-item label="订单ID">-->
+                            <!--<el-input v-model="payplay.orderid"></el-input>-->
+                        <!--</el-form-item>-->
+                        <!--<el-form-item label="旺旺号">-->
+                            <!--<el-input v-model="payplay.ww"></el-input>-->
+                        <!--</el-form-item>-->
 
-                        <el-form-item label="淘宝订单ID">
-                            <el-input v-model="payplay.tbid"></el-input>
-                        </el-form-item>
-                        <el-form-item>
-                            <el-button type="primary" @click="onSubmit">查询</el-button>
-                            <el-button type="primary" @click="onSubmit">导出订单</el-button>
-                        </el-form-item>
-                    </el-form>
+                        <!--<el-form-item label="淘宝订单ID">-->
+                            <!--<el-input v-model="payplay.tbid"></el-input>-->
+                        <!--</el-form-item>-->
+                        <!--<el-form-item>-->
+                            <!--<el-button type="primary" @click="onSubmit">查询</el-button>-->
+                            <!--<el-button type="primary" @click="onSubmit">导出订单</el-button>-->
+                        <!--</el-form-item>-->
+                    <!--</el-form>-->
 
                     <el-table
                             :data="payplayData.data"
@@ -569,64 +569,64 @@
                 </el-tab-pane>
                 <el-tab-pane label="垫付历史订单" name="fifth">
 
-                    <el-form :inline="true" :model="payhistory" class="demo-form-inline">
+                    <!--<el-form :inline="true" :model="payhistory" class="demo-form-inline">-->
 
-                        <el-form-item label="店铺">
-                            <el-select v-model="payhistory.region">
-                                <el-option v-for="(item,index) in shops" :key="index" :label="item.name" :value="item.name"></el-option>
+                        <!--<el-form-item label="店铺">-->
+                            <!--<el-select v-model="payhistory.region">-->
+                                <!--<el-option v-for="(item,index) in shops" :key="index" :label="item.name" :value="item.name"></el-option>-->
 
-                            </el-select>
-                        </el-form-item>
-                        <el-form-item label="类型">
-                            <el-select v-model="payhistory.type">
-                                <el-option v-for="(item,index) in tasks" :key="index" :label="item.name" :value="index"></el-option>
+                            <!--</el-select>-->
+                        <!--</el-form-item>-->
+                        <!--<el-form-item label="类型">-->
+                            <!--<el-select v-model="payhistory.type">-->
+                                <!--<el-option v-for="(item,index) in tasks" :key="index" :label="item.name" :value="index"></el-option>-->
 
-                            </el-select>
-                        </el-form-item>
+                            <!--</el-select>-->
+                        <!--</el-form-item>-->
 
-                        <el-form-item label="状态">
-                            <el-select v-model="payhistory.status">
-                                <el-option v-for="(item,index) in paystatus" :key="index" :label="item.name" :value="index"></el-option>
+                        <!--<el-form-item label="状态">-->
+                            <!--<el-select v-model="payhistory.status">-->
+                                <!--<el-option v-for="(item,index) in paystatus" :key="index" :label="item.name" :value="index"></el-option>-->
 
-                            </el-select>
-                        </el-form-item>
+                            <!--</el-select>-->
+                        <!--</el-form-item>-->
 
-                        <el-form-item>
+                        <!--<el-form-item>-->
 
-                            <el-select v-model="payhistory.seltime">
-                                <el-option label="接单时间" value="1"></el-option>
-                                <el-option label="完成时间" value="2"></el-option>
-                            </el-select>
-                            <span>:</span>
-                            <el-date-picker
-                                    v-model="payhistory.issuetime"
-                                    type="daterange"
-                                    range-separator="至"
-                                    start-placeholder="开始日期"
-                                    end-placeholder="结束日期">
-                            </el-date-picker>
-                        </el-form-item>
-                        <el-form-item label="买手ID">
-                            <el-input v-model="payhistory.id"></el-input>
-                        </el-form-item>
-                        <el-form-item label="任务ID">
-                            <el-input v-model="payhistory.taskid"></el-input>
-                        </el-form-item>
-                        <el-form-item label="订单ID">
-                            <el-input v-model="payhistory.orderid"></el-input>
-                        </el-form-item>
-                        <el-form-item label="旺旺号">
-                            <el-input v-model="payhistory.ww"></el-input>
-                        </el-form-item>
+                            <!--<el-select v-model="payhistory.seltime">-->
+                                <!--<el-option label="接单时间" value="1"></el-option>-->
+                                <!--<el-option label="完成时间" value="2"></el-option>-->
+                            <!--</el-select>-->
+                            <!--<span>:</span>-->
+                            <!--<el-date-picker-->
+                                    <!--v-model="payhistory.issuetime"-->
+                                    <!--type="daterange"-->
+                                    <!--range-separator="至"-->
+                                    <!--start-placeholder="开始日期"-->
+                                    <!--end-placeholder="结束日期">-->
+                            <!--</el-date-picker>-->
+                        <!--</el-form-item>-->
+                        <!--<el-form-item label="买手ID">-->
+                            <!--<el-input v-model="payhistory.id"></el-input>-->
+                        <!--</el-form-item>-->
+                        <!--<el-form-item label="任务ID">-->
+                            <!--<el-input v-model="payhistory.taskid"></el-input>-->
+                        <!--</el-form-item>-->
+                        <!--<el-form-item label="订单ID">-->
+                            <!--<el-input v-model="payhistory.orderid"></el-input>-->
+                        <!--</el-form-item>-->
+                        <!--<el-form-item label="旺旺号">-->
+                            <!--<el-input v-model="payhistory.ww"></el-input>-->
+                        <!--</el-form-item>-->
 
-                        <el-form-item label="淘宝订单ID">
-                            <el-input v-model="payhistory.tbid"></el-input>
-                        </el-form-item>
-                        <el-form-item>
-                            <el-button type="primary" @click="onSubmit">查询</el-button>
-                            <el-button type="primary" @click="onSubmit">导出订单</el-button>
-                        </el-form-item>
-                    </el-form>
+                        <!--<el-form-item label="淘宝订单ID">-->
+                            <!--<el-input v-model="payhistory.tbid"></el-input>-->
+                        <!--</el-form-item>-->
+                        <!--<el-form-item>-->
+                            <!--<el-button type="primary" @click="onSubmit">查询</el-button>-->
+                            <!--<el-button type="primary" @click="onSubmit">导出订单</el-button>-->
+                        <!--</el-form-item>-->
+                    <!--</el-form>-->
 
                     <el-table
                             :data="payhistoryData.data"

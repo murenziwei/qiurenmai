@@ -20,7 +20,7 @@
             <el-link  @click="peoplecontrol('shopseting')" class="recharge"> {{userinfo.user.ue_account|strno}}</el-link>
           </div>
           <div class="at-xs">
-            佣金：<span class="money">{{ue_money['commission']||'**'}}</span>金<el-link type="primary" @click="peoplecontrol('itunes')" class="recharge">充值</el-link>
+            佣金：<span class="money">{{ue_money['commission']|strno}}</span>金<el-link type="primary" @click="peoplecontrol('itunes')" class="recharge">充值</el-link>
           </div>
 
           <div class="at-xs">
@@ -79,12 +79,7 @@
         <div :class="{'at-right':true,fadeIn:!isTag,fadeOut:isTag}" v-show="!isTag">
           <div :class="{'a-r-list':true,'active':tagCount==0}">
             <div class="arl-link" @click.stop="tagcontrol(0)">
-              <span class="a-l-text">商家中心</span>
-            </div>
-          </div>
-          <div v-for="(item,index) in tags" :key="index" :class="{'a-r-list':true,'active':tagCount==(index+1)}">
-            <div class="arl-link" @click.stop="tagcontrol((index+1))">
-              <span class="a-l-text">{{item.text}}</span>
+              <span class="a-l-text">买手中心</span>
             </div>
           </div>
         </div>
@@ -217,13 +212,13 @@
         if(window.innerWidth<767){
           this.isPeople=true;
         }
-        this.$router.push("/about/"+n)
+        this.$router.push("/maishou/"+n)
       },
       tagcontrol(n){
         console.log(n,'你好');
         this.tagCount=n;
         if(n==0){
-          this.$router.push("/about/")
+          this.$router.push("/maishou/")
         }
       },
       nowrouter(to){

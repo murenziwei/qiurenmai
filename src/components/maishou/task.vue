@@ -20,23 +20,22 @@
             <div class="n-content">
                 <div>
                     <el-radio-group v-model="radio1">
-                        <el-radio-button label="垫付任务"></el-radio-button>
-                        <el-radio-button label="浏览任务"></el-radio-button>
+                        <el-radio-button v-for="(tv,ti) in typelist" :label="ti">{{tv}}</el-radio-button>
                     </el-radio-group>
                 </div>
                 <div class="margin-top">
-                    <h3>请选择平台</h3>
+                    <h3>请选择平台类型</h3>
                     <el-radio-group v-model="radio2">
-                        <el-radio-button label="淘宝"></el-radio-button>
-                        <el-radio-button label="拼多多"></el-radio-button>
+                        <el-radio-button  v-for="(av) in appList" :label="av.ind">{{av.name}}</el-radio-button>
                     </el-radio-group>
                 </div>
                 <div class="margin-top">
-                    <h3>请选择平台</h3>
+                    <h3>请选择任务类型</h3>
                     <el-radio-group v-model="radio3">
-                        <el-radio-button label="淘宝任务"></el-radio-button>
-                        <el-radio-button label="淘口令任务"></el-radio-button>
-                        <el-radio-button label="预售任务"></el-radio-button>
+
+                        <el-radio-button label="1" v-for="(tv) in taskList[radio1]" :label="tv.label" v-if="tv.type==radio2">
+                            {{tv.name}}
+                        </el-radio-button>
                     </el-radio-group>
                 </div>
             </div>
@@ -49,14 +48,18 @@
             </div>
             <div class="n-content">
                 <div>
-                    <el-radio-group v-model="radio">
-                        <el-radio :label="3">14725283690</el-radio>
-                        <el-radio :label="6">12345678910</el-radio>
+                    <el-radio-group v-model="bank1">
+                        <el-radio v-for="(sval,sind) in shopData" :key="sind" :label="sval.wang_id" v-if="sval.platform_type==radio2">
+                            {{sval.wang_id}}
+                        </el-radio>
                     </el-radio-group>
 
                     <div class="addAccount">
-                        <i class="el-icon-plus"></i>
-                        添加账号
+                        <el-link type="primary" :underline="false" :href="'#/maishou/account/binding'">
+
+                            <i class="el-icon-plus"></i>
+                            添加账号
+                        </el-link>
                     </div>
                 </div>
             </div>
@@ -67,34 +70,98 @@
                 <span class="c-topic">第三步：请选择任务</span>
             </div>
             <div>
-                <ul class="nav-list">
-                    <li>商家</li>
-                    <li>购买件数</li>
-                    <li>买手需垫付资金</li>
-                    <li>佣金</li>
-                    <li>任务总数</li>
-                    <li>已完成（%）</li>
-                    <li>接手状态</li>
-                </ul>
-                <ul v-for="item of 5" class="nav-list-item">
-                    <li>12345678910</li>
-                    <li>2件</li>
-                    <li>500元</li>
-                    <li>20元</li>
-                    <li>5单</li>
-                    <li class="color">20%</li>
-                    <li><el-button type="text" @click="open">接受此任务</el-button></li>
-                </ul>
+
+                <el-table class="mt1" border :data="dataTable.data" style="width:100%;">
+                    <el-table-column lable="总任务ID" prop="id" width="200"></el-table-column>
+                    <el-table-column lable="任务总数" prop="task_num" width="200"></el-table-column>
+                    <el-table-column lable="商家" prop="shop_wang_id" width="200"></el-table-column>
+                    <el-table-column lable="购买件数" prop="goods_count" width="200"></el-table-column>
+                    <el-table-column lable="买手需垫付资金" prop="every_cash_pledge" width="200"></el-table-column>
+                    <el-table-column lable="佣金" prop="real_commission" width="200"></el-table-column>
+                    <el-table-column lable="已完成（%）" prop="take_rate" width="200"></el-table-column>
+
+                    <el-table-column label="修改" prop="set" width="200" fixed="right">
+                        <template slot-scope="scope">
+                            <el-row >
+                                <el-button type="text" @click="acceptTask(scope.row.id)">接受任务</el-button>
+
+                            </el-row>
+                        </template>
+                    </el-table-column>
+                </el-table>
+
+                <div class="mt-cen" style="text-align:center;">
+                    <el-pagination
+                            :current-page.sync="dataTable.current_page"
+                            @current-change="bschange"
+                            background
+                            layout="prev, pager, next"
+                            :total="dataTable.last_page*10">
+                    </el-pagination>
+                </div>
             </div>
         </el-card>
     </div>
 </template>
 
 <script>
+    import ajax from 'axios';
     export default {
         name: "notice",
         data() {
             return {
+                bank1:'',
+
+                dataTable:[],
+
+                typelist:[
+                    '垫付任务','预览任务'
+                ],
+                appList:[
+                    {
+                        name:'淘宝',
+                        ind:1
+                    },
+                    {
+                        name:'拼多多',
+                        ind:3
+                    }
+                ],
+                //1淘宝任务2淘口令任务3预售任务4拼多多任务5浏览任务
+                taskList:[
+                    [
+                        {
+                            name:'淘宝任务',
+                            label:1,
+                            type:1
+                        },
+                        {
+                            name:'淘口令任务',
+                            label:2,
+                            type:1
+                        },
+                        {
+                            name:'预售任务',
+                            label:3,
+                            type:1
+                        },
+                        {
+                            name:'拼多多',
+                            label:4,
+                            type:3
+                        },
+                    ],
+                    [
+                        {
+                            name:'预览任务',
+                            label:5,
+                            type:1
+                        }
+                    ]
+
+                ],
+
+                shopData:[],
                 count: 10,
                 loading: false,
                 arr: [
@@ -103,10 +170,13 @@
                 ],
                 dialogVisible: false,
                 radio: 3,
-                radio1: '垫付任务',
-                radio2: '淘宝',
+                radio1: 0,
+                radio2: 1,
                 radio3: '淘宝任务',
             }
+        },
+        created(){
+            ajax.all([this.go_shops()]);
         },
         computed: {
             noMore() {
@@ -114,6 +184,78 @@
             }
         },
         methods: {
+            bschange(page){
+                this.go_data({
+                    platform_type:this.radio2||'',
+                    task_type:this.radio3||'',
+                    page
+                });
+            },
+            acceptTask(id){
+
+                this.$confirm('再次确认是否接受？', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    this.$api.ports.takeTask({id,wang_id:this.radio3}).then((res)=>{
+
+                        if(res.code){
+                            this.dataTable=res.data[0];
+                        }else{
+                            this.$notify.error({
+                                title: '错误',
+                                message: res.message
+                            });
+                        }
+
+                    })
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '已取消接受'
+                    });
+                });
+            },
+            go_data(obj){
+
+                return this.$api.ports.filtTask(obj).then((res)=>{
+                    console.log(res,'shuju');
+                    if(res.code){
+
+                        this.dataTable=res.data[0];
+                    }else{
+                        this.$notify.error({
+                            title: '错误',
+                            message: res.message
+                        });
+                    }
+
+                })
+            },
+
+            go_shops(){
+                return this.$api.ports.buyNoList().then((res)=>{
+                    console.log(res,'buyNoList');
+                    if(res.code){
+
+                        var clearArr=res.data.filter((v,i)=>{
+                            if(v.status==1){
+                                return true;
+                            }
+                        });
+                        console.log(clearArr,'ca');
+
+                        this.shopData=clearArr;
+                    }else{
+                        this.$notify.error({
+                            title: '错误',
+                            message: res.message
+                        });
+                    }
+
+                })
+            },
             load() {
                 if (!this.noMore) {
 
@@ -138,6 +280,28 @@
                 }).catch(() => {
 
                 });
+            }
+        },
+        watch:{
+            "radio1":function(){
+               this.radio3=-1;
+            },
+            "radio2":function(to){
+                this.bank1=-1;
+                this.radio3=-1;
+                var obj={
+                    platform_type:to||'',
+                    task_type:this.radio3||''
+                }
+                this.go_data(obj);
+            },
+
+            "radio3":function(to){
+                var obj={
+                    platform_type:this.radio2||'',
+                    task_type:to||''
+                }
+                this.go_data(obj);
             }
         }
     }

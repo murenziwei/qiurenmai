@@ -57,14 +57,14 @@ const about={
           icon:'el-icon-camera-solid'
       }
   },
-  {
-      path:'noorder',
-      component:()=>import('./components/noorder.vue'),
-      data:{
-          name:'待接订单',
-          icon:'el-icon-s-operation'
-      }
-  },
+  // {
+  //     path:'noorder',
+  //     component:()=>import('./components/noorder.vue'),
+  //     data:{
+  //         name:'待接订单',
+  //         icon:'el-icon-s-operation'
+  //     }
+  // },
   {
       path:'fund',
       component:()=>import('./components/fund.vue'),
@@ -72,8 +72,33 @@ const about={
           name:'资金明细',
           icon:'el-icon-bank-card'
       }
+  },
+
+  {
+      path: 'tixian',
+      component: () => import('./components/maishou/bank.vue'),
+      data: {
+          name: '提现设置',
+          icon: 'el-icon-s-operation'
+      },
+      children: [
+          {
+              path: 'bank',
+              name: 'bank',
+              component: () => import('./components/maishou/children/bank_children.vue'),
+          }
+      ]
   }
   ,
+
+  {
+      path: 'virtual',
+      component: () => import('./components/maishou/virtual.vue'),
+      data: {
+          name: '虚拟币提现',
+          icon: 'el-icon-camera-solid'
+      }
+  },
   {
       path:'itunes',
       component:()=>import('./components/itunes.vue'),
@@ -160,15 +185,7 @@ const maishou = {
             }
         },
         {
-            path: 'paytask',
-            component: () => import('./components/paytask.vue'),
-            data: {
-                name: '资金明细',
-                icon: 'el-icon-c-scale-to-original'
-            }
-        },
-        {
-            path: 'previewtask',
+            path: 'virtual',
             component: () => import('./components/maishou/virtual.vue'),
             data: {
                 name: '虚拟币提现',
@@ -191,15 +208,6 @@ const maishou = {
             ]
         },
         {
-            path: 'fund',
-            component: () => import('./components/fund.vue'),
-            data: {
-                name: '申诉中心',
-                icon: 'el-icon-bank-card'
-            }
-        }
-        ,
-        {
             path: 'itunes',
             component: () => import('./components/itunes.vue'),
             data: {
@@ -209,14 +217,6 @@ const maishou = {
         }
         ,
         {
-            path: 'appeall',
-            component: () => import('./components/appeall.vue'),
-            data: {
-                name: '申诉中心',
-                icon: 'el-icon-chat-line-square'
-            }
-        },
-        {
             path: 'invite',
             component: () => import('./components/invite.vue'),
             data: {
@@ -224,15 +224,7 @@ const maishou = {
                 icon: 'el-icon-document-copy'
             }
         }
-        ,
-        {
-            path: 'blacklist',
-            component: () => import('./components/blacklist.vue'),
-            data: {
-                name: '黑名单',
-                icon: 'el-icon-user-solid'
-            }
-        }
+
     ]
 };
 

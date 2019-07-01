@@ -8,6 +8,7 @@ const base={
     member:'../api/Member',
     jin:'../api/Jin',
     complain:'../api/Complain',
-    vip:'../api/Vip'
+    vip:'../api/Vip',
+    dotask:'../api/Dotask'
 }
 export default base;

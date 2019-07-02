@@ -40,7 +40,14 @@
   }
 </script>
 <style lang="less">
-body::-webkit-scrollbar{
+
+.el-message-box{
+    width:unset!important;
+    max-width:420px!important;
+    min-width:200px;
+}
+
+    body::-webkit-scrollbar{
     /*滚动条整体*/
     width:0px;
     float:right;

@@ -72,19 +72,19 @@
             <div>
 
                 <el-table class="mt1" border :data="dataTable.data" style="width:100%;">
-                    <el-table-column lable="总任务ID" prop="id" width="200"></el-table-column>
-                    <el-table-column lable="任务总数" prop="task_num" width="200"></el-table-column>
-                    <el-table-column lable="商家" prop="shop_wang_id" width="200"></el-table-column>
-                    <el-table-column lable="购买件数" prop="goods_count" width="200"></el-table-column>
-                    <el-table-column lable="买手需垫付资金" prop="every_cash_pledge" width="200"></el-table-column>
-                    <el-table-column lable="佣金" prop="real_commission" width="200"></el-table-column>
-                    <el-table-column lable="已完成（%）" prop="take_rate" width="200"></el-table-column>
+                    <el-table-column label="总任务ID" prop="id" width="200"></el-table-column>
+                    <el-table-column label="任务总数" prop="task_num" width="200"></el-table-column>
+                    <el-table-column label="商家" prop="shop_wang_id" width="200"></el-table-column>
+                    <el-table-column label="购买件数" prop="goods_count" width="200"></el-table-column>
+                    <el-table-column label="买手需垫付资金" prop="every_cash_pledge" width="200"></el-table-column>
+                    <el-table-column label="佣金" prop="real_commission" width="200"></el-table-column>
+                    <el-table-column label="已完成（%）" prop="take_rate" width="200"></el-table-column>
 
                     <el-table-column label="修改" prop="set" width="200" fixed="right">
                         <template slot-scope="scope">
                             <el-row >
-                                <el-button type="text" @click="acceptTask(scope.row.id)">接受任务</el-button>
-
+                                <el-link type="danger" :underline="false" v-if="scope.row.status">已接受</el-link>
+                                <el-button type="text" @click="acceptTask(scope.row.id)" v-else>接受任务</el-button>
                             </el-row>
                         </template>
                     </el-table-column>
@@ -192,30 +192,35 @@
                 });
             },
             acceptTask(id){
+                console.log(this.bank1,'radio3');
+                if(this.bank1){
 
-                this.$confirm('再次确认是否接受？', '提示', {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
-                    type: 'warning'
-                }).then(() => {
-                    this.$api.ports.takeTask({id,wang_id:this.radio3}).then((res)=>{
+                    this.$confirm('再次确认是否接受？', '提示', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                        type: 'warning'
+                    }).then(() => {
+                        this.$api.ports.takeTask({id,wang_id:this.bank1}).then((res)=>{
+                            console.log(res,'成功了？');
+                            if(res.code){
+                                this.go_shops();
+                            }else{
+                                this.$notify.error({
+                                    title: '错误',
+                                    message: res.message
+                                });
+                            }
 
-                        if(res.code){
-                            this.dataTable=res.data[0];
-                        }else{
-                            this.$notify.error({
-                                title: '错误',
-                                message: res.message
-                            });
-                        }
-
-                    })
-                }).catch(() => {
-                    this.$message({
-                        type: 'info',
-                        message: '已取消接受'
+                        })
+                    }).catch(() => {
+                        this.$message({
+                            type: 'info',
+                            message: '已取消接受'
+                        });
                     });
-                });
+                }else{
+                    this.$notify.error("请你选择账号");
+                }
             },
             go_data(obj){
 

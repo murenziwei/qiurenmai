@@ -177,7 +177,7 @@ const maishou = {
             ]
         },
         {
-            path: 'shopseting',
+            path: 'unfinished',
             component: () => import('./components/maishou/unfinished.vue'),
             data: {
                 name: '待完成订单',

@@ -9,6 +9,7 @@ const base={
     jin:'../api/Jin',
     complain:'../api/Complain',
     vip:'../api/Vip',
-    dotask:'../api/Dotask'
+    dotask:'../api/Dotask',
+    other:'../api/Other'
 }
 export default base;

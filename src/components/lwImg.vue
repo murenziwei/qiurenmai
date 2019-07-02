@@ -1,8 +1,8 @@
 <template>
-    <div style="text-align:center;">
+    <div style="">
         <template>
             <el-image
-                 style="width:6rem;height:6rem;margin:.5rem;"
+                 style="text-align:left;width:6rem;height:6rem;margin:.5rem;"
                  :src="srcData"
                  id="contract_url"
                  @click="enlargePic" :class="classData"  />

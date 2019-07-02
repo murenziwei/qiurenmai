@@ -36,10 +36,10 @@
                         <span class="ss-title">绑定店铺</span>
                         <el-popover
                                 placement="top"
-                                width="800"
+                                width="300"
                                 v-model="shopformStatus"
                                 >
-                            <el-form :model="shopform" ref="shopform" :rules="shoprule">
+                            <el-form style="height:70vh;overflow-y:scroll;" :model="shopform" ref="shopform" :rules="shoprule">
                                 <el-form-item label="请选择平台" prop="type">
 
                                     <el-select placeholder="请选择" v-model="shopform.type" type="type">
@@ -123,14 +123,14 @@
                     </el-col>
                 </el-row>
                 <el-table class="mt1" border ref="filterTable" :data="shopData" style="width:100%;">
-                    <el-table-column label="全部" prop="type" :filters="typeFilters" :filter-method="filterType">
+                    <el-table-column width="200" label="全部" prop="type" :filters="typeFilters" :filter-method="filterType">
                         <template slot-scope="scope">
                             {{scope.row.type|shops}}
                         </template>
                     </el-table-column>
-                    <el-table-column label="店铺名称" prop="shopname"></el-table-column>
-                    <el-table-column label="旺旺名称" prop="wwname"></el-table-column>
-                    <el-table-column label="店铺地址" prop="link">
+                    <el-table-column width="200"  label="店铺名称" prop="shopname"></el-table-column>
+                    <el-table-column width="200"  label="旺旺名称" prop="wwname"></el-table-column>
+                    <el-table-column width="200" label="店铺地址" prop="link">
                         <template slot-scope="scope">
                             <el-row>
                                 <el-tooltip :content="scope.row.link" placement="top">
@@ -140,7 +140,7 @@
                             </el-row>
                         </template>
                     </el-table-column>
-                    <el-table-column label="发货信息">
+                    <el-table-column width="200"  label="发货信息">
                         <template slot-scope="scope">
                             <el-row>
                                 {{scope.row.shipper}}
@@ -148,7 +148,7 @@
                         </template>
                     </el-table-column>
 
-                    <el-table-column label="接单间隔设置" prop="interval">
+                    <el-table-column width="200"  label="接单间隔设置" prop="interval">
                         <template slot-scope="scope">
                             <el-row>
 
@@ -199,19 +199,19 @@
                             </el-row>
                         </template>
                     </el-table-column>
-                    <el-table-column label="审核状态" prop="status">
+                    <el-table-column width="200"  label="审核状态" prop="status">
                         <template slot-scope="scope">
                             <el-link :type="scope.row.status.type" :underline="false">{{scope.row.status.text}}</el-link>
                         </template>
                     </el-table-column>
 
-                    <el-table-column label="修改" prop="set">
+                    <el-table-column width="200"  label="修改" prop="set">
                         <template slot-scope="scope">
                             <el-row>
 
                                 <el-popover
                                         placement="left"
-                                        width="600"
+                                        width="300"
                                         v-model="scope.row.change"
                                 >
 
@@ -586,9 +586,11 @@
                             if(res.code){
                                 this.$alert('提交成功，待1~3天平台审核', '温馨提示', {
                                     confirmButtonText: '确定',
-                                    callback: action => {this.$router.go(0);
+                                    callback: () => {
+
+                                        this.go_shops();
                                         //this.sfsfn(false);
-                                        }
+                                    }
                                 });
                             }else{
                                 this.$message.error(res.message);
@@ -623,7 +625,7 @@
                             if(res.code){
                                 this.$alert('提交成功，待1~3天平台审核', '温馨提示', {
                                     confirmButtonText: '确定',
-                                    callback: action => {this.popfalse(index);this.$router.go(0)}
+                                    callback: action => {this.popfalse(index);this.go_shops()}
                                 });
                             }else{
                                 this.$message.error(res.message);

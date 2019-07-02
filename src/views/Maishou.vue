@@ -87,14 +87,9 @@
     </div>
     <div>
 
-      <div v-if="tagCount==-2">
-        <div class="pa1">
-          <paydetail></paydetail>
-        </div>
-      </div>
       <div v-if="tagCount==-1">
         <div class="pa1">
-          <detail></detail>
+          <detail_component :id="$route.query.id" :type="$route.query.type"></detail_component>
         </div>
       </div>
       <div v-if="tagCount==0">
@@ -126,8 +121,9 @@
 </template>
 <script>
   import ajax from 'axios';
+
   // 查看详情
-  import detail from '../components/detail.vue';
+  import detail_component from '../components/maishou/detail_component';
 
   // 垫付详情
   import paydetail from '../components/paydetail.vue';
@@ -242,10 +238,10 @@
       '$route':'nowrouter'
     },
     components:{
-      paydetail,
-      detail,
-      shopinfo,
-      shophelp
+        detail_component,
+        paydetail,
+        shopinfo,
+        shophelp
     }
   };
 </script>

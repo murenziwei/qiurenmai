@@ -36,8 +36,10 @@
 
                         <p>主图：</p>
 
-                        <div>
-                            <lw-img v-for="(gval,gind) in (tval.goods_img)?(tval.goods_img).split(','):[tval,goods_img]" :src-data="gval"></lw-img>
+                        <div style="display:flex;">
+                            <div>
+                                <lw-img v-for="(gval,gind) in (tval.goods_img)?(tval.goods_img).split(','):[tval,goods_img]" :src-data="gval"></lw-img>
+                            </div>
                         </div>
                     </el-col>
                     <el-col :xs="24" :sm="12" :lg="6">
@@ -47,9 +49,11 @@
 
                     </el-col>
 
-                    <el-col :xs="24">
-                        <el-button type="primary">继续</el-button>
-                        <el-button type="danger">放弃</el-button>
+                    <el-col :xs="24" class="margin-top">
+                        <el-link class="m-r-1" type="success" :href="'#/maishou?tagcount=-1&id='+tval.id+'&type='+tval.platform_type" target="_blank">继续</el-link>
+                        <el-link class="m-r-1" type="danger" @click="forgetfn(tval.id)">放弃</el-link>
+                        <el-link class="m-r-1" type="info" @click="commentfn(tval.id)">评论</el-link>
+
                     </el-col>
                 </el-row>
                 <p style="text-align:center;" v-if="task.data.length===0"><el-link type="info" :underline="false">没有更多数据了</el-link></p>
@@ -65,6 +69,44 @@
                 </el-pagination>
             </div>
         </el-card>
+        <el-dialog :visible.sync="dialogVisible">
+            <el-form style="height:70vh;width:100%;overflow-y:scroll;" :model="commentform" ref="commentform" label-position="top">
+                <p>
+                    任务编号：{{commentform.id||'**'}}
+                </p>
+                <p>
+                    接单账号：{{commentform.wangwang_id||'**'}}
+                </p>
+                <p>
+                    状态：{{commentform.status|statusfn}}
+                </p>
+                <p>
+                    评论类别： {{commentform.type|commenF}}
+                </p>
+                <el-form-item label="评论文字" >
+                    <el-input v-model="commentform.comment_ask||'**'" :disabled="true" type="textarea" rows="5"></el-input>
+                </el-form-item>
+
+                <el-form-item label="图片" >
+                    <el-row>
+                        <el-col v-for="(imgval) in commentform.imgs">
+                            <lw-img :src-data="imgval"></lw-img>
+                        </el-col>
+                    </el-row>
+
+                    <p style="text-align:center;" v-if="commentform.imgs.length==0"><el-link type="info" :underline="false">没有更多数据了</el-link></p>
+                </el-form-item>
+
+                <el-form-item label="视频" >
+                    <video controls :src="commentform.video"  v-if="commentform.video"></video>
+                    <p style="text-align:center;" v-else><el-link type="info" :underline="false">没有更多数据了</el-link></p>
+                </el-form-item>
+
+                <el-form-item >
+                    <el-button @click="submitCom(commentform.id)">确认评论</el-button>
+                </el-form-item>
+            </el-form>
+        </el-dialog>
     </div>
 </template>
 
@@ -74,6 +116,10 @@
         name: "notice",
         data() {
             return {
+                commentform:{
+                    imgs:[]
+                },
+                dialogVisible:false,
 
                 task:{
                     current_page: 0,
@@ -91,33 +137,103 @@
         },
         computed: {},
         filters:{
+            shops:function(value){
+                var del='**';
+                switch (value){
+                    case 1:del='淘宝';break;
+                    case 3:del='拼多多';break;
+                }
+                return del;
+            },
+            statusfn:function(value){
 
-            filters:{
+                var del='--';
+                switch (value){
+                    case 1:del='未接单';break;
+                    case 2:del='待操作';break;
+                    case 3:del='待返款发货';break;
+                    case 4:del='待评价';break;
+                    case 5:del='待确认';break;
+                    case 6:del='已完成';break;
+                }
+                return del;
+            },
+            commenF:function(value){
 
-                shops:function(value){
-                    var del='**';
-                    switch (value){
-                        case 1:del='淘宝';break;
-                        case 3:del='拼多多';break;
-                    }
-                    return del;
-                },
-                statusfn:function(value){
-
-                    var del='--';
-                    switch (value){
-                        case 1:del='未接单';break;
-                        case 2:del='待操作';break;
-                        case 3:del='待返款发货';break;
-                        case 4:del='待评价';break;
-                        case 5:del='待确认';break;
-                        case 6:del='已完成';break;
-                    }
-                    return del;
-                },
+                var del='--';
+                switch (value){
+                    case 1:del='普通好评';break;
+                    case 2:del='指定文字好评';break;
+                    case 3:del='置顶图片好评';break;
+                    case 4:del='指定视频好评';break;
+                }
+                return del;
             },
         },
         methods: {
+            commentfn(id){
+
+                this.$api.ports.doComment({id}).then((res)=>{
+                    console.log(res,'放弃');
+                    if(res.code){
+                        this.commentform = res.data[0];
+                        this.commentform.id=id;
+                        this.dialogVisible=true;
+                    }else{
+                        this.dialogVisible=false;
+                        this.$notify.error(res.message);
+                    }
+                });
+            },
+            submitCom(id){
+
+                this.$confirm('再次确认是否提交？', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+
+
+                    this.$api.ports.confComment({id}).then((res)=>{
+
+                        if(res.code){
+                            this.$notify.success(res.message);
+                        }else{
+                            this.dialogVisible=false;
+                            this.$notify.error(res.message);
+                        }
+                    });
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '已取消提交'
+                    });
+                });
+            },
+            forgetfn(id){
+                this.$confirm('再次确认是否放弃？', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+
+                    this.$api.ports.abandonTask({id}).then((res)=>{
+                        console.log(res,'放弃');
+                        if(res.code){
+
+                            this.$notify.success('放弃成功');
+                            this.go_task();
+                        }else{
+                            this.$notify.error(res.message);
+                        }
+                    });
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '已取消放弃'
+                    });
+                });
+            },
 
 
             //分页
@@ -147,15 +263,18 @@
                 }).catch(() => {
 
                 });
-            },
-            amend() {
-
             }
+
         }
     }
 </script>
-
+<style>
+    .el-dialog{
+        width:80%!important;
+    }
+</style>
 <style lang="less" scoped>
+    .m-r-1{margin:0 1rem;}
     .binding {
         display: flex;
         div {
@@ -164,7 +283,7 @@
     }
 
     .margin-top {
-        margin-top: 30px;
+        margin: 1rem 0;
     }
 
     .box-card {

@@ -14,7 +14,7 @@
             <div slot="header" class="clearfix">
                 <span class="c-topic">商家公告</span>
             </div>
-            <div>
+            <div v-html="notice.note">
                 <!--<el-tabs v-model="activeName" type="card" @tab-click="handleClick">-->
                     <!--<el-tab-pane label="待返款订单" name="first">-->
                         <!--<div class="infinite-list-wrapper">-->
@@ -42,10 +42,12 @@
 </template>
 
 <script>
+    import ajax from 'axios';
     export default {
         name: "notice",
         data(){
             return {
+                notice:'',
                 count: 10,
                 loading: false,
                 activeName:'first',
@@ -60,7 +62,23 @@
                 return this.count >= 20
             }
         },
+        created(){
+            ajax.all([this.go_notice()])
+        },
+
         methods:{
+            go_notice(){
+                return this.$api.ports.oNotice().then((res)=>{
+
+                    if(res.code){
+                        this.notice=res.data[0];
+
+                    }else{
+                        this.$notify.error(res.message);
+                    }
+                })
+            },
+
             load () {
                 if(!this.noMore){
 

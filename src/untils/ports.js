@@ -2,9 +2,47 @@ import base from './base';//导入接口域名列表
 import axios from './https';//导入http中创建的axios案例
 
 const ports={
+    //商家公告
+    oNotice(){
+        return axios.post(`${base.other}/notice`,{
+            access_token:localStorage.getItem('token')
+        })
+    },
+
     /*买手端*/
 
     /*买手任务流程*/
+    //下单提交截图
+    uploadImgs(obj){
+        obj.access_token=localStorage.getItem('token');
+        return axios.post(`${base.dotask}/uploadImgs`,obj)
+    },
+
+    //评论页面
+    doComment(obj){
+        obj.access_token=localStorage.getItem('token');
+        return axios.post(`${base.dotask}/doComment`,obj)
+    },
+
+    //确认评论
+    confComment(obj){
+        obj.access_token=localStorage.getItem('token');
+        return axios.post(`${base.dotask}/confComment`,obj)
+    },
+
+    //任务流程页面动态数据
+    taskData(obj){
+        obj.access_token=localStorage.getItem('token');
+        return axios.post(`${base.dotask}/taskData`,obj)
+    },
+
+    //放弃任务
+    abandonTask(obj){
+        obj.access_token=localStorage.getItem('token');
+        return axios.post(`${base.dotask}/abandonTask`,obj)
+    },
+
+
     //任务列表
     filtTask(obj){
         obj.access_token=localStorage.getItem('token');
@@ -14,7 +52,7 @@ const ports={
     //接受任务
     takeTask(obj){
         obj.access_token=localStorage.getItem('token');
-        return axios.post(`${base.dotask}/filtTask`,obj)
+        return axios.post(`${base.dotask}/takeTask`,obj)
     },
 
 

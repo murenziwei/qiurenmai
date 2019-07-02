@@ -359,7 +359,7 @@
                                 <div v-if="video">
                                     <div v-for="(item,index) in videoArr" class="c-item">
                                         <div style="text-align:right;" v-if="index>=1">
-                                            <i class="el-icon-close c-i-close" @click="cClose('pictureArr',index)"></i>
+                                            <i class="el-icon-close c-i-close" @click="cClose('videoArr',index)"></i>
                                         </div>
                                         <el-row :gutter="20" type="flex" align="middle">
                                             <el-col>

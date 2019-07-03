@@ -76,71 +76,71 @@
             <div class="n-content" v-html="consumer.note"></div>
         </el-card>
 
-        <el-card class="box-card">
-            <div slot="header" class="clearfix">
-                <span class="c-topic">任务管理</span>
-            </div>
+        <!--<el-card class="box-card">-->
+            <!--<div slot="header" class="clearfix">-->
+                <!--<span class="c-topic">任务管理</span>-->
+            <!--</div>-->
 
-            <div>
-                <el-row v-for="(tval,tind) in task.data">
-                    <el-col :xs="24" :sm="12" :lg="6">
+            <!--<div>-->
+                <!--<el-row v-for="(tval,tind) in task.data">-->
+                    <!--<el-col :xs="24" :sm="12" :lg="6">-->
 
-                        <span>任务编号：</span>
-                        <span>{{tval.id||'**'}}</span>
-                    </el-col>
-                    <el-col :xs="24" :sm="12" :lg="6">
+                        <!--<span>任务编号：</span>-->
+                        <!--<span>{{tval.id||'**'}}</span>-->
+                    <!--</el-col>-->
+                    <!--<el-col :xs="24" :sm="12" :lg="6">-->
 
-                        <span>接单账号：</span>
-                        <span>{{tval.wangwang_id||'**'}}</span>
-                    </el-col>
-                    <el-col :xs="24" :sm="12" :lg="6">
+                        <!--<span>接单账号：</span>-->
+                        <!--<span>{{tval.wangwang_id||'**'}}</span>-->
+                    <!--</el-col>-->
+                    <!--<el-col :xs="24" :sm="12" :lg="6">-->
 
-                        <span>状态：</span>
-                        <span>{{tval.status|statusfn}}</span>
-                    </el-col>
-                    <el-col :xs="24" :sm="12" :lg="6">
+                        <!--<span>状态：</span>-->
+                        <!--<span>{{tval.status|statusfn}}</span>-->
+                    <!--</el-col>-->
+                    <!--<el-col :xs="24" :sm="12" :lg="6">-->
 
-                        <span>佣金：</span>
-                        <span>{{tval.real_commission||'**'}}</span>
-                    </el-col>
-                    <el-col :xs="24" :sm="12" :lg="6">
+                        <!--<span>佣金：</span>-->
+                        <!--<span>{{tval.real_commission||'**'}}</span>-->
+                    <!--</el-col>-->
+                    <!--<el-col :xs="24" :sm="12" :lg="6">-->
 
-                        <span>标题：</span>
-                        <span>{{tval.goods_name||'**'}}</span>
-                    </el-col>
-                    <el-col :xs="24" :sm="12" :lg="6">
+                        <!--<span>标题：</span>-->
+                        <!--<span>{{tval.goods_name||'**'}}</span>-->
+                    <!--</el-col>-->
+                    <!--<el-col :xs="24" :sm="12" :lg="6">-->
 
-                        <p>主图：</p>
+                        <!--<p>主图：</p>-->
 
-                        <div>
-                            <lw-img v-for="(gval,gind) in (tval.goods_img)?(tval.goods_img).split(','):[tval,goods_img]" :src-data="gval"></lw-img>
-                        </div>
-                    </el-col>
-                    <el-col :xs="24" :sm="12" :lg="6">
+                        <!--<div>-->
+                            <!--<lw-img v-for="(gval,gind) in (tval.goods_img)?(tval.goods_img).split(','):[tval,goods_img]" :src-data="gval"></lw-img>-->
+                        <!--</div>-->
+                    <!--</el-col>-->
+                    <!--<el-col :xs="24" :sm="12" :lg="6">-->
 
-                        <span>平台类型：</span>
-                        <span>{{tval.platform_type|shops}}</span>
+                        <!--<span>平台类型：</span>-->
+                        <!--<span>{{tval.platform_type|shops}}</span>-->
 
-                    </el-col>
+                    <!--</el-col>-->
 
-                    <el-col :xs="24">
-                        <el-button type="primary">继续</el-button>
-                        <el-button type="danger">放弃</el-button>
-                    </el-col>
-                </el-row>
-                <p style="text-align:center;" v-if="task.data.length===0"><el-link type="info" :underline="false">没有更多数据了</el-link></p>
-            </div>
+                    <!--<el-col :xs="24">-->
+                        <!--<el-button type="primary">继续</el-button>-->
+                        <!--<el-button type="danger">放弃</el-button>-->
+                    <!--</el-col>-->
+                <!--</el-row>-->
+                <!--<p style="text-align:center;" v-if="task.data.length===0"><el-link type="info" :underline="false">没有更多数据了</el-link></p>-->
+            <!--</div>-->
 
-            <div class="mt-cen" style="text-align:center;">
-                <el-pagination
-                        :current-page.sync="task.current_page"
-                        @current-change="bschange"
-                        background
-                        layout="prev, pager, next"
-                        :total="task.last_page*10">
-                </el-pagination>
-            </div>
-        </el-card>
+            <!--<div class="mt-cen" style="text-align:center;">-->
+                <!--<el-pagination-->
+                        <!--:current-page.sync="task.current_page"-->
+                        <!--@current-change="bschange"-->
+                        <!--background-->
+                        <!--layout="prev, pager, next"-->
+                        <!--:total="task.last_page*10">-->
+                <!--</el-pagination>-->
+            <!--</div>-->
+        <!--</el-card>-->
     </div>
 </template>
 
@@ -186,7 +186,7 @@
             }
         },
         created(){
-            ajax.all([this.go_consumer(),this.go_task()]);
+            ajax.all([this.go_consumer()]);//,this.go_task()
         },
         computed: {
             noMore() {

@@ -55,27 +55,26 @@
                                 <el-col :xs="24" :sm="12">
                                     <ul>
                                         <li>
-                                            打开【 <el-link type="danger" :underline="false">手机拼多多</el-link> 】APP
+                                            打开【 <el-link type="danger" :underline="false">手机淘宝</el-link> 】APP
                                         </li>
                                         <li>
                                             登录买家账号：<el-link type="danger" :underline="false">{{detail.data.wangwang_id||'**'}}</el-link>
                                         </li>
                                         <li>
-                                            在APP顶部搜索框搜索关键字：
-
-                                            <el-link type="danger" :underline="false">{{detail.comment_info.than_word||'**'}}</el-link>
+                                           复制手机淘口令：
+                                            <el-link type="danger" :underline="false">{{detail.comment_info.search_word||'**'}}</el-link>
                                         </li>
                                     </ul>
                                 </el-col>
                                 <el-col :xs="24" :sm="12">
                                     <div>
-                                        <el-image :src="$store.state.urlimg"></el-image>
+                                        <el-image :src="detail.data.goods_img"></el-image>
                                     </div>
                                 </el-col>
                             </el-row>
 
                             <el-divider content-position="center">
-                                第二步、浏览商品+货比三家
+                                第二步、浏览店内商品
                             </el-divider>
                             <el-row :gutter="20">
                                 <el-col :xs="24" :sm="12">
@@ -116,9 +115,14 @@
                                         </li>
                                     </ul>
                                 </el-col>
-                                <el-col :xs="24" :sm="12">
-                                    <div>
-                                        <el-image :src="detail.data.goods_img"></el-image>
+                                <el-col :xs="24">
+                                    <div style="text-align:center;">
+                                        <p>
+                                            进去浏览商品  <el-link type="danger" :underline="false">
+                                            一分钟以上（主图、详情页、评论、视频），然后收藏。浏览店铺内其他商品2个商品，各浏览30秒以上。
+                                        </el-link>
+
+                                        </p>
                                     </div>
                                 </el-col>
                             </el-row>
@@ -154,13 +158,13 @@
 
                         <div>
                             <el-divider content-position="center">
-                                第三步、联系客服
+                                第三步、联系客服、主产品浏览收藏+加购（主图、详情页、评论、视频）
                             </el-divider>
                             <el-row :gutter="20">
                                 <el-col :xs="24" :sm="12">
                                     <ul>
                                         <li>
-                                           浏览完成后请使用旺旺：联系卖家在线客服，至少问1个问题
+                                            浏览完成后请使用旺旺：联系卖家在线客服，至少问1个问题
                                             <p>然后 <el-link type="danger" :underline="false">收藏+加购+关注店铺（需要截图），（如备注说明无需假聊则可以省略）</el-link></p>
                                             <p>
                                                 加购规格型号：{{detail.comment_info["specification"]||'**'}}
@@ -208,10 +212,10 @@
                                 第四步、下单上传截图
                             </el-divider>
                             <el-form label-position="top" ref="form" :rules="formRule" :model="form">
-                                <p>下单需在留言处留言</p>
-                                <p>
-                                    订单留言：<el-link type="danger">订单留言</el-link>
-                                </p>
+                                <!--<p>下单需在留言处留言</p>-->
+                                <!--<p>-->
+                                    <!--订单留言：<el-link type="danger">订单留言</el-link>-->
+                                <!--</p>-->
                                 <el-form-item label="订单号" prop="order_no">
                                     <el-input v-model="form.order_no"></el-input>
                                 </el-form-item>
@@ -398,7 +402,7 @@
 
 
     export default {
-        name: "pin",
+        name: "preview",
         props:['id','status'],
         data() {
             function often(message){
@@ -528,6 +532,7 @@
         created(){
 
             ajax.all([this.go_detail()]).then(()=>{
+
                 this.selectA=Number(this.status);
             });
         },

@@ -89,7 +89,7 @@
 
       <div v-if="tagCount==-1">
         <div class="pa1">
-          <detail_component :id="$route.query.id" :type="$route.query.type"></detail_component>
+          <detail_component :id="$route.query.id" :type="$route.query.type" :status="$route.query.status"></detail_component>
         </div>
       </div>
       <div v-if="tagCount==0">
@@ -246,6 +246,9 @@
   };
 </script>
 <style lang="less">
+.el-dialog{
+  width:80%!important;
+}
 .el-message-box{
   width:unset;
   max-width:420px;

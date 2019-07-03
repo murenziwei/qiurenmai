@@ -73,9 +73,53 @@
                                     </div>
                                 </el-col>
                             </el-row>
+                            <el-divider content-position="center">
+                                第二步、浏览商品货比三家
+                            </el-divider>
+                            <el-row :gutter="20">
+                                <el-col :xs="24">
+                                    <div style="text-align:center">
+                                        <p>浏览3夹其他店铺商品，各浏览半分钟以上，然后收藏加购1个商品</p>
+                                        <p>
+                                            <el-link type="danger" :underline="false">任务完成后需要上传足迹截图</el-link>
+                                        </p>
+                                    </div>
+                                </el-col>
+                            </el-row>
+                            <el-divider></el-divider>
+
+                            <el-alert title="注意" type="info" :closable="false">
+                                <ul>
+                                    <li>
+                                        若你在拼多多使用的不是“账号{{detail.data.wangwang_id||'**'}}”接手当前任务，本次任务佣金将全部扣除，并处罚1点虚拟币；账号封禁7天不可接手任务
+                                    </li>
+                                    <li>
+                                        接手任务后放弃任务则扣除1个虚拟币
+                                    </li>
+                                    <li>
+                                        买手接手手机单任务时，在未到最好一步（去支付）之前，不要着急将购物车中的商品下单付款，对比商家信息是否正确
+                                        <p>
+                                            以免发生拍错、漏拍等情状，若商家投诉第一次扣除2个点点或是冻结账号2天；第二次扣除2和点点冻结账号5天；
+                                            第三次扣除2个卖点冻结账号10天
+                                        </p>
+                                    </li>
+                                </ul>
+                            </el-alert>
+
+                            <el-divider></el-divider>
+                            <el-row>
+                                <el-button type="primary" @click="nextfn(1)">下一步</el-button>
+                            </el-row>
+
+                        </div>
+                    </div>
+
+                    <div v-if="selectA==2">
+
+                        <div>
 
                             <el-divider content-position="center">
-                                第二步、浏览商品+货比三家
+                                第三步、搜索下单词+货比一家
                             </el-divider>
                             <el-row :gutter="20">
                                 <el-col :xs="24" :sm="12">
@@ -122,45 +166,14 @@
                                     </div>
                                 </el-col>
                             </el-row>
-                            <el-divider></el-divider>
-
-                            <el-alert title="注意" type="info" :closable="false">
-                                <ul>
-                                    <li>
-                                        若你在拼多多使用的不是“账号{{detail.data.wangwang_id||'**'}}”接手当前任务，本次任务佣金将全部扣除，并处罚1点虚拟币；账号封禁7天不可接手任务
-                                    </li>
-                                    <li>
-                                        接手任务后放弃任务则扣除1个虚拟币
-                                    </li>
-                                    <li>
-                                        买手接手手机单任务时，在未到最好一步（去支付）之前，不要着急将购物车中的商品下单付款，对比商家信息是否正确
-                                        <p>
-                                            以免发生拍错、漏拍等情状，若商家投诉第一次扣除2个点点或是冻结账号2天；第二次扣除2和点点冻结账号5天；
-                                            第三次扣除2个卖点冻结账号10天
-                                        </p>
-                                    </li>
-                                </ul>
-                            </el-alert>
-
-                            <el-divider></el-divider>
-                            <el-row>
-                                <el-button type="primary" @click="nextfn(1)">下一步</el-button>
-                            </el-row>
-
-                        </div>
-                    </div>
-
-                    <div v-if="selectA==2">
-
-                        <div>
                             <el-divider content-position="center">
-                                第三步、联系客服
+                                第四步、联系客服+主产品浏览收藏+加购（主图、详情页、评论、视频）
                             </el-divider>
                             <el-row :gutter="20">
                                 <el-col :xs="24" :sm="12">
                                     <ul>
                                         <li>
-                                           浏览完成后请使用旺旺：联系卖家在线客服，至少问1个问题
+                                            浏览完成后请使用旺旺：联系卖家在线客服，至少问1个问题
                                             <p>然后 <el-link type="danger" :underline="false">收藏+加购+关注店铺（需要截图），（如备注说明无需假聊则可以省略）</el-link></p>
                                             <p>
                                                 加购规格型号：{{detail.comment_info["specification"]||'**'}}
@@ -194,31 +207,16 @@
                             <el-divider></el-divider>
                             <el-row>
 
-                                <el-button type="primary" @click="nextfn(-1)">上一步</el-button>
-                                <el-button type="primary" @click="nextfn(1)">下一步</el-button>
+                                <el-button type="primary" @click="nextfn(-1)" class="mtl">上一步</el-button>
+                                <el-button type="primary" @click="dialogVisible=true" class="mtl">
+                                    已完成，等待预售时间下单
+                                </el-button>
                             </el-row>
 
                         </div>
-                    </div>
+                        <el-dialog :visible.sync="dialogVisible">
 
-                    <div v-if="selectA==3">
-
-                        <div>
-                            <el-divider content-position="center">
-                                第四步、下单上传截图
-                            </el-divider>
-                            <el-form label-position="top" ref="form" :rules="formRule" :model="form">
-                                <p>下单需在留言处留言</p>
-                                <p>
-                                    订单留言：<el-link type="danger">订单留言</el-link>
-                                </p>
-                                <el-form-item label="订单号" prop="order_no">
-                                    <el-input v-model="form.order_no"></el-input>
-                                </el-form-item>
-                                <el-form-item label="用户垫付金额" prop="real_pay">
-                                    <el-input v-model.number="form.real_pay"></el-input>
-                                </el-form-item>
-
+                            <el-form style="height:60vh;overflow-y:scroll;width:100%;" label-position="top" ref="waitform" :rules="waitRule" :model="waitform">
                                 <el-row>
                                     <el-col :xs="24" :sm="12">
                                         <el-form-item label="搜索框截图" prop="search_img">
@@ -230,21 +228,90 @@
                                                         accept="image/*"
                                                         :data="{access_token:token}"
                                                         list-type="picture-card"
-                                                        :on-success="searchSuccess"
-                                                        :on-remove="searchRemove"
+                                                        :on-success="searchSuccess1"
+                                                        :on-remove="searchRemove1"
 
                                                 >
                                                     <i class="el-icon-plus"></i>
 
                                                     <div slot="tip" class="el-upload__tip">上传“商品主图”，确保与搜索页面展示的图片一致</div>
                                                 </el-upload>
-                                                <el-dialog :visible.sync="dialogVisible">
-                                                    <img width="100%" :src="dialogImageUrl" alt="">
-                                                </el-dialog>
                                             </div>
                                         </el-form-item>
                                     </el-col>
 
+                                    <el-col :xs="24" :sm="12">
+                                        <el-form-item label="足迹截图" prop="record_img">
+                                            <div>
+
+                                                <el-upload
+                                                        class="upload-demo"
+                                                        action="/api/Other/upload"
+                                                        accept="image/*"
+                                                        :data="{access_token:token}"
+                                                        list-type="picture-card"
+                                                        :on-success="recordSuccess1"
+                                                        :on-remove="recordRemove1"
+
+                                                >
+                                                    <i class="el-icon-plus"></i>
+
+                                                    <div slot="tip" class="el-upload__tip">上传“商品主图”，确保与搜索页面展示的图片一致</div>
+                                                </el-upload>
+                                            </div>
+                                        </el-form-item>
+                                    </el-col>
+
+                                    <el-col :xs="24" :sm="12">
+                                        <el-form-item label="收藏夹截图" prop="favorites_img">
+                                            <div>
+
+                                                <el-upload
+                                                        class="upload-demo"
+                                                        action="/api/Other/upload"
+                                                        accept="image/*"
+                                                        :data="{access_token:token}"
+                                                        list-type="picture-card"
+                                                        :on-success="favoritesSuccess1"
+                                                        :on-remove="favoritesRemove1"
+
+                                                >
+                                                    <i class="el-icon-plus"></i>
+
+                                                    <div slot="tip" class="el-upload__tip">上传“商品主图”，确保与搜索页面展示的图片一致</div>
+                                                </el-upload>
+                                            </div>
+                                        </el-form-item>
+                                    </el-col>
+
+                                </el-row>
+                                <el-row>
+
+                                    <el-button type="primary" @click="waitDown('waitform')">下一步</el-button>
+                                </el-row>
+                            </el-form>
+                        </el-dialog>
+                    </div>
+
+                    <div v-if="selectA==3">
+
+                        <div>
+                            <el-divider content-position="center">
+                                第五步、下单上传截图
+                            </el-divider>
+                            <el-form label-position="top" ref="form" :rules="formRule" :model="form">
+                                <!--<p>下单需在留言处留言</p>-->
+                                <!--<p>-->
+                                <!--订单留言：<el-link type="danger">订单留言</el-link>-->
+                                <!--</p>-->
+                                <el-form-item label="订单号" prop="order_no">
+                                    <el-input v-model="form.order_no"></el-input>
+                                </el-form-item>
+                                <el-form-item label="用户垫付金额" prop="real_pay">
+                                    <el-input v-model.number="form.real_pay"></el-input>
+                                </el-form-item>
+
+                                <el-row>
                                     <el-col :xs="24" :sm="12">
                                         <el-form-item label="订单截图" prop="order_img">
                                             <div>
@@ -263,9 +330,6 @@
 
                                                     <div slot="tip" class="el-upload__tip">上传“商品主图”，确保与搜索页面展示的图片一致</div>
                                                 </el-upload>
-                                                <el-dialog :visible.sync="dialogVisible">
-                                                    <img width="100%" :src="dialogImageUrl" alt="">
-                                                </el-dialog>
                                             </div>
                                         </el-form-item>
                                     </el-col>
@@ -288,59 +352,6 @@
 
                                                     <div slot="tip" class="el-upload__tip">上传“商品主图”，确保与搜索页面展示的图片一致</div>
                                                 </el-upload>
-                                                <el-dialog :visible.sync="dialogVisible">
-                                                    <img width="100%" :src="dialogImageUrl" alt="">
-                                                </el-dialog>
-                                            </div>
-                                        </el-form-item>
-                                    </el-col>
-
-                                    <el-col :xs="24" :sm="12">
-                                        <el-form-item label="足迹截图" prop="record_img">
-                                            <div>
-
-                                                <el-upload
-                                                        class="upload-demo"
-                                                        action="/api/Other/upload"
-                                                        accept="image/*"
-                                                        :data="{access_token:token}"
-                                                        list-type="picture-card"
-                                                        :on-success="recordSuccess"
-                                                        :on-remove="recordRemove"
-
-                                                >
-                                                    <i class="el-icon-plus"></i>
-
-                                                    <div slot="tip" class="el-upload__tip">上传“商品主图”，确保与搜索页面展示的图片一致</div>
-                                                </el-upload>
-                                                <el-dialog :visible.sync="dialogVisible">
-                                                    <img width="100%" :src="dialogImageUrl" alt="">
-                                                </el-dialog>
-                                            </div>
-                                        </el-form-item>
-                                    </el-col>
-
-                                    <el-col :xs="24" :sm="12">
-                                        <el-form-item label="收藏夹截图" prop="favorites_img">
-                                            <div>
-
-                                                <el-upload
-                                                        class="upload-demo"
-                                                        action="/api/Other/upload"
-                                                        accept="image/*"
-                                                        :data="{access_token:token}"
-                                                        list-type="picture-card"
-                                                        :on-success="favoritesSuccess"
-                                                        :on-remove="favoritesRemove"
-
-                                                >
-                                                    <i class="el-icon-plus"></i>
-
-                                                    <div slot="tip" class="el-upload__tip">上传“商品主图”，确保与搜索页面展示的图片一致</div>
-                                                </el-upload>
-                                                <el-dialog :visible.sync="dialogVisible">
-                                                    <img width="100%" :src="dialogImageUrl" alt="">
-                                                </el-dialog>
                                             </div>
                                         </el-form-item>
                                     </el-col>
@@ -370,8 +381,6 @@
                             <el-divider></el-divider>
                             <el-row>
 
-                                <el-button type="primary" @click="nextfn(-1)">上一步</el-button>
-
                                 <el-button type="primary" @click="submitThree('form')">下一步</el-button>
                             </el-row>
 
@@ -398,7 +407,7 @@
 
 
     export default {
-        name: "pin",
+        name: "preyu",
         props:['id','status'],
         data() {
             function often(message){
@@ -415,7 +424,31 @@
             return {
 
                 token:localStorage.getItem('token')||(()=>{this.$route.replace('/login')})(),
-
+                waitform:{
+                    //搜索框截图
+                    search_img:[],
+                    //足迹截图
+                    record_img:[],
+                    //收藏夹截图
+                    favorites_img:[]
+                },
+                waitRule:{
+                    search_img:[
+                        {
+                            required:true,validator:often('搜索框截图不能为空'), trigger: 'change'
+                        }
+                    ],
+                    record_img:[
+                        {
+                            required:true,validator:often('足迹截图不能为空'), trigger: 'change'
+                        }
+                    ],
+                    favorites_img:[
+                        {
+                            required:true,validator:often('收藏夹截图不能为空'), trigger: 'change'
+                        }
+                    ]
+                },
                 //第三步表单字符
                 form:{
                     //拼多多订单号
@@ -528,6 +561,7 @@
         created(){
 
             ajax.all([this.go_detail()]).then(()=>{
+
                 this.selectA=Number(this.status);
             });
         },
@@ -543,6 +577,16 @@
             searchRemove(file, fileList){
                 this.form.search_img=fileList;
             },
+
+            //搜索截图1
+            searchSuccess1(response, file, fileList){
+
+                this.waitform.search_img=fileList;
+            },
+            searchRemove1(file, fileList){
+                this.waitform.search_img=fileList;
+            },
+
             //订单截图
             orderSuccess(response, file, fileList){
 
@@ -567,6 +611,16 @@
             recordRemove(file, fileList){
                 this.form.record_img=fileList;
             },
+
+            //足迹截图1
+            recordSuccess1(response, file, fileList){
+
+                this.waitform.record_img=fileList;
+            },
+            recordRemove1(file, fileList){
+                this.waitform.record_img=fileList;
+            },
+
             //收藏夹截图
             favoritesSuccess(response, file, fileList){
 
@@ -576,29 +630,25 @@
                 this.form.favorites_img=fileList;
             },
 
+            //收藏夹截图1
+            favoritesSuccess1(response, file, fileList){
 
+                this.waitform.favorites_img=fileList;
+            },
+            favoritesRemove1(file, fileList){
+                this.waitform.favorites_img=fileList;
+            },
 
-            submitThree(formName){
-                console.log(this.form,'form');
+            waitDown(formName){
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
-                        var getR=this.form;
+                        var getR=this.waitform;
                         console.log(getR,'getR');
                         //搜索框截图
                         var search_img=getR.search_img.map((cv)=>{
                             return (cv.response?cv.response.data[0].filePath:cv.url)
                         }).join(',');
 
-                        //订单截图
-                        var order_img=getR.order_img.map((cv)=>{
-                            return (cv.response?cv.response.data[0].filePath:cv.url)
-                        }).join(',');
-
-
-                        //店铺关注截图
-                        var follow_img=getR.follow_img.map((cv)=>{
-                            return (cv.response?cv.response.data[0].filePath:cv.url)
-                        }).join(',');
 
                         //足迹截图
                         var record_img=getR.record_img.map((cv)=>{
@@ -612,13 +662,72 @@
 
                         var obj={
                             task_id:Number(this.id),
-                            order_no:getR['order_no'],
-                            real_pay:getR.real_pay,
                             search_img,
-                            order_img,
-                            follow_img,
                             record_img,
                             favorites_img
+                        }
+                        console.log(obj,'obj');
+                        this.$api.ports.toWaitSelf(obj).then((res)=>{
+                            console.log(res,'是佛');
+                            if(res.code){
+                                this.$alert('提交成功，待1~3天平台审核', '温馨提示', {
+                                    confirmButtonText: '确定',
+                                    callback: () => {
+                                        this.nextfn(1);
+                                    }
+                                });
+                            }else{
+                                this.$message.error(res.message);
+                            }
+                        }).catch((err)=>{
+                            console.log(err,'失败');
+                        })
+                    } else {
+                        this.$notify.error("注意：带红色*是必填项！");
+                        return false;
+                    }
+                });
+            },
+
+
+            submitThree(formName){
+                console.log(this.form,'form');
+                this.$refs[formName].validate((valid) => {
+                    if (valid) {
+                        var getR=this.form;
+                        console.log(getR,'getR');
+                        // //搜索框截图
+                        // var search_img=getR.search_img.map((cv)=>{
+                        //     return (cv.response?cv.response.data[0].filePath:cv.url)
+                        // }).join(',');
+
+                        //订单截图
+                        var order_img=getR.order_img.map((cv)=>{
+                            return (cv.response?cv.response.data[0].filePath:cv.url)
+                        }).join(',');
+
+
+                        //店铺关注截图
+                        var follow_img=getR.follow_img.map((cv)=>{
+                            return (cv.response?cv.response.data[0].filePath:cv.url)
+                        }).join(',');
+
+                        // //足迹截图
+                        // var record_img=getR.record_img.map((cv)=>{
+                        //     return (cv.response?cv.response.data[0].filePath:cv.url)
+                        // }).join(',');
+                        //
+                        // //收藏夹截图
+                        // var favorites_img=getR.favorites_img.map((cv)=>{
+                        //     return (cv.response?cv.response.data[0].filePath:cv.url)
+                        // }).join(',');
+
+                        var obj={
+                            task_id:Number(this.id),
+                            order_no:getR['order_no'],
+                            real_pay:getR.real_pay,
+                            order_img,
+                            follow_img
                         }
                         console.log(obj,'obj');
                         this.$api.ports.uploadImgs(obj).then((res)=>{
@@ -670,6 +779,9 @@
 </script>
 
 <style lang="less" scoped>
+    .mtl{
+        margin:1rem;
+    }
     .danger-text{
         color:#f78989;
     }

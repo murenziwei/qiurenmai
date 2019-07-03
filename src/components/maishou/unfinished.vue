@@ -50,7 +50,7 @@
                     </el-col>
 
                     <el-col :xs="24" class="margin-top">
-                        <el-link class="m-r-1" type="success" :href="'#/maishou?tagcount=-1&id='+tval.id+'&type='+tval.platform_type" target="_blank">继续</el-link>
+                        <el-link class="m-r-1" type="success" :href="'#/maishou?tagcount=-1&id='+tval.id+'&status='+tval.status+'&type='+tval.platform_type" target="_blank">继续</el-link>
                         <el-link class="m-r-1" type="danger" @click="forgetfn(tval.id)">放弃</el-link>
                         <el-link class="m-r-1" type="info" @click="commentfn(tval.id)">评论</el-link>
 
@@ -70,7 +70,7 @@
             </div>
         </el-card>
         <el-dialog :visible.sync="dialogVisible">
-            <el-form style="height:70vh;width:100%;overflow-y:scroll;" :model="commentform" ref="commentform" label-position="top">
+            <el-form style="height:60vh;width:100%;overflow-y:scroll;" :model="commentform" ref="commentform" label-position="top">
                 <p>
                     任务编号：{{commentform.id||'**'}}
                 </p>

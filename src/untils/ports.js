@@ -12,6 +12,13 @@ const ports={
     /*买手端*/
 
     /*买手任务流程*/
+
+    //等待预售时间下单
+    toWaitSelf(obj){
+        obj.access_token=localStorage.getItem('token');
+        return axios.post(`${base.dotask}/toWaitSelf`,obj)
+    },
+
     //下单提交截图
     uploadImgs(obj){
         obj.access_token=localStorage.getItem('token');

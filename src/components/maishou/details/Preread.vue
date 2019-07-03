@@ -49,13 +49,13 @@
 
                         <div>
                             <el-divider content-position="center">
-                                第一步、搜索类目词：货币关键词
+                                第一步、搜索类目词
                             </el-divider>
                             <el-row :gutter="20">
                                 <el-col :xs="24" :sm="12">
                                     <ul>
                                         <li>
-                                            打开【 <el-link type="danger" :underline="false">手机拼多多</el-link> 】APP
+                                            打开【 <el-link type="danger" :underline="false">手机淘宝</el-link> 】APP
                                         </li>
                                         <li>
                                             登录买家账号：<el-link type="danger" :underline="false">{{detail.data.wangwang_id||'**'}}</el-link>
@@ -63,7 +63,7 @@
                                         <li>
                                             在APP顶部搜索框搜索关键字：
 
-                                            <el-link type="danger" :underline="false">{{detail.comment_info.than_word||'**'}}</el-link>
+                                            <el-link type="danger" :underline="false">{{detail.comment_info.search_word||'**'}}</el-link>
                                         </li>
                                     </ul>
                                 </el-col>
@@ -75,46 +75,22 @@
                             </el-row>
 
                             <el-divider content-position="center">
-                                第二步、浏览商品+货比三家
+                                第二步、浏览商品+货比一家
                             </el-divider>
                             <el-row :gutter="20">
                                 <el-col :xs="24" :sm="12">
                                     <p>
-                                        浏览3家其他店铺商品，各浏览半分钟以上，然后收藏加购1个商品。 <el-link type="danger" :underline="false">（任务完成后需要上传足迹截图）</el-link>
+                                        货币1家商品（各浏览30秒以上）
                                     </p>
                                     <p>
-                                        在手机淘宝顶部搜索框搜索关键词：{{detail.comment_info.than_word||'**'}}（下单关键词）
+                                        浏览店铺主商品，浏览1分钟以上（主图、详情页、评论、视频）
                                     </p>
-                                    <ul>
-                                        <li>
-                                            浏览其他店铺产品一个30秒以上
-                                        </li>
-                                        <li>
-
-                                            找到主产品（搜索到主产品后，需要 <el-link type="danger" :underline="false">上传搜索到的搜索框截图</el-link>）
-
-                                            <div>
-                                                <p>
-                                                    店铺名称：<el-link type="danger" :underline="false">{{detail.shop_name|strno}}</el-link>
-                                                </p>
-                                                <p>
-                                                    商品名为：<el-link type="danger" :underline="false">{{detail.data.goods_name|strno}}</el-link>
-                                                </p>
-                                                <p>
-                                                    件数：<el-link type="danger" :underline="false">{{detail.data.goods_count||'**'}}</el-link>
-                                                </p>
-                                                <p>
-                                                    商品搜索价格：<el-link type="danger" :underline="false">{{detail.data.show_price||'**'}}</el-link>
-                                                </p>
-                                                <p>
-                                                    商品价格区间：<el-link type="danger" :underline="false">{{detail.data.searh_start_price||'**'}}-{{detail.data.searh_end_price||'**'}}</el-link>
-                                                </p>
-                                                <p>
-                                                    筛选商品地区：<el-link type="danger" :underline="false">{{detail.data.goods_location||'**'}}</el-link>
-                                                </p>
-                                            </div>
-                                        </li>
-                                    </ul>
+                                    <p>
+                                        是否加入收藏夹：{{detail.data.is_favorites?'是':'否'}}
+                                    </p>
+                                    <p>
+                                        是否加入购物车：{{detail.data.is_shopping_trolley?'是':'否'}}
+                                    </p>
                                 </el-col>
                                 <el-col :xs="24" :sm="12">
                                     <div>
@@ -246,56 +222,6 @@
                                     </el-col>
 
                                     <el-col :xs="24" :sm="12">
-                                        <el-form-item label="订单截图" prop="order_img">
-                                            <div>
-
-                                                <el-upload
-                                                        class="upload-demo"
-                                                        action="/api/Other/upload"
-                                                        accept="image/*"
-                                                        :data="{access_token:token}"
-                                                        list-type="picture-card"
-                                                        :on-success="orderSuccess"
-                                                        :on-remove="orderRemove"
-
-                                                >
-                                                    <i class="el-icon-plus"></i>
-
-                                                    <div slot="tip" class="el-upload__tip">上传“商品主图”，确保与搜索页面展示的图片一致</div>
-                                                </el-upload>
-                                                <el-dialog :visible.sync="dialogVisible">
-                                                    <img width="100%" :src="dialogImageUrl" alt="">
-                                                </el-dialog>
-                                            </div>
-                                        </el-form-item>
-                                    </el-col>
-
-                                    <el-col :xs="24" :sm="12">
-                                        <el-form-item label="店铺关注截图" prop="follow_img">
-                                            <div>
-
-                                                <el-upload
-                                                        class="upload-demo"
-                                                        action="/api/Other/upload"
-                                                        accept="image/*"
-                                                        :data="{access_token:token}"
-                                                        list-type="picture-card"
-                                                        :on-success="followSuccess"
-                                                        :on-remove="followRemove"
-
-                                                >
-                                                    <i class="el-icon-plus"></i>
-
-                                                    <div slot="tip" class="el-upload__tip">上传“商品主图”，确保与搜索页面展示的图片一致</div>
-                                                </el-upload>
-                                                <el-dialog :visible.sync="dialogVisible">
-                                                    <img width="100%" :src="dialogImageUrl" alt="">
-                                                </el-dialog>
-                                            </div>
-                                        </el-form-item>
-                                    </el-col>
-
-                                    <el-col :xs="24" :sm="12">
                                         <el-form-item label="足迹截图" prop="record_img">
                                             <div>
 
@@ -320,7 +246,32 @@
                                         </el-form-item>
                                     </el-col>
 
-                                    <el-col :xs="24" :sm="12">
+                                    <el-col :xs="24" :sm="12" v-if="detail.data.is_shopping_trolley">
+                                        <el-form-item label="购物车截图" prop="follow_img">
+                                            <div>
+
+                                                <el-upload
+                                                        class="upload-demo"
+                                                        action="/api/Other/upload"
+                                                        accept="image/*"
+                                                        :data="{access_token:token}"
+                                                        list-type="picture-card"
+                                                        :on-success="followSuccess"
+                                                        :on-remove="followRemove"
+
+                                                >
+                                                    <i class="el-icon-plus"></i>
+
+                                                    <div slot="tip" class="el-upload__tip">上传“商品主图”，确保与搜索页面展示的图片一致</div>
+                                                </el-upload>
+                                                <el-dialog :visible.sync="dialogVisible">
+                                                    <img width="100%" :src="dialogImageUrl" alt="">
+                                                </el-dialog>
+                                            </div>
+                                        </el-form-item>
+                                    </el-col>
+
+                                    <el-col :xs="24" :sm="12" v-if="detail.data.is_favorites">
                                         <el-form-item label="收藏夹截图" prop="favorites_img">
                                             <div>
 
@@ -377,7 +328,6 @@
 
                         </div>
                     </div>
-
                     <div v-if="selectA==4">
                         <el-alert
                                 title="温馨提示"
@@ -424,8 +374,6 @@
                     real_pay:'',
                     //搜索框截图
                     search_img:[],
-                    //订单截图
-                    order_img:[],
                     //店铺关注截图
                     follow_img:[],
                     //足迹截图
@@ -459,7 +407,7 @@
                     ],
                     follow_img:[
                         {
-                            required:true,validator:often('店铺关注截图不能为空'), trigger: 'change'
+                            required:true,validator:often('购物车截图不能为空'), trigger: 'change'
                         }
                     ],
                     record_img:[
@@ -589,21 +537,17 @@
                             return (cv.response?cv.response.data[0].filePath:cv.url)
                         }).join(',');
 
-                        //订单截图
-                        var order_img=getR.order_img.map((cv)=>{
+
+                        //足迹截图
+                        var record_img=getR.record_img.map((cv)=>{
                             return (cv.response?cv.response.data[0].filePath:cv.url)
                         }).join(',');
-
 
                         //店铺关注截图
                         var follow_img=getR.follow_img.map((cv)=>{
                             return (cv.response?cv.response.data[0].filePath:cv.url)
                         }).join(',');
 
-                        //足迹截图
-                        var record_img=getR.record_img.map((cv)=>{
-                            return (cv.response?cv.response.data[0].filePath:cv.url)
-                        }).join(',');
 
                         //收藏夹截图
                         var favorites_img=getR.favorites_img.map((cv)=>{
@@ -615,16 +559,32 @@
                             order_no:getR['order_no'],
                             real_pay:getR.real_pay,
                             search_img,
-                            order_img,
-                            follow_img,
-                            record_img,
-                            favorites_img
+                            record_img
                         }
+                        if(this.detail.data.is_favorites){
+                            //收藏夹截图
+                            var favorites_img=getR.favorites_img.map((cv)=>{
+                                return (cv.response?cv.response.data[0].filePath:cv.url)
+                            }).join(',');
+                            obj.favorites_img=favorites_img;
+                        }
+                        if(this.detail.data.is_shopping_trolley){
+
+                            //购物车截图
+                            var follow_img=getR.follow_img.map((cv)=>{
+                                return (cv.response?cv.response.data[0].filePath:cv.url)
+                            }).join(',');
+                            obj.shopping_trolley_img=follow_img;
+                        }
+
+
+
                         console.log(obj,'obj');
                         this.$api.ports.uploadImgs(obj).then((res)=>{
-                            this.nextfn(1);
+
                             console.log(res,'是佛');
                             if(res.code){
+                                this.nextfn(1);
                                 this.$alert('提交成功，待1~3天平台审核', '温馨提示', {
                                     confirmButtonText: '确定',
                                     callback: () => {

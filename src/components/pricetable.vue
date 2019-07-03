@@ -6,7 +6,7 @@
                 <div>
 
                     <el-radio-group v-model="preview">
-                        <el-radio border v-for="(pitem,pindex) in previewarr" :key="pindex" :label="pindex">
+                        <el-radio class="p-radio"  border v-for="(pitem,pindex) in previewarr" :key="pindex" :label="pindex">
                             {{pitem.name}}
                         </el-radio>
                     </el-radio-group>
@@ -43,7 +43,7 @@
                 <span slot="label"><i class="el-icon-bank-card"></i> 垫付类型任务</span>
                 <div>
                     <el-radio-group v-model="payment">
-                        <el-radio border v-for="(pitem,pindex) in payarr" :key="pindex" :label="pindex">
+                        <el-radio class="p-radio" border v-for="(pitem,pindex) in payarr" :key="pindex" :label="pindex">
                             {{pitem.name}}
                         </el-radio>
                     </el-radio-group>
@@ -254,6 +254,9 @@
 </script>
 
 <style lang="less" scoped>
+    .p-radio{
+        margin:1rem .5rem;
+    }
     .mt1{
         margin:1rem 0;
     }

@@ -127,10 +127,16 @@
       </template>
 
     </div>
+
+    <!--联系客服-->
+    <service url="/about"></service>
   </div>
 </template>
 <script>
   import ajax from 'axios';
+
+  //联系客服
+  import service from '../components/service.vue';
   // 查看详情
   import detail from '../components/detail.vue';
 
@@ -254,6 +260,7 @@
       '$route':'nowrouter'
     },
     components:{
+      service,
       paydetail,
       detail,
       shopinfo,

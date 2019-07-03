@@ -1,15 +1,17 @@
 <template>
     <div class="service">
 
-        <div class="home">
+        <div class="home" v-if="ishome">
             <el-button @click.stop="navfn()" class="h-icon" icon="el-icon-s-home" circle></el-button>
         </div>
         <div class="kefu">
             <div class="kf-frame">
                 <img src="../assets/kefu.png" alt="" class="kf-img" />
             </div>
-
-            <img src="https://murenziwei.github.io/qiurenmai/active_wx.jpg" alt="" class="kf-code" />
+            <div class="kf-code">
+                <img src="https://murenziwei.github.io/qiurenmai/active_wx.jpg" alt="" class="img" />
+                <img src="https://murenziwei.github.io/qiurenmai/active_wx.jpg" alt="" class="img" />
+            </div>
         </div>
         
     </div>
@@ -18,9 +20,11 @@
 <script>
     export default {
         name: "service",
+        props:['url','ishome'],
         methods:{
             navfn(){
-                this.$router.push("about");
+                console.log(this.url,'wei');
+                this.$router.push(this.url||'/login');
             }
         }
     }
@@ -46,7 +50,7 @@
         }
         .kf-code{
 
-            top:-3rem;
+            top:-12rem;
             position:absolute;
             width:10rem;
             height:10rem;
@@ -54,6 +58,10 @@
             opacity:0;
             z-index:-1;
             transition:all .5s;
+        }
+        .img{
+            width:10rem;
+            height:10rem;
         }
         &:hover .kf-code{
             opacity:1;

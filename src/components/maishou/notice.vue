@@ -53,8 +53,8 @@
                     </div>
                 </div>
                 <div>
-                    <p>当前本金余额为：<span class="color">{{consumer.member.ue_jin||'***'}}金币</span></p>
-                    <p>当前佣金余额为：<span class="color">{{consumer.member.commission||'***'}}金币</span></p>
+                    <p>当前本金余额为：<span class="color">{{consumer.member?consumer.member.ue_jin:'***'}}金币</span></p>
+                    <p>当前佣金余额为：<span class="color">{{consumer.member?consumer.member.commission:'***'}}金币</span></p>
                 </div>
                 <div>
                     <p>已冻结的本金：<span class="color">{{consumer.freeze_jin["freeze_cash_pledge"]||'***'}}金币</span></p>

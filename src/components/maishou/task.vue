@@ -20,13 +20,13 @@
             <div class="n-content">
                 <div>
                     <el-radio-group v-model="radio1">
-                        <el-radio-button v-for="(tv,ti) in typelist" :label="ti">{{tv}}</el-radio-button>
+                        <el-radio-button v-for="(tv,ti) in typelist" :key="ti" :label="ti">{{tv}}</el-radio-button>
                     </el-radio-group>
                 </div>
                 <div class="margin-top">
                     <h3>请选择平台类型</h3>
                     <el-radio-group v-model="radio2">
-                        <el-radio-button  v-for="(av) in appList" :label="av.ind">{{av.name}}</el-radio-button>
+                        <el-radio-button  v-for="(av,ai) in appList" :key="ai" :label="av.ind">{{av.name}}</el-radio-button>
                     </el-radio-group>
                 </div>
                 <div class="margin-top">
@@ -80,7 +80,7 @@
                     <el-table-column label="佣金" prop="real_commission" width="200"></el-table-column>
                     <el-table-column label="已完成（%）" prop="take_rate" width="200"></el-table-column>
 
-                    <el-table-column label="修改" prop="set" width="200" fixed="right">
+                    <el-table-column label="修改" prop="set" width="100" fixed="right">
                         <template slot-scope="scope">
                             <el-row >
                                 <el-link type="danger" :underline="false" v-if="scope.row.status">已接受</el-link>
@@ -92,6 +92,7 @@
 
                 <div class="mt-cen" style="text-align:center;">
                     <el-pagination
+                            small
                             :current-page.sync="dataTable.current_page"
                             @current-change="bschange"
                             background

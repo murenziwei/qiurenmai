@@ -1,5 +1,5 @@
 <template>
-  <div class="home">
+  <div class="home" v-loading="lwload">
 
     <div :class="{'h-header':true,'active':scrollBol}">
 
@@ -383,6 +383,8 @@ export default {
   name: 'home',
   data(){
       return {
+        lwload:true,
+
         visible:false,
         headnav:[
           {text:'首页',nav:'#indexT'},
@@ -395,7 +397,9 @@ export default {
       }
   },
   mounted(){
+    //数据、dom渲染完毕
     var that=this;
+    this.lwload=false;
     document.addEventListener('scroll',function(){
       that.scrolly=window.scrollY;
     })

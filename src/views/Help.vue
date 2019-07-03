@@ -31,7 +31,7 @@
     </div>
 
     <!--联系客服-->
-    <service></service>
+    <service url="/about" ishome="true"></service>
   </div>
 </template>
 <script>

@@ -28,13 +28,16 @@
             }
         },
         created(){
+
             ajax.all([this.go_url()]);
         },
         methods:{
             go_url(){
                 var login=JSON.parse(localStorage.getItem('login'));
                 if(login){
-                    this.formdata.link=this.$store.state.url+"register?code="+login.user.invite_code
+                    var url=window.location.href;
+
+                    this.formdata.link=url.slice(0,url.indexOf("#/"))+"#/register?code="+login.user.invite_code
                 }
 
             },

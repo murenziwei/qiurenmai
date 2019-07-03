@@ -33,11 +33,11 @@
                         </template>
                     </el-table-column>
 
-                    <el-table-column label="修改" prop="set" width="200" fixed="right">
+                    <el-table-column label="修改" prop="set" width="100" fixed="right">
                         <template slot-scope="scope">
                             <el-row >
                                 <el-link class="kz_item" type="success" :href="'#/maishou/account/shopchange?id='+scope.row.id">修改</el-link>
-                                <el-button  class="kz_item" type="text"  @click="deleteT(scope.row.id)">删除</el-button>
+                                <el-link  class="kz_item" type="primary" :underline="false"  @click="deleteT(scope.row.id)">删除</el-link>
                             </el-row>
                         </template>
                     </el-table-column>

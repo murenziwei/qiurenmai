@@ -66,12 +66,6 @@
                                 {{scope.row.name||'**'}}
                             </template>
                         </el-table-column>
-                        <el-table-column label="开户名" width="200">
-
-                            <template slot-scope="scope">
-                                {{scope.row.name||'**'}}
-                            </template>
-                        </el-table-column>
                         <el-table-column label="转账银行" width="200">
 
                             <template slot-scope="scope">
@@ -93,6 +87,7 @@
 
                 <div class="mt-cen" style="text-align:center;">
                     <el-pagination
+                            small
                             :current-page.sync="task.current_page"
                             @current-change="bschange"
                             background
@@ -190,6 +185,7 @@
                                 if(res.code){
 
                                     this.$notify.success('提现成功');
+                                    this
                                     this.go_table();
                                     this.go_data();
                                 }else{

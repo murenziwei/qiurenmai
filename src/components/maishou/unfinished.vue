@@ -61,6 +61,7 @@
 
             <div class="mt-cen" style="text-align:center;">
                 <el-pagination
+                        small
                         :current-page.sync="task.current_page"
                         @current-change="bschange"
                         background

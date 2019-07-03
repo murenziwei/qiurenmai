@@ -136,6 +136,7 @@
                             </el-table>
                             <div class="mt-cen mt1" style="text-align:center;">
                                 <el-pagination
+                                        small
                                         :current-page.sync="tableData.current_page"
                                         @current-change="bschange"
                                         background

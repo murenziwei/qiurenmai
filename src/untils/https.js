@@ -57,7 +57,7 @@ const errorHandle = (status, other) => {
             tip('请求的资源不存在');
             break;
         default:
-            console.log(other);
+
     }}
 
 let load;
@@ -94,6 +94,13 @@ instance.interceptors.response.use(
     // 请求成功
     res => {
         load.close&&load.close();
+        if(res.data){
+            if(res.data.code==-1){
+                router.replace({
+                    path: '/login'
+                });
+            }
+        }
         return res.status === 200 ? Promise.resolve(res.data) : Promise.reject(res.data)
     },
     // 请求失败

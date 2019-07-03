@@ -142,6 +142,7 @@
 
                     <div class="mt-cen mt1" style="text-align:center;">
                         <el-pagination
+                                small
                                 @current-change="bschange"
                                 background
                                 layout="prev, pager, next"
@@ -160,6 +161,7 @@
         name: "fund",
         data(){
             return {
+                pageC:2,
                 ue_money:{
 
                 },

@@ -1,8 +1,8 @@
 <template>
-        <div class="bank">
+        <div class="bank" v-loading="lwload">
             <el-card class="box-card" v-if="!isrouter">
                 <div slot="header" class="clearfix">
-                    <span class="c-topic">体现设置</span>
+                    <span class="c-topic">提现设置</span>
                 </div>
                 <div class="n-content">
                     <el-breadcrumb separator="/">
@@ -34,6 +34,7 @@
         name: 'bank',
         data() {
             return {
+                lwload:true,
                 bankdata:{
                     bank: "",
                     card_no: "",
@@ -49,6 +50,10 @@
         },
         created(){
             ajax.all([this.go_bank()]);
+        },
+        mounted(){
+            //数据、真实dom都渲染完成
+            this.lwload=false;
         },
         methods: {
             go_bank(){

@@ -267,7 +267,7 @@
               <div class="j-f-top red">
                 <div class="jft-in">
                   <img src="@/assets/logo.png" alt="" class="jft-i-img" />
-                  <div class="jft-i-name">伟哥**万岁</div>
+                  <div class="jft-i-name">买单**万岁</div>
                 </div>
 
               </div>
@@ -283,7 +283,7 @@
               <div class="j-f-top blue">
                 <div class="jft-in">
                   <img src="@/assets/logo.png" alt="" class="jft-i-img" />
-                  <div class="jft-i-name">伟哥**万岁</div>
+                  <div class="jft-i-name">买脚**万岁</div>
                 </div>
 
               </div>
@@ -299,7 +299,7 @@
               <div class="j-f-top black">
                 <div class="jft-in">
                   <img src="@/assets/logo.png" alt="" class="jft-i-img" />
-                  <div class="jft-i-name">伟哥**万岁</div>
+                  <div class="jft-i-name">买手**万岁</div>
                 </div>
 
               </div>
@@ -353,7 +353,7 @@
               <div class="cl-out">
                 <div class="cl-in">
                   <div class="c-i-top">
-                    <img class="c-i-code" src="https://murenziwei.github.io/qiurenmai/active_wx.jpg"></img>
+                    <img class="c-i-code" :src="$store.state.qq_img"></img>
                   </div>
 
 

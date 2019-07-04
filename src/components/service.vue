@@ -9,8 +9,8 @@
                 <img src="../assets/kefu.png" alt="" class="kf-img" />
             </div>
             <div class="kf-code">
-                <img src="https://murenziwei.github.io/qiurenmai/active_wx.jpg" alt="" class="img" />
-                <img src="https://murenziwei.github.io/qiurenmai/active_wx.jpg" alt="" class="img" />
+                <!--<img src="https://murenziwei.github.io/qiurenmai/active_wx.jpg" alt="" class="img" />-->
+                <img :src="$store.state.qq_img" alt="" class="img" />
             </div>
         </div>
         
@@ -50,7 +50,7 @@
         }
         .kf-code{
 
-            top:-12rem;
+            top:-8rem;
             position:absolute;
             width:10rem;
             height:10rem;
@@ -61,7 +61,6 @@
         }
         .img{
             width:10rem;
-            height:10rem;
         }
         &:hover .kf-code{
             opacity:1;

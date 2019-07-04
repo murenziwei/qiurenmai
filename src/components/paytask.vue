@@ -166,17 +166,20 @@
                                 border
                                 style="width: 100%">
                             <el-table-column
-                                    fixed
+
+                                    width="200"
                                     prop="shop_wang_id"
                                     label="商家店铺ID"
                                     >
                             </el-table-column>
                             <el-table-column
+                                    width="200"
                                     prop="task_id"
                                     label="任务ID"
                                     >
                             </el-table-column>
                             <el-table-column
+                                    width="200"
                                     label="付款时间"
                                     >
                                 <template slot-scope="scope">
@@ -185,6 +188,7 @@
                             </el-table-column>
                             <el-table-column
 
+                                    width="200"
                                     label="截图一"
                                     >
                                 <template slot-scope="scope">
@@ -193,6 +197,7 @@
                             </el-table-column>
                             <el-table-column
 
+                                    width="200"
                                     label="截图二"
                             >
                                 <template slot-scope="scope">
@@ -200,26 +205,31 @@
                                 </template>
                             </el-table-column>
                             <el-table-column
+                                    width="200"
                                     prop="cash_pledge"
                                     label="商家押金"
                             >
                             </el-table-column>
                             <el-table-column
+                                    width="200"
                                     prop="real_pay"
                                     label="用户付款"
                             >
                             </el-table-column>
                             <el-table-column
+                                    width="200"
                                     prop="qq_no"
                                     label="QQ"
                             >
                             </el-table-column>
                             <el-table-column
+                                    width="200"
                                     prop="ue_account"
                                     label="手机号"
                             >
                             </el-table-column>
                             <el-table-column
+                                    width="200"
                                     prop="task_type"
                                     label="任务类型"
                             >
@@ -228,21 +238,25 @@
                                 </template>
                             </el-table-column>
                             <el-table-column
+                                    width="200"
                                     prop="wangwang_id"
                                     label="淘宝账号"
                             >
                             </el-table-column>
                             <el-table-column
+                                    width="200"
                                     prop="user_id"
                                     label="用户ID"
                             >
                             </el-table-column>
                             <el-table-column
+                                    width="200"
                                     prop="order_id"
                                     label="订单ID"
                             >
                             </el-table-column>
                             <el-table-column
+                                    width="200"
                                     prop="tao_order_no"
                                     label="买手提交单号"
                             >
@@ -312,60 +326,65 @@
                             border
                             style="width: 100%">
                         <el-table-column
-                                fixed
-                                prop="shop_wang_id"
-                                label="商家店铺ID"
+
+                                width="200"
+                                prop="son_task_id"
+                                label="子任务ID"
                         >
-                        </el-table-column>
-                        <el-table-column
-                                prop="task_id"
-                                label="任务ID"
-                        >
-                        </el-table-column>
-                        <el-table-column
-                                label="付款时间"
-                        >
-                            <template slot-scope="scope">
-                                {{new Date(scope.row.post_at*1000).toLocaleString()}}
-                            </template>
                         </el-table-column>
                         <el-table-column
 
-                                label="截图一"
+                                width="200"
+                                prop="tao_order_no"
+                                label="淘宝订单号"
                         >
-                            <template slot-scope="scope">
-                                <el-image :src="scope.row.search_img" class="tf-img"></el-image>
-                            </template>
                         </el-table-column>
-                        <el-table-column
 
-                                label="截图二"
-                        >
-                            <template slot-scope="scope">
-                                <el-image :src="scope.row.order_img" class="tf-img"></el-image>
-                            </template>
-                        </el-table-column>
                         <el-table-column
-                                prop="cash_pledge"
-                                label="商家押金"
+                                width="200"
+                                prop="shop_name"
+                                label="发件人/店铺"
                         >
                         </el-table-column>
                         <el-table-column
-                                prop="real_pay"
-                                label="用户付款"
+                                width="200"
+                                prop="post_phone"
+                                label="发货电话"
                         >
                         </el-table-column>
                         <el-table-column
-                                prop="qq_no"
-                                label="QQ"
+                                width="200"
+                                prop="post_street"
+                                label="发货街道"
                         >
                         </el-table-column>
                         <el-table-column
-                                prop="ue_account"
-                                label="手机号"
+                                width="200"
+                                prop="ue_name"
+                                label="收货人"
                         >
                         </el-table-column>
                         <el-table-column
+                                width="200"
+                                prop="ue_phone"
+                                label="收货电话"
+                        >
+                        </el-table-column>
+
+                        <el-table-column
+                                width="200"
+                                prop="ue_addr"
+                                label="收货地址"
+                        >
+                        </el-table-column>
+                        <el-table-column
+                                width="200"
+                                prop="ue_street"
+                                label="收货街道"
+                        >
+                        </el-table-column>
+                        <el-table-column
+                                width="200"
                                 prop="task_type"
                                 label="任务类型"
                         >
@@ -374,33 +393,19 @@
                             </template>
                         </el-table-column>
                         <el-table-column
-                                prop="wangwang_id"
-                                label="淘宝账号"
-                        >
-                        </el-table-column>
-                        <el-table-column
-                                prop="user_id"
-                                label="用户ID"
-                        >
-                        </el-table-column>
-                        <el-table-column
-                                prop="order_id"
-                                label="订单ID"
-                        >
-                        </el-table-column>
-                        <el-table-column
-                                prop="tao_order_no"
-                                label="买手提交单号"
+                                width="200"
+                                prop="buy_id"
+                                label="买手ID"
                         >
                         </el-table-column>
                         <el-table-column
                                 fixed="right"
                                 label="操作"
-                                width="100">
+                                width="200">
                             <template slot-scope="scope">
                                 <template v-if="scope.row.empty_parcel_serve==null">
 
-                                    <el-button @click="cdv('aform',scope.row.id)" slot="reference" type="primary" size="small">获取快递单号</el-button>
+                                    <el-button @click="cdv('aform',scope.row.id)" type="primary" size="small">获取快递单号</el-button>
                                 </template>
                                 <template v-else>
                                     <p>
@@ -487,7 +492,8 @@
                             border
                             style="width: 100%">
                         <el-table-column
-                                fixed
+
+                                width="200"
                                 prop="ordertime"
                                 label="接单时间"
                         >
@@ -497,6 +503,7 @@
                         </el-table-column>
                         <el-table-column
 
+                                width="200"
                                 label="订单id"
                         >
                             <template slot-scope="scope">
@@ -505,27 +512,35 @@
                         </el-table-column>
                         <el-table-column
 
+                                width="200"
                                 prop="task_id"
                                 label="任务id"
                         >
                         </el-table-column>
                         <el-table-column
+
+                                width="200"
                                 prop="user_id"
                                 label="买手id"
                         >
                         </el-table-column>
                         <el-table-column
+
+                                width="200"
                                 prop="wangwang_id"
                                 label="接单账号"
                         >
                         </el-table-column>
                         <el-table-column
+
+                                width="200"
                                 prop="status"
                                 label="订单状态"
                         >
                         </el-table-column>
                         <el-table-column
 
+                                width="200"
                                 label="任务类型"
                         >
                             <template slot-scope="scope">
@@ -533,12 +548,14 @@
                             </template>
                         </el-table-column>
                         <el-table-column
+
+                                width="200"
                                 prop="goods_name"
                                 label="商品名称"
                         >
                         </el-table-column>
                         <el-table-column
-
+                                width="200"
                                 label="商品链接"
                         >
                             <template slot-scope="scope">
@@ -633,7 +650,8 @@
                             border
                             style="width: 100%">
                         <el-table-column
-                                fixed
+
+                                width="200"
                                 prop="ordertime"
                                 label="接单时间"
                         >
@@ -643,6 +661,7 @@
                         </el-table-column>
                         <el-table-column
 
+                                width="200"
                                 label="订单id"
                         >
                             <template slot-scope="scope">
@@ -651,27 +670,35 @@
                         </el-table-column>
                         <el-table-column
 
+                                width="200"
                                 prop="task_id"
                                 label="任务id"
                         >
                         </el-table-column>
                         <el-table-column
+
+                                width="200"
                                 prop="user_id"
                                 label="买手id"
                         >
                         </el-table-column>
                         <el-table-column
+
+                                width="200"
                                 prop="wangwang_id"
                                 label="接单账号"
                         >
                         </el-table-column>
                         <el-table-column
+
+                                width="200"
                                 prop="status"
                                 label="订单状态"
                         >
                         </el-table-column>
                         <el-table-column
 
+                                width="200"
                                 label="任务类型"
                         >
                             <template slot-scope="scope">
@@ -679,12 +706,15 @@
                             </template>
                         </el-table-column>
                         <el-table-column
+
+                                width="200"
                                 prop="goods_name"
                                 label="商品名称"
                         >
                         </el-table-column>
                         <el-table-column
 
+                                width="200"
                                 label="商品链接"
                         >
                             <template slot-scope="scope">
@@ -926,6 +956,7 @@
         },
         methods:{
             cdv(f,id){
+
                 this.resetForm(f);
                 this.kuaidi=id;
                 this.centerDialogVisible=true;
@@ -933,7 +964,8 @@
             },
             //重置表单
             resetForm(formName) {
-                this.$refs[formName].resetFields();
+                setTimeout(()=>{if(this.$refs[formName]){this.$refs[formName].resetFields();}},200);
+
             },
             handleClick(id){
 
@@ -1115,6 +1147,7 @@
             go_apn(obj){
                 return this.$api.ports.addPostNo(obj).then((res)=>{
                     if(res.code){
+                        this.centerDialogVisible=false;
                         this.tabChange();
                         console.log(res,'addPostNo');
                     }else{

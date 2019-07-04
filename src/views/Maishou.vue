@@ -30,42 +30,48 @@
           <div class="at-xs">
             <el-popover
                     placement="left"
-                    width="400"
+                    width="300"
                     trigger="click" v-model="passstatus">
-              <el-form :model="passform">
+              <el-form ref="passform" :model="passform" :rules="passRule">
                 <el-row class="mt1">
-                  用户名：13825000***
+                  手机号：{{userinfo.user.ue_account|strno}}
                 </el-row>
-                <el-row class="mt1">
-                  手机号：13825000***
-                </el-row>
-                <el-row class="mt1">
-                  <el-input placeholder="输入旧密码" v-model="passform.old" show-password>
-                    <template slot="prepend">
-                      <i class="el-icon-s-goods"></i>
-                    </template>
-                  </el-input>
-                </el-row>
-                <el-row class="mt1">
-                  <el-input placeholder="设置新密码" v-model="passform.new" show-password>
-                    <template slot="prepend">
-                      <i class="el-icon-s-goods"></i>
-                    </template>
-                  </el-input>
-                </el-row>
-                <el-row class="mt1">
-                  <el-input placeholder="确认新密码" v-model="passform.old" show-password>
-                    <template slot="prepend">
-                      <i class="el-icon-s-goods"></i>
-                    </template>
-                  </el-input>
-                </el-row>
+                <el-form-item prop="old_pwd">
+
+                  <el-row class="mt1">
+                    <el-input placeholder="输入旧密码" v-model="passform.old_pwd" show-password>
+                      <template slot="prepend">
+                        <i class="el-icon-s-goods"></i>
+                      </template>
+                    </el-input>
+                  </el-row>
+                </el-form-item>
+                <el-form-item prop="new_pwd">
+
+                  <el-row class="mt1">
+                    <el-input placeholder="设置新密码" v-model="passform.new_pwd" show-password>
+                      <template slot="prepend">
+                        <i class="el-icon-s-goods"></i>
+                      </template>
+                    </el-input>
+                  </el-row>
+                </el-form-item>
+                <el-form-item prop="conf_pwd">
+
+                  <el-row class="mt1">
+                    <el-input placeholder="确认新密码" v-model="passform.conf_pwd" show-password>
+                      <template slot="prepend">
+                        <i class="el-icon-s-goods"></i>
+                      </template>
+                    </el-input>
+                  </el-row>
+                </el-form-item>
                 <el-divider></el-divider>
                 <el-row class="mt-c">
-                  <el-button icon="el-icon-circle-check" @click="passfn">确认提交</el-button>
+                  <el-button icon="el-icon-circle-check" @click="passfn('passform')">确认提交</el-button>
                 </el-row>
               </el-form>
-              <el-button slot="reference" type="text" >修改密码</el-button>
+              <el-button slot="reference" type="text" @click="resetform('passform')">修改密码</el-button>
             </el-popover>
           </div>
         </div>
@@ -139,7 +145,33 @@
   import shophelp from '../components/shophelp.vue';
   export default {
     data() {
+
+      var validatePass2 = (rule, value, callback) => {
+          if (value === '') {
+              callback(new Error('请再次输入密码'));
+          } else if (value !== this.passform.new_pwd) {
+              callback(new Error('两次输入密码不一致!'));
+          } else {
+              callback();
+          }
+      };
       return {
+
+        passRule:{
+              old_pwd:[
+                  {
+                      required:true,
+                      message:'旧密码不能为空',
+                      trigger:'blur'
+                  }
+              ],
+              new_pwd:[
+                  {required: true, message:'新密码不能为空', trigger: 'blur' }
+              ],
+              conf_pwd:[
+                  {required: true, validator: validatePass2, trigger: 'blur' }
+              ]
+          },
 
         ue_money:{
             ue_jin: "554161.70"
@@ -148,9 +180,9 @@
         userinfo:{},
         passstatus:false,
         passform:{
-          old:'',
-          new:'',
-          confirm:''
+            new_pwd:'',
+            old_pwd:'',
+            conf_pwd:''
         },
         tagCount:0,
         tags:[
@@ -192,8 +224,11 @@
     },
     methods: {
 
+      resetform(formName){
+
+          this.$refs[formName].resetFields();
+      },
       go_money(){
-          console.log("是否知心");
           return this.$api.ports.getMoney().then((res)=>{
               if(res.code){
                   console.log(res,'getMoney');
@@ -207,8 +242,29 @@
       go_user(){
           this.userinfo=JSON.parse(localStorage.getItem('login'));
       },
-      passfn(){
-        this.passstatus=false;
+      passfn(formName){
+
+          this.$refs[formName].validate((valid) => {
+              if (valid) {
+                  var getR=this.passform;
+
+                  //请求注册后台
+                  this.$api.ports.editPwd(getR).then((res)=>{
+                      if(res.code){
+                          this.passstatus=false;
+                          this.$message.success('修改成功');
+
+                      }else{
+                          this.$message.error(res.message);
+                      }
+                  }).catch((err)=>{
+                      console.log(err,'错误');
+                  })
+
+              } else {
+                  return false;
+              }
+          });
       },
       peoplecontrol(n){
         this.tagCount=0;

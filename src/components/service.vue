@@ -41,7 +41,7 @@
     }
     .kefu{
         position:fixed;
-        bottom:6rem;
+        bottom:8rem;
         right:2rem;
         .kf-frame{
             .kf-img{

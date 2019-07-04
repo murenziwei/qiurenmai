@@ -2,6 +2,13 @@ import base from './base';//导入接口域名列表
 import axios from './https';//导入http中创建的axios案例
 
 const ports={
+    /*发送手机验证码*/
+
+    getCode(phone){
+        return axios.post(`${base.login}/getCode`,{phone})
+    },
+
+
     //商家公告
     oNotice(){
         return axios.post(`${base.other}/notice`,{
@@ -145,6 +152,15 @@ const ports={
     /*登录*/
     login(obj){
         return axios.post(`${base.login}/userLogin`,obj)
+    },
+    forGetPwd(obj){
+        obj.access_token=localStorage.getItem('token');
+        return axios.post(`${base.member}/forGetPwd`,obj)
+    },
+    //修改密码
+    editPwd(obj){
+        obj.access_token=localStorage.getItem('token');
+        return axios.post(`${base.member}/editPwd`,obj)
     },
 
     /*资金模块*/

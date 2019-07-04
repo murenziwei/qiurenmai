@@ -29,21 +29,49 @@
                             <span class="cf-left">找回登录密码</span>
                             <el-link class="cf-right" type="primary" href="#/login">返回登录</el-link>
                         </div>
-                        <el-form :hide-required-asterisk="true" label-position="left" :model="ruleForm" :rules="rules" ref="ruleForm" label-width="auto">
-                            <el-form-item label="手机号码" prop="mobile">
-                                <el-input v-model="ruleForm.mobile" type="mobile" placeholder="输入手机号码"></el-input>
+
+                        <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="auto" class="demo-ruleForm">
+
+                            <el-form-item label="手机号" prop="phone">
+                                <el-input v-model.number="ruleForm.phone" placeholder="请输入手机号"></el-input>
                             </el-form-item>
+                            <el-form-item label="密码" prop="pass">
+                                <el-input type="password" v-model="ruleForm.pass" autocomplete="off"  placeholder="请输入密码"></el-input>
+                            </el-form-item>
+                            <el-form-item label="确认密码" prop="checkPass">
+                                <el-input type="password" v-model="ruleForm.checkPass" autocomplete="off"  placeholder="请再次确认密码"></el-input>
+                            </el-form-item>
+
                             <el-form-item label="验证码" prop="verification">
                                 <el-row >
-                                    <el-col :span="12"><el-input v-model="ruleForm.verification" type="verification" placeholder="输入验证码" autocomplete="off"></el-input></el-col>
-                                    <el-col :span="12"><div @click="makeCode" class="mch"><s-identify :identifyCode="identifyCode"></s-identify></div></el-col>
+                                    <el-col :span="12"><el-input v-model="ruleForm.verification"  ></el-input></el-col>
+                                    <el-col :span="12">
+                                        <el-button @click="makeCode" type="danger" class="mch" :loading="!send"><i class="el-icon-message" v-if="send"></i><span v-else>{{second}}</span></el-button>
+                                    </el-col>
                                 </el-row>
                             </el-form-item>
+
+
                             <div class="clearfix">
                                 <el-button type="primary" @click="submitForm('ruleForm')">确认</el-button>
                                 <el-button @click="resetForm('ruleForm')">重置</el-button>
                             </div>
                         </el-form>
+                        <!--<el-form :hide-required-asterisk="true" label-position="left" :model="ruleForm" :rules="rules" ref="ruleForm" label-width="auto">-->
+                            <!--<el-form-item label="手机号码" prop="mobile">-->
+                                <!--<el-input v-model="ruleForm.mobile" type="mobile" placeholder="输入手机号码"></el-input>-->
+                            <!--</el-form-item>-->
+                            <!--<el-form-item label="验证码" prop="verification">-->
+                                <!--<el-row >-->
+                                    <!--<el-col :span="12"><el-input v-model="ruleForm.verification" type="verification" placeholder="输入验证码" autocomplete="off"></el-input></el-col>-->
+                                    <!--<el-col :span="12"><div @click="makeCode" class="mch"><s-identify :identifyCode="identifyCode"></s-identify></div></el-col>-->
+                                <!--</el-row>-->
+                            <!--</el-form-item>-->
+                            <!--<div class="clearfix">-->
+                                <!--<el-button type="primary" @click="submitForm('ruleForm')">确认</el-button>-->
+                                <!--<el-button @click="resetForm('ruleForm')">重置</el-button>-->
+                            <!--</div>-->
+                        <!--</el-form>-->
                     </el-card>
                 </el-col>
             </el-row>
@@ -57,50 +85,172 @@
     export default {
         name: 'forget',
         data () {
-            var validatecode=(rule, value, callback) => {
-                console.log(this);
+
+            var checkPhone = (rule, value, callback) => {
+                if (!value) {
+                    return callback(new Error('手机号不能为空'));
+                }
+                setTimeout(() => {
+                    if (!Number.isInteger(value)) {
+                        callback(new Error('请输入手机号'));
+                    } else if(value.toString().length<11){
+                        callback(new Error('请输入11位数的手机号码'));
+                    }
+                    else {
+                        callback();
+                    }
+                }, 1000);
+            };
+            var validatePass = (rule, value, callback) => {
                 if (value === '') {
-                    callback(new Error('请输入验证码'));
-                } else if (value != this.identifyCode) {
-                    callback(new Error('验证码错误'));
+                    callback(new Error('请输入密码'));
+                } else {
+                    if (this.ruleForm.checkPass !== '') {
+                        this.$refs.ruleForm.validateField('checkPass');
+                    }
+                    callback();
+                }
+            };
+
+
+            var validatePass2 = (rule, value, callback) => {
+                if (value === '') {
+                    callback(new Error('请再次输入密码'));
+                } else if (value !== this.ruleForm.pass) {
+                    callback(new Error('两次输入密码不一致!'));
                 } else {
                     callback();
                 }
             };
+
+            var validatecode=(rule, value, callback) => {
+                var phone=this.ruleForm.phone;
+                if (!Number.isInteger(phone)||phone.toString().length<11) {
+                    callback(new Error('手机号无效，请你重填'));
+                } else {
+                    if (value === '') {
+                        callback(new Error('请输入短信码'));
+                    }else {
+                        callback();
+                    }
+                }
+            };
+
+            var validatesel=(rule,value,callback)=>{
+                if(value){
+                    callback();
+                }else{
+                    callback(new Error('请选择协议!'));
+                }
+            }
             return {
+                second:0,
+                send:true,
                 loadstatus:false,
                 identifyCode:'',
                 ruleForm: {
-                    mobile: '',
-                    verification:''
+
+                    verification:'',
+                    phone:'',
+                    pass:'',
+                    checkPass:''
                 },
+
                 rules: {
-                    mobile: [
-                        { required: true, message: '请输入手机号码', trigger: 'blur' },
-                        { min:10,max:20, message: '手机格式10位数以上', trigger: 'blur' }
+
+                    pass: [
+                        {required: true, validator: validatePass, trigger: 'blur' }
+                    ],
+                    checkPass: [
+                        {required: true, validator: validatePass2, trigger: 'blur' }
+                    ],
+                    phone:[
+                        {required: true,validator:checkPhone,trigger:'blur'}
                     ],
                     verification:[
-                        { validator: validatecode, trigger: 'blur' }
+                        { required:true,validator: validatecode, trigger: 'blur' }
                     ]
                 }
             }
         },
         mounted(){
-            //随机生成验证码
-            this.makeCode();
         },
         methods: {
-            makeCode(){
-                var code=1000+Math.floor(Math.random()*8999);
-                console.log(code);
-                this.identifyCode=code.toString();
+            go_phone_code(phone){
+                return this.$api.ports.getCode(phone).then((res)=>{
+                    console.log(res,'手机验证码');
+                    if(res.code){
+
+                    }
+                });
             },
+            go_code(){
+                var code=this.$route.query.code
+                if(code){
+                    this.ruleForm.user=code;
+                }
+            },
+            makeCode(){
+                var phone=this.ruleForm.phone;
+                if (!Number.isInteger(phone)||phone.toString().length<11) {
+                    this.$message.error('手机号无效，请你重填');
+                } else {
+                    if(this.send){
+                        this.$message.success('发送成功，请注意查收消息');
+
+                        this.send=false,this.second=30;
+                        // var code=1000+Math.floor(Math.random()*8999);
+                        //
+                        // this.identifyCode=code.toString();
+                        //开始发送手机验证码
+                        this.go_phone_code(phone);
+
+                        // this.$notify.success(code.toString())
+                        var sendInter=setInterval(()=>{
+                            this.second--;
+                            if(this.second<=0) {
+                                this.second = 0;
+                                this.send = true;
+                                clearInterval(sendInter);
+                            }
+                        },1000)
+                    }
+                }
+
+            },
+            // makeCode(){
+            //     var code=1000+Math.floor(Math.random()*8999);
+            //     console.log(code);
+            //     this.identifyCode=code.toString();
+            // },
             submitForm(formName) {
                 console.log(this.$refs.verif);
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
-                        this.loadstatus=true;
-                        this.$message.success('验证成功，进入下一步')
+
+                        var getR=this.ruleForm;
+                        var obj={
+                            phone:getR.phone,
+                            code:getR.verification,
+                            new_pwd:getR.pass,
+                            conf_pwd:getR.checkPass
+                        }
+                        //请求注册后台
+                        this.$api.ports.forGetPwd(obj).then((res)=>{
+                            if(res.code){
+
+                                this.passstatus=false;
+                                this.$message.success('找回成功');
+                                this.$router.replace('/login');
+
+                            }else{
+                                this.$message.error(res.message);
+                            }
+                        }).catch((err)=>{
+                            console.log(err,'错误');
+                        })
+
+                        // this.$message.success('验证成功，进入下一步')
 
 
                     } else {

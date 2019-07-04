@@ -51,7 +51,7 @@
 
                             <el-form-item label="验证码" prop="verification">
                                 <el-row >
-                                    <el-col :span="12"><el-input v-model="ruleForm.verification" type="verification" autocomplete="off"></el-input></el-col>
+                                    <el-col :span="12"><el-input v-model="ruleForm.verification"  autocomplete="off"></el-input></el-col>
                                     <el-col :span="12">
                                         <el-button @click="makeCode" type="danger" class="mch" :loading="!send"><i class="el-icon-message" v-if="send"></i><span v-else>{{second}}</span></el-button>
                                     </el-col>
@@ -176,8 +176,6 @@
                 } else {
                     if (value === '') {
                         callback(new Error('请输入短信码'));
-                    } else if (value != this.identifyCode) {
-                        callback(new Error('短信码错误'));
                     } else {
                         callback();
                     }
@@ -257,6 +255,17 @@
             this.go_code();
         },
         methods: {
+            go_phone_code(phone){
+                return this.$api.ports.getCode(phone).then((res)=>{
+                    console.log(res,'手机验证码');
+
+                    if(res.code){
+                        this.$message.success(res.message);
+                    }else{
+                        this.$message.error(res.message);
+                    }
+                });
+            },
             go_code(){
                 var code=this.$route.query.code
                 if(code){
@@ -272,11 +281,13 @@
                         this.$message.success('发送成功，请注意查收消息');
 
                         this.send=false,this.second=30;
-                        var code=1000+Math.floor(Math.random()*8999);
+                        // var code=1000+Math.floor(Math.random()*8999);
+                        //
+                        // this.identifyCode=code.toString();
+                        //开始发送手机验证码
+                        this.go_phone_code(phone);
 
-                        this.identifyCode=code.toString();
-
-                        this.$notify.success(code.toString())
+                        // this.$notify.success(code.toString())
                         var sendInter=setInterval(()=>{
                             this.second--;
                             if(this.second<=0) {

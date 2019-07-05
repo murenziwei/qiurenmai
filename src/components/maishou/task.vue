@@ -204,7 +204,11 @@
                         this.$api.ports.takeTask({id,wang_id:this.bank1}).then((res)=>{
                             console.log(res,'成功了？');
                             if(res.code){
-                                this.go_shops();
+                                this.$notify.success('接收成功');
+                                setTimeout(()=>{
+                                    this.$router.replate('/maishou/unfinished');
+                                },1000)
+                                // this.go_shops();
                             }else{
                                 this.$notify.error({
                                     title: '错误',

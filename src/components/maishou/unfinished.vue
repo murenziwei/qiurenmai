@@ -6,7 +6,7 @@
             </div>
 
             <div>
-                <el-row v-for="(tval,tind) in task.data">
+                <el-row v-for="(tval,tind) in task.data" :key="tind">
                     <el-col :xs="24" :sm="12" :lg="6">
 
                         <span>任务编号：</span>
@@ -50,9 +50,9 @@
                     </el-col>
 
                     <el-col :xs="24" class="margin-top">
-                        <el-link class="m-r-1" type="success" :href="'#/maishou?tagcount=-1&id='+tval.id+'&status='+tval.status+'&type='+tval.platform_type" target="_blank">继续</el-link>
+                        <el-link class="m-r-1" type="success" :href="'#/maishou?tagcount=-1&id='+tval.id+'&status='+tval.status+'&type='+tval.task_type" target="_blank">继续</el-link>
                         <el-link class="m-r-1" type="danger" @click="forgetfn(tval.id)">放弃</el-link>
-                        <el-link class="m-r-1" type="info" @click="commentfn(tval.id)">评论</el-link>
+                        <el-link class="m-r-1" type="info" @click="commentfn(tval.id)" v-if="tval.status==4">评论</el-link>
 
                     </el-col>
                 </el-row>
@@ -198,6 +198,8 @@
                     this.$api.ports.confComment({id}).then((res)=>{
 
                         if(res.code){
+                            this.dialogVisible=false;
+                            this.go_task();
                             this.$notify.success(res.message);
                         }else{
                             this.dialogVisible=false;

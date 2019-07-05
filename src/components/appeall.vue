@@ -93,13 +93,14 @@
                         stripe>
 
                     <el-table-column
-
+                            width="200"
                             label="申诉进程">
                         <template slot-scope="scope">
                             {{scope.row.status?'待查看':'已处理'}}
                         </template>
                     </el-table-column>
                     <el-table-column
+                            width="200"
                             prop="atime"
                             label="申诉时间">
                         <template  slot-scope="scope">
@@ -108,6 +109,7 @@
                     </el-table-column>
 
                     <el-table-column
+                            width="200"
                             label="申诉类型">
 
                         <template  slot-scope="scope">
@@ -116,16 +118,19 @@
                     </el-table-column>
 
                     <el-table-column
+                            width="200"
                             prop="son_task_id"
                             label="订单id">
                     </el-table-column>
 
                     <el-table-column
+                            width="200"
                             prop="user_id"
                             label="被申诉人id">
                     </el-table-column>
 
                     <el-table-column
+                            width="200"
                             label="图片1">
                         <template slot-scope="scope">
                             <lw-img :src-data="scope.row.img1"></lw-img>
@@ -133,6 +138,7 @@
                     </el-table-column>
 
                     <el-table-column
+                            width="200"
                             label="图片2">
                         <template slot-scope="scope">
                             <lw-img :src-data="scope.row.img2"></lw-img>
@@ -140,6 +146,7 @@
                     </el-table-column>
 
                     <el-table-column
+                            width="200"
                             prop="note"
                             label="申诉内容">
                     </el-table-column>

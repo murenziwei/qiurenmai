@@ -174,8 +174,8 @@
                             </el-table-column>
                             <el-table-column
                                     width="200"
-                                    prop="task_id"
-                                    label="任务ID"
+                                    prop="id"
+                                    label="子任务ID"
                                     >
                             </el-table-column>
                             <el-table-column
@@ -183,7 +183,7 @@
                                     label="付款时间"
                                     >
                                 <template slot-scope="scope">
-                                    {{new Date(scope.row.post_at*1000).toLocaleString()}}
+                                    {{new Date(scope.row.accept_at*1000).toLocaleString()}}
                                 </template>
                             </el-table-column>
                             <el-table-column
@@ -267,7 +267,7 @@
                                     label="操作"
                                     width="100">
                                 <template slot-scope="scope">
-                                    <el-button type="text" size="small" @click="confirm_pay({id:scope.row.task_id})">返款管理</el-button>
+                                    <el-button type="text" size="small" @click="confirm_pay({id:scope.row.id})">返款管理</el-button>
                                 </template>
                             </el-table-column>
                         </el-table>
@@ -403,15 +403,17 @@
                                 label="操作"
                                 width="200">
                             <template slot-scope="scope">
-                                <template v-if="scope.row.empty_parcel_serve==null">
+                                <template v-if="!scope.row.post_no">
 
-                                    <el-button @click="cdv('aform',scope.row.id)" type="primary" size="small">获取快递单号</el-button>
+                                    <el-button @click="cdv('aform',scope.row.id)" type="primary" size="small">填写快递单号</el-button>
                                 </template>
                                 <template v-else>
                                     <p>
                                         快递号：{{scope.row.post_no||'**'}}
                                     </p>
-                                    <el-button type="success" size="small">发货</el-button>
+                                    <el-button type="success" size="small" @click="sendId(scope.row.son_task_id,scope.row.post_no)">发货</el-button>
+
+                                    <el-button @click="cdv('aform',scope.row.id)" type="primary" size="small">修改快递单号</el-button>
                                 </template>
                             </template>
                         </el-table-column>
@@ -534,9 +536,11 @@
                         <el-table-column
 
                                 width="200"
-                                prop="status"
                                 label="订单状态"
                         >
+                            <template slot-scope="scope">
+                                {{scope.row.status|statusfn}}
+                            </template>
                         </el-table-column>
                         <el-table-column
 
@@ -568,8 +572,9 @@
                                 label="操作"
                                 width="100">
                             <template slot-scope="scope">
-                                <el-button @click="handleClick(scope.row.task_id)" type="text" size="small">确认完成</el-button>
 
+                                <el-button @click="handleClick(scope.row.id)" type="text" size="small" v-if="scope.row.status==5">确认完成</el-button>
+                                <el-link type="info" :underline="false" v-else>暂无操作</el-link>
                             </template>
                         </el-table-column>
                     </el-table>
@@ -692,9 +697,13 @@
                         <el-table-column
 
                                 width="200"
-                                prop="status"
+
                                 label="订单状态"
                         >
+
+                            <template slot-scope="scope">
+                                {{scope.row.status|statusfn}}
+                            </template>
                         </el-table-column>
                         <el-table-column
 
@@ -933,6 +942,19 @@
         },
         filters:{
 
+            statusfn:function(value){
+
+                var del='--';
+                switch (value){
+                    case 1:del='未接单';break;
+                    case 2:del='待操作';break;
+                    case 3:del='待返款发货';break;
+                    case 4:del='待评价';break;
+                    case 5:del='待确认';break;
+                    case 6:del='已完成';break;
+                }
+                return del;
+            },
 
             shoptype:function(value){
                 var del='/';
@@ -1143,7 +1165,29 @@
                     }
                 })
             },
+            sendId(id,post_no){
 
+                this.$confirm('再次确认是否发货？', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    this.$api.ports.confPost({id,post_no}).then((res)=>{
+                        if(res.code){
+                            this.$notify.success('发货成功！');
+                            this.tabChange();
+                            console.log(res,'发');
+                        }else{
+                            this.$notify.error(res.message);
+                        }
+                    });
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '已取消确认'
+                    });
+                });
+            },
             go_apn(obj){
                 return this.$api.ports.addPostNo(obj).then((res)=>{
                     if(res.code){

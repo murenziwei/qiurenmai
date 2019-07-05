@@ -2,6 +2,8 @@ import base from './base';//导入接口域名列表
 import axios from './https';//导入http中创建的axios案例
 
 const ports={
+
+
     /*发送手机验证码*/
 
     getCode(phone){
@@ -222,7 +224,22 @@ const ports={
     },
 
     /*垫付任务管理*/
+    //浏览子任务确认
+    confBrowse(obj){
+        obj.access_token=localStorage.getItem('token');
+        return axios.post(`${base.task}/confBrowse`,obj)
+    },
+    //预览子任务
+    waitBrowseList(obj){
 
+        obj.access_token=localStorage.getItem('token');
+        return axios.post(`${base.task}/waitBrowseList`,obj)
+    },
+    //确认发货
+    confPost(obj){
+        obj.access_token=localStorage.getItem('token');
+        return axios.post(`${base.task}/confPost`,obj)
+    },
 
 
 
@@ -267,7 +284,7 @@ const ports={
     //商家确认完成
     confFinish(obj){
         obj.access_token=localStorage.getItem('token');
-        return axios.post(`${base.task}/feeInfo`,obj)
+        return axios.post(`${base.task}/confFinish`,obj)
     },
 
     //进行中订单

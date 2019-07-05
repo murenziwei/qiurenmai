@@ -185,14 +185,16 @@
                                       </td>
                                       <td>
                                           <el-row type="flex" align="middle" justify="center">
-                                              {{userInfo[0].imgs?(userInfo[0].imgs.create_at|times):"**"}} <i class="el-icon-success"></i>
+                                              {{userInfo[0].imgs?times(userInfo[0].imgs.create_at):"**"}} <i class="el-icon-success"></i>
                                           </el-row>
                                       </td>
                                       <td>
-                                          <template v-for="(fval) in (userInfo[0].imgs?userInfo[0].imgs.search_img:[])">
-                                              <lw-img :src-data="fval"></lw-img>
-                                          </template>
-                                          <template v-if="!(userInfo[0].imgs?userInfo[0].imgs.search_img.length:false)">没有数据</template>
+                                          <div class="lw-flex">
+                                              <template v-for="(fval) in (userInfo[0].imgs?userInfo[0].imgs.search_img.split(','):[])">
+                                                  <lw-img :src-data="fval"></lw-img>
+                                              </template>
+                                              <template v-if="!(userInfo[0].imgs?userInfo[0].imgs.search_img.split(',').length:false)">没有数据</template>
+                                          </div>
 
                                       </td>
                                   </tr>
@@ -206,14 +208,17 @@
                                       </td>
                                       <td>
                                           <el-row type="flex" align="middle" justify="center">
-                                              {{userInfo[0].imgs?(userInfo[0].imgs.create_at|times):"**"}} <i class="el-icon-success"></i>
+                                              {{userInfo[0].imgs?times(userInfo[0].imgs.create_at):"**"}} <i class="el-icon-success"></i>
                                           </el-row>
                                       </td>
                                       <td>
-                                          <template v-for="(fval) in (userInfo[0].imgs?userInfo[0].imgs.record_img:[])">
-                                              <lw-img :src-data="fval"></lw-img>
-                                          </template>
-                                          <template v-if="!(userInfo[0].imgs?userInfo[0].imgs.record_img.length:false)">没有数据</template>
+                                          <div class="lw-flex">
+
+                                              <template v-for="(fval) in (userInfo[0].imgs?userInfo[0].imgs.record_img.split(','):[])">
+                                                  <lw-img :src-data="fval"></lw-img>
+                                              </template>
+                                              <template v-if="!(userInfo[0].imgs?userInfo[0].imgs.record_img.split(',').length:false)">没有数据</template>
+                                          </div>
                                       </td>
                                   </tr>
                                   <tr>
@@ -225,14 +230,17 @@
                                       </td>
                                       <td>
                                           <el-row type="flex" align="middle" justify="center">
-                                              {{userInfo[0].imgs?(userInfo[0].imgs.create_at|times):"**"}} <i class="el-icon-success"></i>
+                                              {{userInfo[0].imgs?times(userInfo[0].imgs.create_at):"**"}} <i class="el-icon-success"></i>
                                           </el-row>
                                       </td>
                                       <td>
-                                          <template v-for="(fval) in (userInfo[0].imgs?userInfo[0].imgs.shopping_trolley_img:[])">
-                                              <lw-img :src-data="fval"></lw-img>
-                                          </template>
-                                          <template v-if="!(userInfo[0].imgs?userInfo[0].imgs.shopping_trolley_img.length:false)">没有数据</template>
+                                          <div class="lw-flex">
+
+                                              <template v-for="(fval) in (userInfo[0].imgs?userInfo[0].imgs.shopping_trolley_img.split(','):[])">
+                                                  <lw-img :src-data="fval"></lw-img>
+                                              </template>
+                                              <template v-if="!(userInfo[0].imgs?userInfo[0].imgs.shopping_trolley_img.split(',').length:false)">没有数据</template>
+                                          </div>
                                       </td>
                                   </tr>
                                   <tr>
@@ -244,14 +252,17 @@
                                       </td>
                                       <td>
                                           <el-row type="flex" align="middle" justify="center">
-                                              {{userInfo[0].imgs?(userInfo[0].imgs.create_at|times):"**"}} <i class="el-icon-success"></i>
+                                              {{userInfo[0].imgs?times(userInfo[0].imgs.create_at):"**"}} <i class="el-icon-success"></i>
                                           </el-row>
                                       </td>
                                       <td>
-                                          <template v-for="(fval) in (userInfo[0].imgs?userInfo[0].imgs.follow_img:[])">
-                                              <lw-img :src-data="fval"></lw-img>
-                                          </template>
-                                          <template v-if="!(userInfo[0].imgs?userInfo[0].imgs.follow_img.length:false)">没有数据</template>
+                                          <div class="lw-flex">
+
+                                              <template v-for="(fval) in (userInfo[0].imgs?userInfo[0].imgs.follow_img.split(','):[])">
+                                                  <lw-img :src-data="fval"></lw-img>
+                                              </template>
+                                              <template v-if="!(userInfo[0].imgs?userInfo[0].imgs.follow_img.split(',').length:false)">没有数据</template>
+                                          </div>
                                       </td>
                                   </tr>
                                   <tr>
@@ -263,14 +274,17 @@
                                       </td>
                                       <td>
                                           <el-row type="flex" align="middle" justify="center">
-                                              {{userInfo[0].imgs?(userInfo[0].imgs.create_at|times):"**"}} <i class="el-icon-success"></i>
+                                              {{userInfo[0].imgs?times(userInfo[0].imgs.create_at):"**"}} <i class="el-icon-success"></i>
                                           </el-row>
                                       </td>
                                       <td>
-                                          <template v-for="(fval) in (userInfo[0].imgs?userInfo[0].imgs.favorites_img:[])">
-                                              <lw-img :src-data="fval"></lw-img>
-                                          </template>
-                                          <template v-if="!(userInfo[0].imgs?userInfo[0].imgs.favorites_img.length:false)">没有数据</template>
+                                          <div class="lw-flex">
+
+                                              <template v-for="(fval) in (userInfo[0].imgs?userInfo[0].imgs.favorites_img.split(','):[])">
+                                                  <lw-img :src-data="fval"></lw-img>
+                                              </template>
+                                              <template v-if="!(userInfo[0].imgs?userInfo[0].imgs.favorites_img.split(',').length:false)">没有数据</template>
+                                          </div>
                                       </td>
                                   </tr>
                                   <tr>
@@ -282,14 +296,17 @@
                                       </td>
                                       <td>
                                           <el-row type="flex" align="middle" justify="center">
-                                              {{userInfo[0].imgs?(userInfo[0].imgs.create_at|times):"**"}} <i class="el-icon-success"></i>
+                                              {{userInfo[0].imgs?times(userInfo[0].imgs.create_at):"**"}} <i class="el-icon-success"></i>
                                           </el-row>
                                       </td>
                                       <td>
-                                          <template v-for="(fval) in (userInfo[0].imgs?userInfo[0].imgs.order_img:[])">
-                                              <lw-img :src-data="fval"></lw-img>
-                                          </template>
-                                          <template v-if="!(userInfo[0].imgs?userInfo[0].imgs.order_img.length:false)">没有数据</template>
+                                          <div class="lw-flex">
+
+                                              <template v-for="(fval) in (userInfo[0].imgs?userInfo[0].imgs.order_img.split(','):[])">
+                                                  <lw-img :src-data="fval"></lw-img>
+                                              </template>
+                                              <template v-if="!(userInfo[0].imgs?userInfo[0].imgs.order_img.split(',').length:false)">没有数据</template>
+                                          </div>
                                       </td>
                                   </tr>
                                   <tr>
@@ -301,13 +318,16 @@
                                       </td>
                                       <td>
                                           <el-row type="flex" align="middle" justify="center">
-                                              {{userInfo[0].imgs?(userInfo[0].imgs.create_at|times):"**"}} <i class="el-icon-success"></i>
+                                              {{userInfo[0].imgs?times(userInfo[0].imgs.create_at):"**"}} <i class="el-icon-success"></i>
                                           </el-row>
                                       </td>
                                       <td>
-                                          <template v-for="(fval) in (userInfo[0].imgs?userInfo[0].imgs.order_img:[])">
-                                              <lw-img :src-data="fval"></lw-img>
-                                          </template>
+                                          <div class="lw-flex">
+
+                                              <template v-for="(fval) in (userInfo[0].imgs?userInfo[0].imgs.order_img.split(','):[])">
+                                                  <lw-img :src-data="fval"></lw-img>
+                                              </template>
+                                          </div>
                                           <p>
                                               用户提交单号：{{userInfo[0].tao_order_no||'**'}}
                                           </p>
@@ -323,7 +343,7 @@
                                       </td>
                                       <td>
                                           <el-row type="flex" align="middle" justify="center">
-                                              {{userInfo[0].refund_at?(userInfo[0].refund_at|times):"**"}} <i class="el-icon-success"></i>
+                                              {{userInfo[0].refund_at?times(userInfo[0].refund_at):"**"}} <i class="el-icon-success"></i>
                                           </el-row>
                                       </td>
                                       <td>
@@ -350,7 +370,7 @@
                                       </td>
                                       <td>
                                           <el-row type="flex" align="middle" justify="center">
-                                              {{userInfo[0].refund_at?(userInfo[0].post_at|times):"**"}} <i class="el-icon-success"></i>
+                                              {{userInfo[0].refund_at?times(userInfo[0].post_at):"**"}} <i class="el-icon-success"></i>
                                           </el-row>
                                       </td>
                                       <td>
@@ -392,7 +412,7 @@
                                     v-model="aform.note">
                             </el-input>
                         </el-form-item>
-                        <el-form-item label="添加图片证据">
+                        <el-form-item label="添加图片证据" style="text-align:left;">
                             <div>
                                 <el-upload
                                         action="/api/Other/upload"
@@ -498,9 +518,6 @@
             ajax.all([this.go_detail(this.id)]);
         },
         filters:{
-            times:function(value){
-                return new Date(value*1000).toLocaleString();
-            },
 
             strno:function(value){
                 if(typeof value=='string'&&value.length>4){
@@ -540,6 +557,9 @@
         },
         methods:{
 
+            times:function(value){
+                return new Date(value*1000).toLocaleString();
+            },
             imgSuccess(response, file, fileList){
                 this.aform.imgs=fileList;
             },
@@ -664,6 +684,12 @@
 </script>
 
 <style lang="less" scoped>
+.lw-flex{
+    display:flex;
+    align-items:center;
+    justify-content: center;
+    flex-wrap:wrap;
+}
 .d-table{
 
     width:100%;text-align:center;
@@ -671,6 +697,7 @@
     border-collapse: collapse;
     th,td{
         border:1px dashed #999;
+        min-width:300px;
     }
 }
 

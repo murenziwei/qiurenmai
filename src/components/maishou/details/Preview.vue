@@ -62,7 +62,7 @@
                                         </li>
                                         <li>
                                            复制手机淘口令：
-                                            <el-link type="danger" :underline="false">{{detail.comment_info.search_word||'**'}}</el-link>
+                                            <el-link type="danger" :underline="false">{{detail.comment_info?detail.comment_info.search_word:'**'}}</el-link>
                                         </li>
                                     </ul>
                                 </el-col>
@@ -82,7 +82,7 @@
                                         浏览3家其他店铺商品，各浏览半分钟以上，然后收藏加购1个商品。 <el-link type="danger" :underline="false">（任务完成后需要上传足迹截图）</el-link>
                                     </p>
                                     <p>
-                                        在手机淘宝顶部搜索框搜索关键词：{{detail.comment_info.than_word||'**'}}（下单关键词）
+                                        在手机淘宝顶部搜索框搜索关键词：{{detail.comment_info?detail.comment_info.than_word:'**'}}（下单关键词）
                                     </p>
                                     <ul>
                                         <li>
@@ -167,7 +167,7 @@
                                             浏览完成后请使用旺旺：联系卖家在线客服，至少问1个问题
                                             <p>然后 <el-link type="danger" :underline="false">收藏+加购+关注店铺（需要截图），（如备注说明无需假聊则可以省略）</el-link></p>
                                             <p>
-                                                加购规格型号：{{detail.comment_info["specification"]||'**'}}
+                                                加购规格型号：{{detail.comment_info?detail.comment_info["specification"]:'**'}}
                                             </p>
                                             <p>
                                                 成交金额：{{detail.data.real_price||'**'}}
@@ -400,7 +400,6 @@
 <script>
     import ajax from 'axios';
 
-
     export default {
         name: "preview",
         props:['id','status'],
@@ -486,7 +485,7 @@
                     "货比商品",
                     "主商品浏览",
                     "下单上传截图",
-                    "任务完成"
+                    "待商家确认"
                 ],
                 detail:{
                     shop_name:'',
@@ -588,7 +587,7 @@
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
                         var getR=this.form;
-                        console.log(getR,'getR');
+
                         //搜索框截图
                         var search_img=getR.search_img.map((cv)=>{
                             return (cv.response?cv.response.data[0].filePath:cv.url)
@@ -627,19 +626,18 @@
                         }
                         console.log(obj,'obj');
                         this.$api.ports.uploadImgs(obj).then((res)=>{
-                            this.nextfn(1);
-                            console.log(res,'是佛');
+
+
                             if(res.code){
                                 this.$alert('提交成功，待1~3天平台审核', '温馨提示', {
                                     confirmButtonText: '确定',
                                     callback: () => {
+                                        this.nextfn(1);
                                     }
                                 });
                             }else{
                                 this.$message.error(res.message);
                             }
-                        }).catch((err)=>{
-                            console.log(err,'失败');
                         })
                     } else {
                         this.$notify.error("注意：带红色*是必填项！");

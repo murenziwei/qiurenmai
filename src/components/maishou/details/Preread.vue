@@ -63,7 +63,7 @@
                                         <li>
                                             在APP顶部搜索框搜索关键字：
 
-                                            <el-link type="danger" :underline="false">{{detail.comment_info.search_word||'**'}}</el-link>
+                                            <el-link type="danger" :underline="false">{{detail.comment_info?detail.comment_info.search_word:'**'}}</el-link>
                                         </li>
                                     </ul>
                                 </el-col>
@@ -139,7 +139,7 @@
                                            浏览完成后请使用旺旺：联系卖家在线客服，至少问1个问题
                                             <p>然后 <el-link type="danger" :underline="false">收藏+加购+关注店铺（需要截图），（如备注说明无需假聊则可以省略）</el-link></p>
                                             <p>
-                                                加购规格型号：{{detail.comment_info["specification"]||'**'}}
+                                                加购规格型号：{{detail.comment_info?detail.comment_info["specification"]:'**'}}
                                             </p>
                                             <p>
                                                 成交金额：{{detail.data.real_price||'**'}}
@@ -345,10 +345,8 @@
 
 <script>
     import ajax from 'axios';
-
-
     export default {
-        name: "pin",
+        name: 'preread',
         props:['id','status'],
         data() {
             function often(message){
@@ -430,7 +428,7 @@
                     "货比商品",
                     "主商品浏览",
                     "下单上传截图",
-                    "任务完成"
+                    "待商家确认"
                 ],
                 detail:{
                     shop_name:'',
@@ -584,10 +582,10 @@
 
                             console.log(res,'是佛');
                             if(res.code){
-                                this.nextfn(1);
+
                                 this.$alert('提交成功，待1~3天平台审核', '温馨提示', {
                                     confirmButtonText: '确定',
-                                    callback: () => {
+                                    callback: () => {this.nextfn(1);
                                     }
                                 });
                             }else{

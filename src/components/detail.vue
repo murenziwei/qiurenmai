@@ -465,7 +465,7 @@
                                 </el-row>
                             </div>
                         </el-tab-pane>
-                        <el-tab-pane label="进行中订单">
+                        <el-tab-pane label="进行中订单" v-if="detaildata.task_type!=5">
 
                             <el-table
                                     :data="loadOrder"
@@ -517,7 +517,7 @@
                                 </el-table-column>
                             </el-table>
                         </el-tab-pane>
-                        <el-tab-pane label="已完成订单">
+                        <el-tab-pane label="已完成订单" v-if="detaildata.task_type!=5" >
 
                             <el-table
                                     :data="doneOrder"
@@ -561,7 +561,7 @@
                                 </el-table-column>
                             </el-table>
                         </el-tab-pane>
-                        <el-tab-pane label="已撤销订单">
+                        <el-tab-pane label="已撤销订单" v-if="detaildata.task_type!=5">
 
                             <el-table
                                     :data="annulOrder"
@@ -595,7 +595,7 @@
                             </el-table>
                         </el-tab-pane>
 
-                        <el-tab-pane label="待接订单">
+                        <el-tab-pane label="待接订单" v-if="detaildata.task_type!=5">
 
                             <el-table
                                     :data="waitOrder"
@@ -634,6 +634,51 @@
                                 </el-table-column>
                             </el-table>
                         </el-tab-pane>
+                        <el-tab-pane label="预览子任务" v-if="detaildata.task_type==5">
+
+                            <el-table
+                                    :data="preList"
+                                    border
+                                    stripe
+                                    style="width: 100%; margin-top: 20px">
+                                <el-table-column
+                                        label="接单时间"
+                                >
+                                    <template slot-scope="scope">
+                                        {{new Date(scope.row.create_at*1000).toLocaleString()}}
+                                    </template>
+                                </el-table-column>
+                                <el-table-column
+                                        prop="id"
+                                        label="订单ID"
+                                >
+                                </el-table-column>
+
+                                <el-table-column
+                                        prop="user_id"
+                                        label="买手ID"
+                                >
+                                </el-table-column>
+                                <el-table-column
+                                        prop="wangwang_id"
+                                        label="接单账号"
+                                >
+                                </el-table-column>
+
+
+
+                                <el-table-column
+                                        fixed="right"
+                                        label="操作"
+                                >
+                                    <template slot-scope="scope">
+                                        <el-button type="primary" size="mini" @click="prefn(scope.row.id)">确认完成</el-button>
+                                    </template>
+                                </el-table-column>
+                            </el-table>
+
+
+                        </el-tab-pane>
                     </el-tabs>
                 </div>
             </div>
@@ -666,6 +711,7 @@
                 doneOrder:[],
                 annulOrder:[],
                 waitOrder:[],
+                preList:[],
                 tableData: [{
                     id: '12987122',
                     name: '王小虎',
@@ -746,17 +792,49 @@
         },
         created(){
             //任务详情、详情头部、任务详情费用、进行中订单、已完成订单、已撤销订单、待接订单
+
             ajax.all([
                 this.go_detail(this.id),
                 this.go_head(this.id),
                 this.go_fi(this.id),
                 this.go_fu(this.id),
-                this.go_ff(this.id),
-                this.go_rt(this.id),
-                this.go_fw(this.id)
-            ])
+            ]).then(()=>{
+                if(this.detaildata.task_type==5){
+                    this.go_preload(this.id)
+                }else{
+                    this.go_ff(this.id),
+                    this.go_rt(this.id),
+                    this.go_fw(this.id)
+                }
+            })
         },
         methods:{
+            prefn(id){
+                this.$confirm('再次确认是否完成？', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+
+                    this.$api.ports.confBrowse({id}).then((res)=>{
+                        if(res.code){
+                            this.$notify.success('确认成功')
+
+                            this.go_preload(id);
+
+
+                        }else{
+                            this.$notify.error(res.message);
+                        }
+                    });
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '已取消确认'
+                    });
+                });
+            },
+
 
             go_dr(obj){
 
@@ -936,6 +1014,19 @@
                         this.$notify.error(res.message);
                     }
                 });
+            },
+
+            //预览已完成
+            go_preload(id){
+                    return this.$api.ports.waitBrowseList({id}).then((res)=>{
+                        if(res.code){
+                            console.log(res,'preList');
+                            this.preList=res.data;
+
+                        }else{
+                            this.$notify.error(res.message);
+                        }
+                    });
             },
 
             //已完成

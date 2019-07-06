@@ -379,16 +379,21 @@
                                 <el-button type="primary" @click="submitThree('form')">下一步</el-button>
                             </el-row>
 
+                            <el-link href="#/maishou/" target="_blank" class="retM" :underline="false">返回买手</el-link>
                         </div>
                     </div>
 
                     <div v-if="selectA==4">
+
                         <el-alert
+                                style="margin:1rem 0;"
                                 title="温馨提示"
                                 type="success"
-                                description="恭喜你完成了任务！"
+                                description="恭喜你完成了任务！待商家确认！"
                                 show-icon>
                         </el-alert>
+
+                        <el-link href="#/maishou/" target="_blank" class="retM" :underline="false">返回买手</el-link>
                     </div>
                 </div>
             </div>
@@ -480,7 +485,7 @@
                 dialogImageUrl: '',
                 dialogVisible: false,
 
-                selectA:1,
+                selectA:-1,
                 steps:[
                     "货比商品",
                     "主商品浏览",
@@ -497,10 +502,12 @@
         filters:{
 
             strno:function(value){
-                if(typeof value=='string'&&value.length>4){
+                if(typeof value=='string'&&value.length>1){
                     var arr=value.split('');
-                    var newarr=arr.splice(3);
+                    var newarr=arr.splice(2);
+
                     value=newarr.join('');
+
                     value='***'+value;
                     return value;
                 }else{
@@ -530,14 +537,23 @@
         },
         created(){
 
-            ajax.all([this.go_detail()]).then(()=>{
-
-                this.selectA=Number(this.status);
-            });
+            ajax.all([this.go_detail()]);
         },
         components: {
         },
         methods: {
+            statusFn(val){
+                var f=-1;
+                switch (val){
+                    case 1:;
+                    case 2:f=1;break;
+                    case 3:;
+                    case 4:;
+                    case 5:;
+                    case 6:f=4;break;
+                }
+                this.selectA=Number(f);
+            },
 
             //搜索截图
             searchSuccess(response, file, fileList){
@@ -647,9 +663,10 @@
             },
             go_detail(){
                 return this.$api.ports.taskData({id:this.id}).then((res)=>{
-                    console.log(res,'时间类型及');
+
 
                     if(res.code){
+                        this.statusFn(res.data[0].data.status);
                         this.detail=res.data[0];
                     }else{
                         this.$notify.error(res.message);
@@ -673,6 +690,10 @@
 </script>
 
 <style lang="less" scoped>
+    .retM{
+        font-size:3rem;
+        margin:1rem auto;
+    }
     .danger-text{
         color:#f78989;
     }

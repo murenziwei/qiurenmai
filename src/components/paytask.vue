@@ -183,6 +183,7 @@
                                     label="付款时间"
                                     >
                                 <template slot-scope="scope">
+
                                     {{new Date(scope.row.accept_at*1000).toLocaleString()}}
                                 </template>
                             </el-table-column>

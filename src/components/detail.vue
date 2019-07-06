@@ -602,26 +602,44 @@
                                     border
                                     stripe
                                     style="width: 100%; margin-top: 20px">
+
                                 <el-table-column
-                                        prop="keyword"
-                                        label="搜索关键词"
+
+                                        label="好评类型"
+                                >
+                                    <template slot-scope="scope">
+                                        {{scope.row.type|tasktype}}
+                                    </template>
+                                </el-table-column>
+
+                                <el-table-column
+                                        prop="search_word"
+                                        label="搜索关键字"
                                 >
                                 </el-table-column>
                                 <el-table-column
-                                        prop="cash"
-                                        label="撤销单号"
+                                        prop="id"
+                                        label="子任务ID"
+                                >
+                                </el-table-column>
+                                <el-table-column
+                                        prop="cash_pledge"
+                                        label="押金"
                                 >
                                 </el-table-column>
 
                                 <el-table-column
-                                        prop="paycash"
-                                        label="垫付押金"
+                                        prop="commission"
+                                        label="佣金"
                                 >
                                 </el-table-column>
                                 <el-table-column
-                                        prop="orderbank"
-                                        label="备注"
+
+                                        label="状态"
                                 >
+                                    <template slot-scope="scope">
+                                        {{scope.row.status|statusfn}}
+                                    </template>
                                 </el-table-column>
 
                                 <el-table-column
@@ -788,6 +806,16 @@
                     case 5:del='浏览任务';break;
                 }
                 return del;
+            },
+            tasktype:function(value){
+                var del='--';
+                switch (value){
+                    case 1:del='普通好评';break;
+                    case 2:del='指定文字好评';break;
+                    case 3:del='指定图片好评';break;
+                    case 4:del='指定视频好评';break;
+                }
+                return del;
             }
         },
         created(){
@@ -847,6 +875,7 @@
                     this.$api.ports.doRecallTask(obj).then((res)=>{
                         console.log(res,'db');
                         if(res.code){
+                            this.go_fw(this.id);
                             this.$message({
                                 type: 'success',
                                 message: '撤销成功!'
@@ -908,7 +937,7 @@
                     });
                     console.log(duijiao,val)
 
-                    duijiao.forEach((v,i)=>{
+                    duijiao.forEach((v)=>{
                         var dind=sar.indexOf(v);
 
                         if(dind>-1){

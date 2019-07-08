@@ -936,7 +936,7 @@
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
                         var getD=this.taskForm,comment={},task={
-                            task_type:2,
+                            task_type:5,
                             explain:this.remark
                         };
 

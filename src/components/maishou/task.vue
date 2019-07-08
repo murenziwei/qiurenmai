@@ -187,8 +187,8 @@
         methods: {
             bschange(page){
                 this.go_data({
-                    platform_type:this.radio2||'',
-                    task_type:this.radio3||'',
+                    platform_type:(this.radio2&&this.radio3)||'',
+                    task_type:(this.radio2&&this.radio3)||'',
                     page
                 });
             },

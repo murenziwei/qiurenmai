@@ -78,7 +78,7 @@
                     <el-table-column label="购买件数" prop="goods_count" width="200"></el-table-column>
                     <el-table-column label="买手需垫付资金" prop="every_cash_pledge" width="200"></el-table-column>
                     <el-table-column label="佣金" prop="real_commission" width="200"></el-table-column>
-                    <el-table-column label="已完成（%）" prop="take_rate" width="200"></el-table-column>
+                    <el-table-column label="未完成（%）" prop="take_rate" width="200"></el-table-column>
 
                     <el-table-column label="修改" prop="set" width="100" fixed="right">
                         <template slot-scope="scope">
@@ -208,7 +208,7 @@
                                 setTimeout(()=>{
                                     this.$router.replate('/maishou/unfinished');
                                 },1000)
-                                // this.go_shops();
+                                this.go_data();
                             }else{
                                 this.$notify.error({
                                     title: '错误',

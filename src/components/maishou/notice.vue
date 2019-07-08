@@ -57,13 +57,13 @@
                     <p>当前佣金余额为：<span class="color">{{consumer.member?consumer.member.commission:'***'}}金币</span></p>
                 </div>
                 <div>
-                    <p>已冻结的本金：<span class="color">{{consumer.freeze_jin["freeze_cash_pledge"]||'***'}}金币</span></p>
-                    <p>已冻结的佣金：<span class="color">{{consumer.freeze_jin["freeze_commission"]||'***'}}金币</span></p>
+                    <p>已冻结的本金：<span class="color">{{consumer.freeze_jin[0]?consumer.freeze_jin[0]["freeze_cash_pledge"]:'***'}}金币</span></p>
+                    <p>已冻结的佣金：<span class="color">{{consumer.freeze_jin[0]?consumer.freeze_jin[0]["freeze_commission"]:'***'}}金币</span></p>
                 </div>
                 <div>
-                    <p>待返还笔数：<span class="color">{{consumer.wait_jin["wait_count"]||'***'}} 笔</span></p>
-                    <p>待商家返款本金：<span class="color">{{consumer.wait_jin["wait_commission"]||'***'}}金币</span></p>
-                    <p>待商家返款佣金：<span class="color">{{consumer.wait_jin["wait_cash_pledge"]||'***'}}金币</span></p>
+                    <p>待返还笔数：<span class="color">{{consumer.wait_jin[0]?consumer.wait_jin[0]["wait_count"]:'***'}} 笔</span></p>
+                    <p>待商家返款本金：<span class="color">{{consumer.wait_jin[0]?consumer.wait_jin[0]["wait_commission"]:'***'}}金币</span></p>
+                    <p>待商家返款佣金：<span class="color">{{consumer.wait_jin[0]?consumer.wait_jin[0]["wait_cash_pledge"]:'***'}}金币</span></p>
                 </div>
             </div>
         </el-card>

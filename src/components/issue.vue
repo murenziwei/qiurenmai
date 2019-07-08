@@ -284,12 +284,13 @@
     //淘宝预售
     import Tbpresell from './shop/Tbpresell.vue'
 
-    //淘宝口令
+    //淘宝精搜
     import Tbsearch from './shop/Tbsearch.vue'
 
-    //淘宝精瘦
-    import Tbpreview from './shop/Tbpreview.vue'
     //淘宝预览
+    import Tbpreview from './shop/Tbpreview.vue'
+    
+    //淘宝口令
     import Tbword from "./shop/Tbword.vue";
     //拼多多
     import Pinduoduo from "./shop/Pinduoduo.vue";

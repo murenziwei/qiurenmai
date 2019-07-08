@@ -193,6 +193,14 @@ const maishou = {
             }
         },
         {
+            path:'fund',
+            component:()=>import('./components/fund.vue'),
+            data:{
+                name:'资金明细',
+                icon:'el-icon-bank-card'
+            }
+        },
+        {
             path: 'noorder',
             component: () => import('./components/maishou/bank.vue'),
             data: {

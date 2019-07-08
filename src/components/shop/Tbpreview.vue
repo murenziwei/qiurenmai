@@ -624,7 +624,7 @@
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
                         var getD=this.taskForm,browse_calendar=[],task={
-                            task_type:5,
+                            task_type:1,
                             explain:this.remark
                         };
 

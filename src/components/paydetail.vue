@@ -375,7 +375,7 @@
                                       </td>
                                       <td>
                                           <p>
-                                              快递单号：{{userInfo[0].post_no||'**'}}元
+                                              快递单号：{{userInfo[0].post_no||'**'}}
                                           </p>
 
                                       </td>

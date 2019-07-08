@@ -512,6 +512,20 @@
                         </div>
                     </el-row>
 
+                    <el-row>
+                        <span><el-link type="danger" :underline="false">*</el-link>购买付款时间</span>
+                        <el-select class="i-padding" v-model="paytime" placeholder="请选择">
+                            <el-option
+                                    v-for="item in ptarr"
+                                    :key="item.value"
+                                    :label="item.label"
+                                    :value="item.value">
+                            </el-option>
+                        </el-select>
+                        <span class="info-text">
+                            （买家会指定日期后48小时的任意时间付款）
+                        </span>
+                    </el-row>
                 </div>
                 <div>
                     <el-divider content-position="center">第四步：选择增值服务</el-divider>
@@ -712,6 +726,16 @@
 
 
             return {
+
+                ptarr: [{
+                    value: '1',
+                    label: '24小时'
+                }, {
+                    value: '2',
+                    label: '48小时'
+                }],
+                paytime: '',
+
                 imposeObj:{
                     //地域限制
                     area:{
@@ -977,9 +1001,22 @@
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
                         var getD=this.taskForm,comment={},task={
-                            task_type:1,
+                            task_type:3,
                             explain:this.remark
                         };
+                        if(this.paytime){
+                        console.log(this.paytime,'paytime');
+                            var nD=new Date();
+                            nD.setDate(nD.getDate()+Number(this.paytime));
+
+                            var timeD=Math.floor(Date.parse(nD)/1000)
+
+                            task.wait_sell_at=timeD;
+
+                        }else{
+                            this.$notify.error('预付时间不能为空');
+                            return false;
+                        }
 
                         //新版发布时间设置
                         if(this.newR){

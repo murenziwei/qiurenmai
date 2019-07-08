@@ -756,6 +756,10 @@
                     case 5:;
                     case 6:f=4;break;
                 }
+                
+                if(this.detail.data.is_wait_sale&&val<3){
+                  f=3;
+                }
                 this.selectA=Number(f);
             },
             go_detail(){
@@ -764,8 +768,8 @@
 
                     if(res.code){
 
-                        this.statusFn(res.data[0].data.status);
                         this.detail=res.data[0];
+                        this.statusFn(res.data[0].data.status);
                     }else{
                         this.$notify.error(res.message);
                     }

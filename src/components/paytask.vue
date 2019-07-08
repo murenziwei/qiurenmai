@@ -571,11 +571,11 @@
                         <el-table-column
                                 fixed="right"
                                 label="操作"
-                                width="100">
+                                width="200">
                             <template slot-scope="scope">
 
                                 <el-button @click="handleClick(scope.row.id)" type="text" size="small" v-if="scope.row.status==5">确认完成</el-button>
-                                <el-link type="info" :underline="false" v-else>暂无操作</el-link>
+                                <el-link type="info" :underline="false" v-else>待买家确认评论</el-link>
                             </template>
                         </el-table-column>
                     </el-table>
@@ -1002,7 +1002,8 @@
                         if(res.code){
 
                             this.$notify.success('确认成功')
-                            this.activeName='firth';
+                            //this.go_ut_load();
+                            this.activeName='fifth';
 
 
                         }else{
@@ -1109,7 +1110,9 @@
 
                     this.$api.ports.confRefund(obj).then((res)=>{
                         console.log(res,'db');
+                        this.go_rti();
                         if(res.code){
+                            this.activeName='third';
                             this.$message({
                                 type: 'success',
                                 message: '确认成功!'
@@ -1175,8 +1178,10 @@
                 }).then(() => {
                     this.$api.ports.confPost({id,post_no}).then((res)=>{
                         if(res.code){
+
                             this.$notify.success('发货成功！');
-                            this.tabChange();
+                            //this.tabChange();
+                            this.activeName='fourth';
                             console.log(res,'发');
                         }else{
                             this.$notify.error(res.message);

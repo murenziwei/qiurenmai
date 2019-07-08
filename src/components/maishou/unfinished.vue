@@ -6,7 +6,8 @@
             </div>
 
             <div>
-                <el-row v-for="(tval,tind) in task.data" :key="tind">
+              <div v-for="(tval,tind) in task.data" :key="tind">
+                <el-row>
                     <el-col :xs="24" :sm="12" :lg="6">
 
                         <span>任务编号：</span>
@@ -56,6 +57,8 @@
 
                     </el-col>
                 </el-row>
+                <el-divider />
+              </div>
                 <p style="text-align:center;" v-if="task.data.length===0"><el-link type="info" :underline="false">没有更多数据了</el-link></p>
             </div>
 

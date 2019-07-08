@@ -206,9 +206,9 @@
                             if(res.code){
                                 this.$notify.success('接收成功');
                                 setTimeout(()=>{
-                                    this.$router.replate('/maishou/unfinished');
+                                    this.$router.push('unfinished');
                                 },1000)
-                                this.go_data();
+                                //this.go_data();
                             }else{
                                 this.$notify.error({
                                     title: '错误',

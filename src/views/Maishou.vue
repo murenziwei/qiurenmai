@@ -281,6 +281,12 @@
         }
       },
       nowrouter(to){
+
+        if(!to.query.tagcount){
+            this.tagCount=0;
+        }else{
+            this.tagCount=to.query.tagcount;
+        }
         this.nowrou=to.path;
         this.isAside=true;
       },

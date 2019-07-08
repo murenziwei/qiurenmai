@@ -84,7 +84,7 @@
                         <template slot-scope="scope">
                             <el-row >
                                 <el-link type="danger" :underline="false" v-if="scope.row.status">已接受</el-link>
-                                <el-button type="text" @click="acceptTask(scope.row.id)" v-else>接受任务</el-button>
+                                <el-button type="text" @click="acceptTask(scope.row.id,scope.row.status)" v-else>接受任务</el-button>
                             </el-row>
                         </template>
                     </el-table-column>
@@ -177,7 +177,7 @@
             }
         },
         created(){
-            ajax.all([this.go_shops()]);
+            ajax.all([this.go_shops(),this.go_data({})]);
         },
         computed: {
             noMore() {

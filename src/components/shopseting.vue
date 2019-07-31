@@ -205,7 +205,7 @@
                         </template>
                     </el-table-column>
 
-                    <el-table-column width="200"  label="修改" prop="set">
+                    <el-table-column fixed="right" width="200"  label="修改" prop="set">
                         <template slot-scope="scope">
                             <el-row>
 

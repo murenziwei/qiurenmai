@@ -84,7 +84,7 @@
                         <template slot-scope="scope">
                             <el-row >
                                 <el-link type="danger" :underline="false" v-if="scope.row.status">已接受</el-link>
-                                <el-button type="text" @click="acceptTask(scope.row.id,scope.row.status)" v-else>接受任务</el-button>
+                                <el-button type="text" @click="acceptTask(scope.row.id,scope.row.status,scope.row.task_num)" v-else>接受任务</el-button>
                             </el-row>
                         </template>
                     </el-table-column>
@@ -192,7 +192,7 @@
                     page
                 });
             },
-            acceptTask(id){
+            acceptTask(id,status,type){
                 console.log(this.bank1,'radio3');
                 if(this.bank1){
 
@@ -206,8 +206,8 @@
                             if(res.code){
                                 this.$notify.success('接收成功');
                                 setTimeout(()=>{
-                                    this.$router.push('unfinished');
-                                },1000)
+                                    this.$router.replace("unfinished");
+                                },500)
                                 //this.go_data();
                             }else{
                                 this.$notify.error({

@@ -186,7 +186,7 @@
 
         ue_money:{
 
-            ue_jin: "554161.70"
+            ue_jin: "0"
         },
 
         taskid:0,

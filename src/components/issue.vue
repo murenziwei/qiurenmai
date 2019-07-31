@@ -130,9 +130,9 @@
                                             <div class="tr-li">
                                                 <el-radio :label="1" class="w-sp">
                                                     平台系统返款（收取服务费 <span class="danger-text">1</span> 元/单）
-                                                    <p>
-                                                        <span class="danger-text">优先展示给用户</span>商家押商品本金到平台，只需在“返款管理”中确认返款金额，一键返款给用户( <span class="danger-text">24</span>小时内)，商家无需耗费时间、人力处理退款。
-                                                    </p>
+                                                    <!--<p>-->
+                                                        <!--<span class="danger-text">优先展示给用户</span>商家押商品本金到平台，只需在“返款管理”中确认返款金额，一键返款给用户( <span class="danger-text">24</span>小时内)，商家无需耗费时间、人力处理退款。-->
+                                                    <!--</p>-->
                                                 </el-radio>
                                             </div>
                                         </el-radio-group>

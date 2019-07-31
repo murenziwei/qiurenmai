@@ -118,7 +118,7 @@
                     <el-divider content-position="center">第二步：选择任务类型和单数</el-divider>
 
                     <el-row>
-                        <div>选择添加推广任务类型</div>
+                        <div>选择添加推广任务类型<el-link :underline="false" type="danger">（打上勾的选项都是必填的）</el-link></div>
                         <div>
 
 

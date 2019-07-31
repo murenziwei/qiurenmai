@@ -89,23 +89,23 @@
                                         </el-col>
                                     </el-row>
                                 </el-col>
-                                <el-col class="tib-first tib-item" :span="3">
-                                    <el-link type="info">待操作:{{item.status2||0}}</el-link>
+                                <!--<el-col class="tib-first tib-item" :span="3">-->
+                                    <!--<el-link type="info">待操作:{{item.status2||0}}</el-link>-->
+                                <!--</el-col>-->
+
+                                <el-col class="tib-first tib-item" :span="4">
+                                    <el-link type="danger" @click="tabName('second')">待返款发货:{{item.status3||0}}</el-link>
                                 </el-col>
 
-                                <el-col class="tib-first tib-item" :span="3">
-                                    <el-link type="danger">待返款发货:{{item.status3||0}}</el-link>
+                                <el-col class="tib-first tib-item" :span="4">
+                                    <el-link type="info" @click="tabName('third')">待评价:{{item.status4||0}}</el-link>
+                                </el-col>
+                                <el-col class="tib-first tib-item" :span="4">
+                                    <el-link type="info" @click="tabName('fourth')">待确认:{{item.status5||0}}</el-link>
                                 </el-col>
 
-                                <el-col class="tib-first tib-item" :span="3">
-                                    <el-link type="info">待评价:{{item.status4||0}}</el-link>
-                                </el-col>
-                                <el-col class="tib-first tib-item" :span="3">
-                                    <el-link type="info">待确认:{{item.status5||0}}</el-link>
-                                </el-col>
-
-                                <el-col class="tib-first tib-item" :span="3">
-                                    <el-link type="info">已完成：{{item.status6||0}}</el-link>
+                                <el-col class="tib-first tib-item" :span="4">
+                                    <el-link type="info" @click="tabName('fifth')">已完成：{{item.status6||0}}</el-link>
                                 </el-col>
                             </el-row>
                             <el-divider></el-divider>
@@ -1087,6 +1087,10 @@
                         this.$notify.error(res.message);
                     }
                 })
+            },
+
+            tabName(active){
+                this.activeName=active;
             },
 
             //垫付任务返款管理

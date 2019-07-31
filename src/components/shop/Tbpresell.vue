@@ -97,11 +97,68 @@
                 </div>
 
 
+                <!--<div>-->
+                    <!--<el-divider content-position="center">第二步：设置如何找到商品</el-divider>-->
+                    <!--<div>-->
+
+                        <!--<el-form-item label="商品现有收货人数或付款人数约" prop="sell_num">-->
+                            <!--<el-row type="flex" justify="center" align="middle" :gutter="20">-->
+                                <!--<el-col :span="5"><el-input v-model="taskForm.sell_num" type="sell_num"></el-input> </el-col>-->
+                                <!--<el-col :span="2"><span>人</span></el-col>-->
+                                <!--<el-col><span class="info-text">此处为手机淘宝销量优先搜索列表页显示的收货人数</span></el-col>-->
+
+                            <!--</el-row>-->
+                        <!--</el-form-item>-->
+                    <!--</div>-->
+                    <!--<el-form-item label="价格区间" prop="search_price">-->
+                        <!--<el-row type="flex" justify="center" align="middle" :gutter="20">-->
+                            <!--<el-col :span="14">-->
+                                <!--<el-row type="flex" align="middle">-->
+                                    <!--<el-input v-model="taskForm.search_price.start" type="search_price"></el-input>-->
+                                    <!--<i class="el-icon-minus"></i>-->
+                                    <!--<el-input v-model="taskForm.search_price.end" type="search_end"></el-input>-->
+                                <!--</el-row>-->
+                            <!--</el-col>-->
+                            <!--<el-col :span="2"><span>{{$store.state.mtext}}</span></el-col>-->
+                            <!--<el-col><span class="info-text">务必亲自在手机端搜索，确认价格准确</span></el-col>-->
+
+                        <!--</el-row>-->
+                    <!--</el-form-item>-->
+                    <!--<el-form-item label="商品所在地" prop="cityvalue">-->
+                        <!--<el-select v-model="taskForm.cityvalue" placeholder="请选择" type="cityvalue">-->
+                            <!--<el-option-->
+                                    <!--v-for="item in cityoptions"-->
+                                    <!--:key="item.value"-->
+                                    <!--:label="item.text"-->
+                                    <!--:value="item.text">-->
+                            <!--</el-option>-->
+                        <!--</el-select>-->
+                    <!--</el-form-item>-->
+                    <!--<el-form-item label="订单留言" prop="order_message">-->
+                        <!--<el-row type="flex" justify="center" align="middle" :gutter="20">-->
+                            <!--<el-col :span="10"><el-input v-model="taskForm.order_message" type="order_message"></el-input></el-col>-->
+                            <!--<el-col >-->
+                                <!--<el-row type="flex" align="middle">-->
+
+                                    <!--<el-popover-->
+                                            <!--placement="top-start"-->
+                                            <!--title="订单留言"-->
+                                            <!--width="200"-->
+                                            <!--trigger="click"-->
+                                            <!--content="如非必须建议不指定订单备注留言！因淘宝现在人工审核申诉订单时，会排查买家的订单留言内容及发货方式 是否匹配，出于安全性考虑，大家尽量通过订单号和买号来区分推广订单。">-->
+                                        <!--<el-button type="text" slot="reference" icon="el-icon-info" class="info-btn"></el-button>-->
+                                    <!--</el-popover><span class="info-text">用户拍下商品所需要填写的买家留言；出于安全考虑不建议大批量使用</span>-->
+                                <!--</el-row>-->
+                            <!--</el-col>-->
+
+                        <!--</el-row>-->
+                    <!--</el-form-item>-->
+                <!--</div>-->
                 <div>
                     <el-divider content-position="center">第二步：设置如何找到商品</el-divider>
                     <div>
 
-                        <el-form-item label="商品现有收货人数或付款人数约" prop="sell_num">
+                        <el-form-item label="商品现有收货人数或付款人数约">
                             <el-row type="flex" justify="center" align="middle" :gutter="20">
                                 <el-col :span="5"><el-input v-model="taskForm.sell_num" type="sell_num"></el-input> </el-col>
                                 <el-col :span="2"><span>人</span></el-col>
@@ -110,7 +167,7 @@
                             </el-row>
                         </el-form-item>
                     </div>
-                    <el-form-item label="价格区间" prop="search_price">
+                    <el-form-item label="价格区间" >
                         <el-row type="flex" justify="center" align="middle" :gutter="20">
                             <el-col :span="14">
                                 <el-row type="flex" align="middle">
@@ -124,7 +181,7 @@
 
                         </el-row>
                     </el-form-item>
-                    <el-form-item label="商品所在地" prop="cityvalue">
+                    <el-form-item label="商品所在地">
                         <el-select v-model="taskForm.cityvalue" placeholder="请选择" type="cityvalue">
                             <el-option
                                     v-for="item in cityoptions"
@@ -134,7 +191,7 @@
                             </el-option>
                         </el-select>
                     </el-form-item>
-                    <el-form-item label="订单留言" prop="order_message">
+                    <el-form-item label="订单留言">
                         <el-row type="flex" justify="center" align="middle" :gutter="20">
                             <el-col :span="10"><el-input v-model="taskForm.order_message" type="order_message"></el-input></el-col>
                             <el-col >
@@ -155,12 +212,11 @@
                     </el-form-item>
                 </div>
 
-
                 <div>
                     <el-divider content-position="center">第三步：选择任务类型和单数</el-divider>
 
                     <el-row>
-                        <div>选择添加推广任务类型</div>
+                        <div>选择添加推广任务类型<el-link :underline="false" type="danger">（打上勾的选项都是必填的）</el-link></div>
                         <div>
 
 
